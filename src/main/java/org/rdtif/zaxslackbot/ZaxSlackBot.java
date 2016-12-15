@@ -8,6 +8,8 @@ class ZaxSlackBot {
     }
 
     private void run() {
-        configurationLoader.getConfigurationFrom(".");
+        ZaxSlackBotConfiguration configuration = configurationLoader.getConfigurationFrom(".");
+        SlackConnection connection = new SlackConnection(configuration.getApiToken());
+        connection.connect();
     }
 }
