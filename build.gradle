@@ -14,7 +14,9 @@ repositories {
 
 dependencies {
     compile 'com.github.RDT-IF:zax:0.92-SNAPSHOT'
-    compile 'com.github.Ullink:simple-slack-api:0.6.0'
+    compile 'com.github.Ullink:simple-slack-api:0.6.0', {
+        exclude module: 'junit'
+    }
 
     testCompile 'junit:junit:4.12', {
         exclude module: 'hamcrest-core'
