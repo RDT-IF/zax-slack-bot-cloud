@@ -10,7 +10,8 @@ class SlackConnection {
 
     SlackConnection(String apiToken) {
         session = SlackSessionFactory.createWebSocketSlackSession(apiToken);
-
+        session.addGroupJoinedListener(new GroupJoinListener());
+        session.addMessagePostedListener(new MessagePostedListener());
     }
 
     void connect() {
