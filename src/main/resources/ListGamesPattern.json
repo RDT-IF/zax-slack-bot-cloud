@@ -1,0 +1,18 @@
+{
+  "pattern": "(what|which) (game|games|story|stories) (do you know|can i play)(.*)",
+  "action": "ListGames",
+  "responses": [
+    {
+      "name": "default",
+      "responses": [
+        "I'm sorry, I don't have any games."
+      ]
+    },
+    {
+      "name": "games",
+      "responses": [
+        "I have a lot of games, here is what I have:"
+      ]
+    }
+  ]
+}
