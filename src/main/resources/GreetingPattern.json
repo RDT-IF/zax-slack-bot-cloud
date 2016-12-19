@@ -1,6 +1,6 @@
 {
   "pattern": "(hi|hello|how are you|yo|howdy)(.*)",
-  "action": "Greeting",
+  "action": "Default",
   "responses": [
     {
       "name": "default",

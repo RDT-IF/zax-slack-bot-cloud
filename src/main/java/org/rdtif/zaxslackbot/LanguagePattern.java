@@ -4,7 +4,7 @@ import java.util.List;
 
 public class LanguagePattern {
     private String pattern;
-    private LanguageAction action;
+    private LanguageAction action = LanguageAction.Default;
     private List<LanguageResponse> responses;
 
     public String getPattern() {

@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.github.RDT-IF:zax:0.92-SNAPSHOT-2'
+    compile 'com.github.RDT-IF:zax:0.92-SNAPSHOT-5'
     compile 'com.github.Ullink:simple-slack-api:0.6.0', {
         exclude module: 'junit'
     }
@@ -29,6 +29,7 @@ dependencies {
 }
 
 jar {
+    from sourceSets.main.allSource
     manifest {
         attributes(
                 "Implementation-Title": "Zax",
