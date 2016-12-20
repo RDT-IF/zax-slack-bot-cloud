@@ -1,15 +1,23 @@
 package org.rdtif.zaxslackbot;
 
-class ZaxSlackBot {
-    private final ConfigurationLoader configurationLoader = new ConfigurationLoader();
+import com.google.inject.Guice;
 
-    public static void main(String... arguments) {
-        new ZaxSlackBot().run();
+import javax.inject.Inject;
+
+class ZaxSlackBot {
+    private final SlackConnection connection;
+
+    @Inject
+    ZaxSlackBot(SlackConnection connection) {
+        this.connection = connection;
     }
 
+    public static void main(String... arguments) {
+        Guice.createInjector(new ZaxSlackBotModule()).getInstance(ZaxSlackBot.class).run();
+    }
+
+
     private void run() {
-        ZaxSlackBotConfiguration configuration = configurationLoader.getConfigurationFrom(".");
-        SlackConnection connection = new SlackConnection(configuration.getApiToken());
         connection.connect();
     }
 }

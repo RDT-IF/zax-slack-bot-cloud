@@ -1,5 +1,6 @@
 package org.rdtif.zaxslackbot;
 
+import java.net.URI;
 import java.util.Properties;
 
 class ZaxSlackBotConfiguration {
@@ -11,5 +12,10 @@ class ZaxSlackBotConfiguration {
 
     String getApiToken() {
         return properties.getProperty("api-token");
+    }
+
+    public String getGameDirectory() {
+        return properties.getProperty("game-directory");
+
     }
 }
