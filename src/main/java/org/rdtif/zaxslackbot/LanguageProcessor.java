@@ -1,10 +1,16 @@
 package org.rdtif.zaxslackbot;
 
+import com.google.common.collect.ImmutableMap;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 class LanguageProcessor {
+    private static final Map<LanguageAction, Action> ACTION_MAP = ImmutableMap.<LanguageAction, Action>builder()
+            .put(LanguageAction.ListGames, new ListGamesAction())
+            .build();
     static final String DEFAULT_MESSAGE = "I do not understand what you want.";
 
     private final Random random = new Random();
@@ -13,7 +19,12 @@ class LanguageProcessor {
     String responseTo(String input) {
         for (LanguagePattern pattern : languagePatterns) {
             if (input.toLowerCase().matches(pattern.getPattern().toLowerCase())) {
-                return getResponseFromPattern(pattern);
+                Action action = ACTION_MAP.get(pattern.getAction());
+                if (action == null) {
+                    return getResponseFromPattern(pattern);
+                } else {
+                    return action.execute(pattern.getResponses());
+                }
             }
         }
 
@@ -37,4 +48,5 @@ class LanguageProcessor {
 
         return DEFAULT_MESSAGE;
     }
+
 }
