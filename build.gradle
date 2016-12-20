@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+    compile 'com.google.inject:guice:4.1.0'
     compile 'com.github.RDT-IF:zax:0.92-SNAPSHOT-5'
     compile 'com.github.Ullink:simple-slack-api:0.6.0', {
         exclude module: 'junit'
