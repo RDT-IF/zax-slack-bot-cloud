@@ -21,25 +21,25 @@ public class LanguageProcessorTest {
 
     @Test
     public void returnDefaultResponseWhenNoRegisteredPatterns() {
-        assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguageProcessor.DEFAULT_MESSAGE));
+        assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguagePattern.DEFAULT_MESSAGE));
     }
 
     @Test
     public void returnDefaultResponseWhenInputIsUnknown() {
         languageProcessor.registerPattern(createLanguagePattern("/doesnt/g", "matter"));
-        assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguageProcessor.DEFAULT_MESSAGE));
+        assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguagePattern.DEFAULT_MESSAGE));
     }
 
     @Test
     public void doNotRegisterNullPattern() {
         languageProcessor.registerPattern(null);
-        assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguageProcessor.DEFAULT_MESSAGE));
+        assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguagePattern.DEFAULT_MESSAGE));
     }
 
     @Test
     public void doNotRegisterLanguagePatternWhenNoPatternPresent() {
         languageProcessor.registerPattern(new LanguagePattern());
-        assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguageProcessor.DEFAULT_MESSAGE));
+        assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguagePattern.DEFAULT_MESSAGE));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class LanguageProcessorTest {
         languagePattern.setPattern(input);
         languageProcessor.registerPattern(languagePattern);
 
-        assertThat(languageProcessor.responseTo(input), equalTo(LanguageProcessor.DEFAULT_MESSAGE));
+        assertThat(languageProcessor.responseTo(input), equalTo(LanguagePattern.DEFAULT_MESSAGE));
     }
 
     @Test
