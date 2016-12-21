@@ -2,6 +2,8 @@ package org.rdtif.zaxslackbot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 class ListGamesAction implements Action {
@@ -15,10 +17,19 @@ class ListGamesAction implements Action {
     public String execute(List<LanguageResponse> responses) {
         List<String> names = new ArrayList<>(repository.fileNames());
         if (names.size() == 0) {
-            return "";
+            return getByName(responses, "default");
         } else {
-            return formatList(names) + ".";
+            return getByName(responses, "games") + formatList(names) + ".";
         }
+    }
+
+    private String getByName(List<LanguageResponse> responses, String name) {
+        Optional<LanguageResponse> first = responses.stream().filter(response -> name.equalsIgnoreCase("default")).findFirst();
+        if (first.isPresent()) {
+            LanguageResponse response = first.get();
+            return response.getResponses().get(new Random().nextInt(response.getResponses().size()));
+        }
+        return "";
     }
 
     private String formatList(List<String> names) {
