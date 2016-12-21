@@ -18,18 +18,18 @@ public class InterpreterModuleTest {
 
     @Test
     public void providesActionMap() {
-        Map<LanguageAction, Action> map = injector.getInstance(Key.get(new TypeLiteral<Map<LanguageAction, Action>>(){}));
+        Map<LanguageAction, Action> map = injector.getInstance(Key.get(new TypeLiteral<Map<LanguageAction, Action>>() {
+        }));
 
         assertThat(map, notNullValue());
     }
 
     @Test
     public void actionMapContainsListGames() {
-        Map<LanguageAction, Action> map = injector.getInstance(Key.get(new TypeLiteral<Map<LanguageAction, Action>>(){}));
+        Map<LanguageAction, Action> map = injector.getInstance(Key.get(new TypeLiteral<Map<LanguageAction, Action>>() {
+        }));
         Action action = map.get(LanguageAction.ListGames);
 
         assertThat(action, instanceOf(ListGamesAction.class));
     }
-
-
 }
