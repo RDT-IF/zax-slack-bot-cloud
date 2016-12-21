@@ -5,6 +5,12 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Properties;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,13 +19,6 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Properties;
-import java.util.Random;
 
 @RunWith(Theories.class)
 public class GameRepositoryTest {

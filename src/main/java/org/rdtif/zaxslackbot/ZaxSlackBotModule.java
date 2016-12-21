@@ -23,17 +23,17 @@ class ZaxSlackBotModule extends AbstractModule {
     @Provides
     @Singleton
     public SlackSession providesSlackConnection(ZaxSlackBotConfiguration configuration, GroupJoinListener groupJoinListener, MessagePostedListener messagePostedListener) {
-            SlackSession session = SlackSessionFactory.createWebSocketSlackSession(configuration.getApiToken());
-            session.addGroupJoinedListener(groupJoinListener);
-            session.addMessagePostedListener(messagePostedListener);
-            return session;
+        SlackSession session = SlackSessionFactory.createWebSocketSlackSession(configuration.getApiToken());
+        session.addGroupJoinedListener(groupJoinListener);
+        session.addMessagePostedListener(messagePostedListener);
+        return session;
     }
 
     @Provides
     @Singleton
-    Map<LanguageAction, Action> providesActionMap() {
+    public Map<LanguageAction, Action> providesActionMap(GameRepository repository) {
         return ImmutableMap.<LanguageAction, Action>builder()
-                .put(LanguageAction.ListGames, new ListGamesAction())
+                .put(LanguageAction.ListGames, new ListGamesAction(repository))
                 .build();
     }
 }

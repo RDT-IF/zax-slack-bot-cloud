@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -21,7 +21,7 @@ class GameRepository {
         this.configuration = configuration;
     }
 
-    Collection<String> fileNames() {
+    List<String> fileNames() {
         try (Stream<Path> paths = Files.walk(Paths.get(configuration.getGameDirectory()))) {
             return paths.filter(FOR_REGULAR_FILES).map(Path::getFileName).map(Path::toString).filter(ENDS_WITH_Z_VERSION).collect(Collectors.toList());
         } catch (IOException exception) {
