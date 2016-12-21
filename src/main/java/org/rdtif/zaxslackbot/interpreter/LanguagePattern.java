@@ -1,4 +1,4 @@
-package org.rdtif.zaxslackbot;
+package org.rdtif.zaxslackbot.interpreter;
 
 import java.util.ArrayList;
 import java.util.List;

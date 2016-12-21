@@ -1,4 +1,4 @@
-package org.rdtif.zaxslackbot;
+package org.rdtif.zaxslackbot.interpreter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -11,6 +11,7 @@ import java.util.Collections;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
+import org.rdtif.zaxslackbot.GameRepository;
 
 public class ListGamesActionTest {
     private static final String GAMES_MESSAGE = RandomStringUtils.randomAlphabetic(13);

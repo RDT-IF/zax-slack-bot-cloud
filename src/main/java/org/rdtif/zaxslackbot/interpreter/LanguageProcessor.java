@@ -1,11 +1,11 @@
-package org.rdtif.zaxslackbot;
+package org.rdtif.zaxslackbot.interpreter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 
-class LanguageProcessor {
+public class LanguageProcessor {
     private final Map<LanguageAction, Action> actionMap;
     private List<LanguagePattern> languagePatterns = new ArrayList<>();
 
@@ -14,7 +14,7 @@ class LanguageProcessor {
         this.actionMap = actionMap;
     }
 
-    String responseTo(String input) {
+    public String responseTo(String input) {
         for (LanguagePattern pattern : languagePatterns) {
             if (input.toLowerCase().matches(pattern.getPattern().toLowerCase())) {
                 Action action = actionMap.get(pattern.getAction());
@@ -29,7 +29,7 @@ class LanguageProcessor {
         return LanguagePattern.DEFAULT_MESSAGE;
     }
 
-    void registerPattern(LanguagePattern languagePattern) {
+    public void registerPattern(LanguagePattern languagePattern) {
         if (languagePattern == null || languagePattern.getPattern() == null) {
             return;
         }

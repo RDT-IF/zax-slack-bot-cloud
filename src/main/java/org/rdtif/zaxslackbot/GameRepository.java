@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.inject.Inject;
 
-class GameRepository {
+public class GameRepository {
     private static final Predicate<Path> FOR_REGULAR_FILES = (path -> Files.isRegularFile(path));
     private static final Predicate<String> ENDS_WITH_Z_VERSION = Pattern.compile(".*\\.z[1-5|7-8]$").asPredicate();
     private final ZaxSlackBotConfiguration configuration;
@@ -21,7 +21,7 @@ class GameRepository {
         this.configuration = configuration;
     }
 
-    List<String> fileNames() {
+    public List<String> fileNames() {
         try (Stream<Path> paths = Files.walk(Paths.get(configuration.getGameDirectory()))) {
             return paths.filter(FOR_REGULAR_FILES).map(Path::getFileName).map(Path::toString).filter(ENDS_WITH_Z_VERSION).collect(Collectors.toList());
         } catch (IOException exception) {

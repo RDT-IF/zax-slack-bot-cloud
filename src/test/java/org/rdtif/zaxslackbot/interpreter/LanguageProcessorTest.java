@@ -1,4 +1,4 @@
-package org.rdtif.zaxslackbot;
+package org.rdtif.zaxslackbot.interpreter;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;

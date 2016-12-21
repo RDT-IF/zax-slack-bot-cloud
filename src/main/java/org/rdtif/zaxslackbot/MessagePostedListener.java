@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ullink.slack.simpleslackapi.SlackSession;
 import com.ullink.slack.simpleslackapi.events.SlackMessagePosted;
 import com.ullink.slack.simpleslackapi.listeners.SlackMessagePostedListener;
+import org.rdtif.zaxslackbot.interpreter.LanguagePattern;
+import org.rdtif.zaxslackbot.interpreter.LanguageProcessor;
 
 class MessagePostedListener implements SlackMessagePostedListener {
     private final LanguageProcessor languageProcessor;

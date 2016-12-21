@@ -1,4 +1,4 @@
-package org.rdtif.zaxslackbot;
+package org.rdtif.zaxslackbot.interpreter;
 
 enum LanguageAction {
     Default,
