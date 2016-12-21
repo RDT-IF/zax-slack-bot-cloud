@@ -24,7 +24,7 @@ class ListGamesAction implements Action {
     }
 
     private String getByName(List<LanguageResponse> responses, String name) {
-        Optional<LanguageResponse> first = responses.stream().filter(response -> name.equalsIgnoreCase("default")).findFirst();
+        Optional<LanguageResponse> first = responses.stream().filter(response -> name.equalsIgnoreCase(response.getName())).findFirst();
         if (first.isPresent()) {
             LanguageResponse response = first.get();
             return response.getResponses().get(new Random().nextInt(response.getResponses().size()));
