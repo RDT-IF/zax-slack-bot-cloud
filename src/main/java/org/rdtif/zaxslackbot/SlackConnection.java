@@ -1,19 +1,16 @@
 package org.rdtif.zaxslackbot;
 
-import com.ullink.slack.simpleslackapi.SlackSession;
-import com.ullink.slack.simpleslackapi.impl.SlackSessionFactory;
-
 import java.io.IOException;
 import javax.inject.Inject;
+
+import com.ullink.slack.simpleslackapi.SlackSession;
 
 class SlackConnection {
     private final SlackSession session;
 
     @Inject
-    SlackConnection(String apiToken) {
-        session = SlackSessionFactory.createWebSocketSlackSession(apiToken);
-        session.addGroupJoinedListener(new GroupJoinListener());
-        session.addMessagePostedListener(new MessagePostedListener());
+    SlackConnection(SlackSession session) {
+        this.session = session;
     }
 
     void connect() {

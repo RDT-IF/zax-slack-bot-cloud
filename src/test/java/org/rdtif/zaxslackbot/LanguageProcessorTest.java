@@ -1,17 +1,24 @@
 package org.rdtif.zaxslackbot;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
-
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import com.google.common.collect.ImmutableMap;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Test;
+
 public class LanguageProcessorTest {
-    private final LanguageProcessor languageProcessor = new LanguageProcessor();
+    private static final String TEST_ACTION_RESPONSE = RandomStringUtils.randomAlphanumeric(12);
+    private static final Map<LanguageAction, Action> actionMap = ImmutableMap.<LanguageAction, Action>builder()
+            .put(LanguageAction.ListGames, new TestAction())
+            .build();
+    private final LanguageProcessor languageProcessor = new LanguageProcessor(actionMap);
 
     @Test
     public void returnDefaultResponseWhenNoRegisteredPatterns() {
@@ -105,6 +112,17 @@ public class LanguageProcessorTest {
         assertThat(languageProcessor.responseTo(input), equalTo(LanguageProcessor.DEFAULT_MESSAGE));
     }
 
+    @Test
+    public void useSpecifiedAction() {
+        String input = RandomStringUtils.randomAlphabetic(10);
+        LanguagePattern languagePattern = new LanguagePattern();
+        languagePattern.setPattern(input);
+        languagePattern.setAction(LanguageAction.ListGames);
+        languageProcessor.registerPattern(languagePattern);
+
+        assertThat(languageProcessor.responseTo(input), equalTo(TEST_ACTION_RESPONSE));
+    }
+
     private LanguagePattern createLanguagePattern(String pattern, String... response) {
         LanguagePattern languagePattern = new LanguagePattern();
         languagePattern.setPattern(pattern);
@@ -115,5 +133,12 @@ public class LanguageProcessorTest {
         languagePattern.setResponses(Collections.singletonList(languageResponse));
 
         return languagePattern;
+    }
+
+    private static class TestAction implements Action {
+        @Override
+        public String execute(List<LanguageResponse> responses) {
+            return TEST_ACTION_RESPONSE;
+        }
     }
 }

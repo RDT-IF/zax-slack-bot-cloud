@@ -1,10 +1,14 @@
 package org.rdtif.zaxslackbot;
 
-import com.google.inject.Guice;
-
 import javax.inject.Inject;
 
+import com.google.inject.Guice;
+
 class ZaxSlackBot {
+    public static void main(String... arguments) {
+        Guice.createInjector(new ZaxSlackBotModule()).getInstance(ZaxSlackBot.class).run();
+    }
+
     private final SlackConnection connection;
 
     @Inject
@@ -12,12 +16,7 @@ class ZaxSlackBot {
         this.connection = connection;
     }
 
-    public static void main(String... arguments) {
-        Guice.createInjector(new ZaxSlackBotModule()).getInstance(ZaxSlackBot.class).run();
-    }
-
-
-    private void run() {
+    void run() {
         connection.connect();
     }
 }
