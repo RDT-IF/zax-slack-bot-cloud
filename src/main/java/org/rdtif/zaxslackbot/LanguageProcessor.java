@@ -25,7 +25,7 @@ class LanguageProcessor {
                 if (action == null) {
                     return getResponseFromPattern(pattern);
                 } else {
-                    return action.execute(pattern.getResponses());
+                    return action.execute(pattern);
                 }
             }
         }

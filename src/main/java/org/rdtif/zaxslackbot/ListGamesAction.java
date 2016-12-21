@@ -14,17 +14,17 @@ class ListGamesAction implements Action {
     }
 
     @Override
-    public String execute(List<LanguageResponse> responses) {
+    public String execute(LanguagePattern pattern) {
         List<String> names = new ArrayList<>(repository.fileNames());
         if (names.size() == 0) {
-            return getByName(responses, "default");
+            return getByName(pattern, "default");
         } else {
-            return getByName(responses, "games") + formatList(names) + ".";
+            return getByName(pattern, "games") + formatList(names) + ".";
         }
     }
 
-    private String getByName(List<LanguageResponse> responses, String name) {
-        Optional<LanguageResponse> first = responses.stream().filter(response -> name.equalsIgnoreCase(response.getName())).findFirst();
+    private String getByName(LanguagePattern pattern, String name) {
+        Optional<LanguageResponse> first = pattern.responseFor(name);
         if (first.isPresent()) {
             LanguageResponse response = first.get();
             return response.getResponses().get(new Random().nextInt(response.getResponses().size()));

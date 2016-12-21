@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -137,7 +136,7 @@ public class LanguageProcessorTest {
 
     private static class TestAction implements Action {
         @Override
-        public String execute(List<LanguageResponse> responses) {
+        public String execute(LanguagePattern pattern) {
             return TEST_ACTION_RESPONSE;
         }
     }

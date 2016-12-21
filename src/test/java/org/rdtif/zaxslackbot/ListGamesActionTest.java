@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
@@ -22,7 +21,7 @@ public class ListGamesActionTest {
     @Test
     public void neverReturnNull() {
         when(repository.fileNames()).thenReturn(Collections.emptyList());
-        String response = action.execute(createResponses());
+        String response = action.execute(createPattern());
 
         assertThat(response, notNullValue());
     }
@@ -30,7 +29,7 @@ public class ListGamesActionTest {
     @Test
     public void returnFileListNone() {
         when(repository.fileNames()).thenReturn(Collections.emptyList());
-        String response = action.execute(createResponses());
+        String response = action.execute(createPattern());
 
         assertThat(response, equalTo(DEFAULT_MESSAGE));
     }
@@ -38,7 +37,7 @@ public class ListGamesActionTest {
     @Test
     public void returnFileListOne() {
         when(repository.fileNames()).thenReturn(Collections.singletonList("file1"));
-        String response = action.execute(createResponses());
+        String response = action.execute(createPattern());
 
         assertThat(response, equalTo(GAMES_MESSAGE + "file1."));
     }
@@ -46,7 +45,7 @@ public class ListGamesActionTest {
     @Test
     public void returnFileListTwo() {
         when(repository.fileNames()).thenReturn(Arrays.asList("file1", "file2"));
-        String response = action.execute(createResponses());
+        String response = action.execute(createPattern());
 
         assertThat(response, equalTo(GAMES_MESSAGE + "file1 and file2."));
     }
@@ -54,18 +53,20 @@ public class ListGamesActionTest {
     @Test
     public void returnFileListThreeOrMore() {
         when(repository.fileNames()).thenReturn(Arrays.asList("file1", "file2", "file3"));
-        String response = action.execute(createResponses());
+        String response = action.execute(createPattern());
 
         assertThat(response, equalTo(GAMES_MESSAGE + "file1, file2, and file3."));
     }
 
-    private List<LanguageResponse> createResponses() {
+    private LanguagePattern createPattern() {
+        LanguagePattern pattern = new LanguagePattern();
         LanguageResponse response1 = new LanguageResponse();
         response1.setName("default");
         response1.setResponses(Collections.singletonList(DEFAULT_MESSAGE));
         LanguageResponse response2 = new LanguageResponse();
         response2.setName("games");
         response2.setResponses(Collections.singletonList(GAMES_MESSAGE));
-        return Arrays.asList(response1, response2);
+        pattern.setResponses(Arrays.asList(response1, response2));
+        return pattern;
     }
 }
