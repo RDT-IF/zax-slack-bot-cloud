@@ -10,7 +10,7 @@ public class LanguageProcessor {
     private List<LanguagePattern> languagePatterns = new ArrayList<>();
 
     @Inject
-    LanguageProcessor(Map<LanguageAction, Action> actionMap) {
+    public LanguageProcessor(Map<LanguageAction, Action> actionMap) {
         this.actionMap = actionMap;
     }
 
