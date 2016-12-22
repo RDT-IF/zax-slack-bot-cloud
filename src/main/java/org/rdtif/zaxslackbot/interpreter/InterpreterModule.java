@@ -24,6 +24,7 @@ public class InterpreterModule extends AbstractModule {
     public Map<LanguageAction, Action> providesActionMap(GameRepository repository) {
         return ImmutableMap.<LanguageAction, Action>builder()
                 .put(LanguageAction.ListGames, new ListGamesAction(repository))
+                .put(LanguageAction.StartGame, new StartGameAction(repository))
                 .build();
     }
 
