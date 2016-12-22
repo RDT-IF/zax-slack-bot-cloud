@@ -1,7 +1,7 @@
 # zax-slack-bot
 
 # Configuration
-1. Create a configuration.properties file with the following:
+Create a configuration.properties file with the following:
 ```
     api-token=fill in your api token here
     game-directory=/path/to/folder/for/games
