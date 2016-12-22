@@ -21,7 +21,7 @@ public class LanguageProcessor {
                 if (action == null) {
                     return pattern.responseForFirst();
                 } else {
-                    return action.execute(pattern);
+                    return action.execute(input, pattern);
                 }
             }
         }

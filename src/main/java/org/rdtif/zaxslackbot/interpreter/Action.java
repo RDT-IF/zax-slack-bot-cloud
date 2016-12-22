@@ -1,5 +1,5 @@
 package org.rdtif.zaxslackbot.interpreter;
 
 public interface Action {
-    String execute(LanguagePattern pattern);
+    String execute(String input, LanguagePattern pattern);
 }

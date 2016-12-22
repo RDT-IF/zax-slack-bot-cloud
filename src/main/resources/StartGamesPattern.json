@@ -1,0 +1,21 @@
+{
+  "pattern": "(play|start|open|run) (.*)?",
+  "action": "StartGame",
+  "responses": [
+    {
+      "name": "default",
+      "responses": [
+        "I do not know that game.",
+        "Why would you ever ask me to play that game?",
+        "Seriously? That game is so lame, I can't even play it.",
+        "No.",
+        "I politely refuse to play that game."
+      ]
+    }, {
+      "name": "start",
+      "responses": [
+        "Starting: "
+      ]
+    }
+  ]
+}

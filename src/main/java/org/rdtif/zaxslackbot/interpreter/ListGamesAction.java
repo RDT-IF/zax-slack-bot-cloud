@@ -14,7 +14,7 @@ class ListGamesAction implements Action {
     }
 
     @Override
-    public String execute(LanguagePattern pattern) {
+    public String execute(String input, LanguagePattern pattern) {
         List<String> names = new ArrayList<>(repository.fileNames());
         if (names.size() == 0) {
             return pattern.responseFor("default");

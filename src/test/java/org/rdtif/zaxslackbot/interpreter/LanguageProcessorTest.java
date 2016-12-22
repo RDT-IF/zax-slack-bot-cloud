@@ -136,7 +136,7 @@ public class LanguageProcessorTest {
 
     private static class TestAction implements Action {
         @Override
-        public String execute(LanguagePattern pattern) {
+        public String execute(String input, LanguagePattern pattern) {
             return TEST_ACTION_RESPONSE;
         }
     }
