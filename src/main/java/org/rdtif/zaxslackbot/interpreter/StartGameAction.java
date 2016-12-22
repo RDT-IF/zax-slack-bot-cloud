@@ -1,6 +1,7 @@
 package org.rdtif.zaxslackbot.interpreter;
 
 import com.google.inject.Inject;
+import com.zaxsoft.zax.zmachine.ZCPU;
 import org.rdtif.zaxslackbot.GameRepository;
 
 import java.util.regex.Matcher;
@@ -19,6 +20,9 @@ public class StartGameAction implements Action {
         String gameName = extractGameName(input, pattern);
 
         if (gameRepository.fileNames().contains(gameName)) {
+//            ZCPU cpu = new ZCPU(new SlackZUserInterface());
+//            cpu.initialize("games/anchor.z8");
+//            cpu.run();
             return pattern.responseFor("start") + " " + gameName;
         }
 
@@ -28,12 +32,12 @@ public class StartGameAction implements Action {
     private String extractGameName(String input, LanguagePattern pattern) {
         Pattern regex = Pattern.compile(pattern.getPattern());
         Matcher matcher = regex.matcher(input);
-        StringBuffer gameName = new StringBuffer();
 
         if (matcher.find()) {
-            gameName.append(matcher.group(2));
+            return matcher.group(2);
         }
 
-        return gameName.toString();
+        return "";
     }
+
 }
