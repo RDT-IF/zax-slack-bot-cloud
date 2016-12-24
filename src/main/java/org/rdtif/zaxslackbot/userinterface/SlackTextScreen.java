@@ -3,18 +3,20 @@ package org.rdtif.zaxslackbot.userinterface;
 import com.ullink.slack.simpleslackapi.SlackChannel;
 import com.ullink.slack.simpleslackapi.SlackSession;
 
-class SlackTextScreen extends TextScreen {
+public class SlackTextScreen extends TextScreen {
     private final SlackSession slackSession;
     private final SlackChannel slackChannel;
     private String slackMessageTimeStamp;
 
-    SlackTextScreen(SlackSession slackSession, SlackChannel slackChannel) {
+    public SlackTextScreen(SlackSession slackSession, SlackChannel slackChannel) {
         this.slackSession = slackSession;
         this.slackChannel = slackChannel;
-        this.slackMessageTimeStamp = slackSession.sendMessage(slackChannel, "").getReply().getTimestamp();
+        this.slackMessageTimeStamp = slackSession.sendMessage(slackChannel, "FOOBARBAZ").getReply().getTimestamp();
     }
 
-    void update() {
-        slackMessageTimeStamp = slackSession.updateMessage(slackMessageTimeStamp, slackChannel, getText()).getReply().getTimestamp();
+    public void update() {
+        String replaceActualBackTicks = "`" + (char) 11 + "`" + (char) 11 + "`";
+        String message = "```\n" + getText().replaceAll("```", replaceActualBackTicks) + "\n```";
+        slackMessageTimeStamp = slackSession.updateMessage(slackMessageTimeStamp, slackChannel, message).getReply().getTimestamp();
     }
 }
