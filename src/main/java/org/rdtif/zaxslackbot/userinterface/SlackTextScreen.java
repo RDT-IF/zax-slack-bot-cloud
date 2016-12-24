@@ -41,12 +41,20 @@ class SlackTextScreen {
         line.setText(left + string + right);
         line.setTimeStamp(updateLine(line));
     }
-    
+
     void scroll(int lines) {
+        if (lines == 0) {
+            return;
+        }
+
         for (int i = 0; i < lines; i++) {
             screenLines.get(i).setText(screenLines.get(i + 1).getText());
         }
         screenLines.get(lines).setText("");
+    }
+
+    void eraseLine() {
+        screenLines.get(cursorPosition.getRow()).setText("");
     }
 
     void update() {
