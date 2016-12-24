@@ -13,7 +13,7 @@ import com.ullink.slack.simpleslackapi.replies.SlackMessageReply;
 class SlackTextScreen {
     private static final int LINES = 25;
     private static final int COLUMNS = 80;
-    private final List<TextScreenLine> lines = new ArrayList<>(LINES);
+    private final List<TextScreenLine> screenLines = new ArrayList<>(LINES);
     private final SlackSession slackSession;
     private final SlackChannel channel;
     private final ScreenPosition cursorPosition = new ScreenPosition(0, 0);
@@ -22,9 +22,7 @@ class SlackTextScreen {
         this.slackSession = slackSession;
         this.channel = channel;
         for (int i = 0; i < LINES; i++) {
-            lines.add(new TextScreenLine());
-            TextScreenLine line = lines.get(i);
-            line.setTimeStamp(writeLine(line.getText()));
+            screenLines.add(new TextScreenLine(writeLine("")));
         }
     }
 
@@ -37,14 +35,22 @@ class SlackTextScreen {
         if (cursorPosition.getColumn() + string.length() > COLUMNS) {
             throw new RuntimeException("Out of bounds");
         }
-        TextScreenLine line = lines.get(cursorPosition.getRow());
+        TextScreenLine line = screenLines.get(cursorPosition.getRow());
         String left = line.getText().substring(0, cursorPosition.getColumn());
         String right = line.getText().substring(cursorPosition.getColumn() + string.length());
         line.setText(left + string + right);
+        line.setTimeStamp(updateLine(line));
+    }
+    
+    void scroll(int lines) {
+        for (int i = 0; i < lines; i++) {
+            screenLines.get(i).setText(screenLines.get(i + 1).getText());
+        }
+        screenLines.get(lines).setText("");
     }
 
     void update() {
-        lines.stream().filter(TextScreenLine::hasChanged).forEach(line -> line.setTimeStamp(updateLine(line)));
+        screenLines.stream().filter(TextScreenLine::hasChanged).forEach(line -> line.setTimeStamp(updateLine(line)));
     }
 
     private String updateLine(TextScreenLine line) {

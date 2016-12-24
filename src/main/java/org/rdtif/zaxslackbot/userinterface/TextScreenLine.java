@@ -5,6 +5,10 @@ class TextScreenLine {
     private String text = "";
     private boolean changed;
 
+    TextScreenLine(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
     }
