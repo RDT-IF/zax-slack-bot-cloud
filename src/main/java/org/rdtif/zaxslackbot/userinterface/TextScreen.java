@@ -55,4 +55,7 @@ abstract class TextScreen {
         cursorPosition = new TextScreenPosition(cursorPosition.getRow() + extent.getRows(), cursorPosition.getColumn() + extent.getColumns());
     }
 
+    TextScreenPosition getCursorPosition() {
+        return cursorPosition;
+    }
 }
