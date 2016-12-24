@@ -1,21 +1,8 @@
 package org.rdtif.zaxslackbot.userinterface;
 
 class TextScreenLine {
-    private String timeStamp = "";
     private String text = "";
     private boolean changed;
-
-    TextScreenLine(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-    }
-
-    String getTimeStamp() {
-        return timeStamp;
-    }
 
     String getText() {
         return text;
@@ -28,7 +15,7 @@ class TextScreenLine {
 
     @Override
     public String toString() {
-        return timeStamp + ": " + text;
+        return text;
     }
 
     boolean hasChanged() {

@@ -2,13 +2,12 @@ package org.rdtif.zaxslackbot.userinterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.ullink.slack.simpleslackapi.SlackChannel;
 import com.ullink.slack.simpleslackapi.SlackMessageHandle;
 import com.ullink.slack.simpleslackapi.SlackSession;
 import com.ullink.slack.simpleslackapi.replies.SlackMessageReply;
-
-// TODO: Erasing lines, Scrolling, etc.
 
 class SlackTextScreen {
     private static final int LINES = 25;
@@ -17,18 +16,20 @@ class SlackTextScreen {
     private final SlackSession slackSession;
     private final SlackChannel channel;
     private final ScreenPosition cursorPosition = new ScreenPosition(0, 0);
+    private String slackMessageTimestamp;
 
     SlackTextScreen(SlackSession slackSession, SlackChannel channel) {
         this.slackSession = slackSession;
         this.channel = channel;
-        for (int i = 0; i < LINES; i++) {
-            screenLines.add(new TextScreenLine(writeLine("")));
-        }
+        initialize();
     }
 
-    private String writeLine(String line) {
-        SlackMessageHandle<SlackMessageReply> handle = slackSession.sendMessage(channel, line);
-        return handle.getReply().getTimestamp();
+    private void initialize() {
+        for (int i = 0; i < LINES; i++) {
+            screenLines.add(new TextScreenLine());
+        }
+        SlackMessageHandle<SlackMessageReply> handle = slackSession.sendMessage(channel, "");
+        slackMessageTimestamp = handle.getReply().getTimestamp();
     }
 
     void writeString(String string) {
@@ -39,7 +40,6 @@ class SlackTextScreen {
         String left = line.getText().substring(0, cursorPosition.getColumn());
         String right = line.getText().substring(cursorPosition.getColumn() + string.length());
         line.setText(left + string + right);
-        line.setTimeStamp(updateLine(line));
     }
 
     void scroll(int lines) {
@@ -51,6 +51,7 @@ class SlackTextScreen {
             screenLines.get(i).setText(screenLines.get(i + 1).getText());
         }
         screenLines.get(lines).setText("");
+        update();
     }
 
     void eraseLine() {
@@ -58,11 +59,7 @@ class SlackTextScreen {
     }
 
     void update() {
-        screenLines.stream().filter(TextScreenLine::hasChanged).forEach(line -> line.setTimeStamp(updateLine(line)));
-    }
-
-    private String updateLine(TextScreenLine line) {
-        SlackMessageHandle<SlackMessageReply> handle = slackSession.updateMessage(line.getTimeStamp(), channel, line.getText());
-        return handle.getReply().getTimestamp();
+        String message = screenLines.stream().map(TextScreenLine::getText).collect(Collectors.joining("\n"));
+        slackMessageTimestamp = slackSession.updateMessage(slackMessageTimestamp, channel, message).getReply().getTimestamp();
     }
 }
