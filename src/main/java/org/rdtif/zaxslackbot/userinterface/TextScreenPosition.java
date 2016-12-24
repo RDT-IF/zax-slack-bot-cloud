@@ -1,10 +1,10 @@
 package org.rdtif.zaxslackbot.userinterface;
 
-class ScreenPosition {
+class TextScreenPosition {
     private final int row;
     private final int column;
 
-    ScreenPosition(int row, int column) {
+    TextScreenPosition(int row, int column) {
         this.row = row;
         this.column = column;
     }
