@@ -25,11 +25,11 @@ abstract class TextScreen {
         return cursorPosition;
     }
 
-    void moveCursorBy(Extent extent) {
+    public void moveCursorBy(Extent extent) {
         moveCursorTo(cursorPosition.translateBy(extent));
     }
 
-    void moveCursorTo(Position position) {
+    public void moveCursorTo(Position position) {
         if (isValid(position)) {
             throw new IndexOutOfBoundsException("Attempt to move cursor to invalid position " + position);
         }
@@ -45,7 +45,7 @@ abstract class TextScreen {
         return screenLines.stream().map(TextScreenLine::getText).collect(Collectors.joining("\n", "", "\n"));
     }
 
-    void print(String string) {
+    public void print(String string) {
         if (cursorPosition.getColumn() + string.length() > size.getColumns()) {
             throw new IndexOutOfBoundsException("Attempt to print a string beyond the edge of screen");
         }
@@ -64,7 +64,7 @@ abstract class TextScreen {
         screenLines.set(cursorPosition.getRow(), new TextScreenLine(left + string + right));
     }
 
-    void eraseLine() {
+    public void eraseLine() {
         screenLines.set(cursorPosition.getRow(), new TextScreenLine(""));
     }
 
