@@ -1,10 +1,10 @@
 package org.rdtif.zaxslackbot.userinterface;
 
-public class TextScreenExtent {
+class Extent {
     private final int rows;
     private final int columns;
 
-    public TextScreenExtent(int rows, int columns) {
+    Extent(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
     }

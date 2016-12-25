@@ -4,61 +4,78 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-abstract class TextScreen {
-    private static final int LINES = 30;
-    private static final int COLUMNS = 80;
-    private final List<TextScreenLine> screenLines = new ArrayList<>(LINES);
-    private TextScreenPosition cursorPosition = new TextScreenPosition(0, 0);
+import org.apache.commons.lang3.StringUtils;
 
-    TextScreen() {
-        for (int i = 0; i < LINES; i++) {
-            screenLines.add(new TextScreenLine());
+abstract class TextScreen {
+    private final List<TextScreenLine> screenLines;
+    private final Extent size;
+    private Position cursorPosition = new Position(0, 0);
+
+    TextScreen(Extent size) {
+        this.size = size;
+        screenLines = new ArrayList<>(size.getRows());
+        for (int i = 0; i < size.getRows(); i++) {
+            screenLines.add(new TextScreenLine(""));
         }
     }
 
     abstract void update();
 
-    public void writeString(String string) {
-        if (cursorPosition.getColumn() + string.length() > COLUMNS) {
-            throw new RuntimeException("Out of bounds");
-        }
-        TextScreenLine line = screenLines.get(cursorPosition.getRow());
-        String left = line.getText().substring(0, cursorPosition.getColumn());
-        String right = "";
-        if (cursorPosition.getColumn() + string.length() <  line.getText().length()) {
-            right = line.getText().substring(cursorPosition.getColumn() + string.length());
-        }
-        line.setText(left + string + right);
+    Position getCursorPosition() {
+        return cursorPosition;
     }
 
-    public void scroll(int lines) {
-        if (lines == 0) {
-            return;
+    void moveCursorBy(Extent extent) {
+        moveCursorTo(cursorPosition.translateBy(extent));
+    }
+
+    void moveCursorTo(Position position) {
+        if (isValid(position)) {
+            throw new IndexOutOfBoundsException("Attempt to move cursor to invalid position " + position);
         }
-
-        for (int i = 0; i < lines; i++) {
-            screenLines.get(i).setText(screenLines.get(i + 1).getText());
-        }
-        screenLines.get(lines).setText("");
-    }
-
-    public void eraseLine() {
-        screenLines.get(cursorPosition.getRow()).setText("");
-    }
-
-    String getText() {
-        return screenLines.stream().map(TextScreenLine::getText).collect(Collectors.joining("\n"));
-    }
-
-    public void moveCursorTo(TextScreenPosition position) {
         cursorPosition = position;
     }
 
-    public void translateCursorBy(TextScreenExtent extent) {
-        cursorPosition = new TextScreenPosition(cursorPosition.getRow() + extent.getRows(), cursorPosition.getColumn() + extent.getColumns());
+    private boolean isValid(Position position) {
+        return position.getRow() < 0 || position.getRow() >= size.getRows()
+            || position.getColumn() < 0 || position.getColumn() >= size.getColumns();
     }
 
-    public TextScreenPosition getCursorPosition() {
-        return cursorPosition;
+    String getJoinedText() {
+        return screenLines.stream().map(TextScreenLine::getText).collect(Collectors.joining("\n", "", "\n"));
+    }
+
+    void print(String string) {
+        if (cursorPosition.getColumn() + string.length() > size.getColumns()) {
+            throw new IndexOutOfBoundsException("Attempt to print a string beyond the edge of screen");
+        }
+
+        TextScreenLine line = screenLines.get(cursorPosition.getRow());
+        String text = line.getText();
+        if (cursorPosition.getColumn() > text.length()) {
+            text = StringUtils.rightPad(text, cursorPosition.getColumn());
+        }
+
+        String left = text.substring(0, cursorPosition.getColumn());
+        String right = "";
+        if (cursorPosition.getColumn() + string.length() <  text.length()) {
+            right = text.substring(cursorPosition.getColumn() + string.length());
+        }
+        screenLines.set(cursorPosition.getRow(), new TextScreenLine(left + string + right));
+    }
+
+    public void scroll(int lines) {
+//        if (lines == 0) {
+//            return;
+//        }
+//
+//        for (int i = 0; i < lines; i++) {
+//            screenLines.get(i).setText(screenLines.get(i + 1).getText());
+//        }
+//        screenLines.get(lines).setText("");
+    }
+
+    public void eraseLine() {
+//        screenLines.get(cursorPosition.getRow()).setText("");
     }
 }
