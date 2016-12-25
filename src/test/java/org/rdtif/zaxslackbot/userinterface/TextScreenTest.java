@@ -70,7 +70,7 @@ public class TextScreenTest {
     @Test
     public void moveCursorLeftByTooManyColumns() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
-        int columns = 0 - new Random().nextInt(100) + 1;
+        int columns = 0 - new Random().nextInt(100) + 2;
         Extent extent = new Extent(0, columns);
 
         thrown.expect(IndexOutOfBoundsException.class);
@@ -104,7 +104,7 @@ public class TextScreenTest {
     @Test
     public void moveCursorToRowTooLow() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
-        int row = 0 - new Random().nextInt(100) + 1;
+        int row = 0 - new Random().nextInt(100) + 2;
         Position position = new Position(row, 0);
 
         thrown.expect(IndexOutOfBoundsException.class);
@@ -247,6 +247,243 @@ public class TextScreenTest {
         textScreen.print(line);
     }
 
+    @Test
+    public void eraseLine() {
+        String line = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(1, 25));
+        textScreen.print(line);
+
+        textScreen.eraseLine();
+
+        String text = textScreen.getJoinedText();
+        assertThat(text, equalTo("\n"));
+    }
+
+    @Test
+    public void eraseLineUsesCursorPosition() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        String line3 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(3, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line3);
+        textScreen.moveCursorBy(new Extent(-1, 0));
+        textScreen.eraseLine();
+
+        String text = textScreen.getJoinedText();
+
+        String expected = line1 + "\n\n" + line3 + "\n";
+        assertThat(text, equalTo(expected));
+    }
+
+    @Test
+    public void scrollOne() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        String line3 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(3, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line3);
+
+        textScreen.scroll(1);
+
+        assertThat(textScreen.getJoinedText(), equalTo(line2 + "\n" + line3 + "\n\n"));
+    }
+
+    @Test
+    public void scrollMultiple() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        String line3 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(10, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line3);
+
+        textScreen.scroll(3);
+
+        assertThat(textScreen.getJoinedText(), equalTo("\n\n\n\n\n\n\n\n\n\n"));
+    }
+
+    @Test
+    public void scrollCallsUpdate() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        String line3 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(10, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line3);
+        int expected = new Random().nextInt(100);
+
+        textScreen.scroll(expected);
+
+        assertThat(textScreen.count, equalTo(expected));
+    }
+
+    @Test
+    public void scrollMultipleIncludingBottom() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        String line3 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(3, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line3);
+
+        textScreen.scroll(3);
+
+        assertThat(textScreen.getJoinedText(), equalTo("\n\n\n"));
+    }
+
+    @Test
+    public void scrollMultipleBeyondBottom() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(2, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+
+        textScreen.scroll(3);
+
+        assertThat(textScreen.getJoinedText(), equalTo("\n\n"));
+    }
+
+    @Test
+    public void scrollMultipleSingleRowScreen() {
+        String line = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(1, 25));
+        textScreen.print(line);
+
+        textScreen.scroll(3);
+
+        assertThat(textScreen.getJoinedText(), equalTo("\n"));
+    }
+
+    @Test
+    public void scrollZero() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        String line3 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(3, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line3);
+
+        textScreen.scroll(0);
+
+        assertThat(textScreen.getJoinedText(), equalTo(line1 + "\n" + line2 + "\n" + line3 + "\n"));
+    }
+
+    @Test
+    public void scrollNegativeOne() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        String line3 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(3, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line3);
+
+        textScreen.scroll(-1);
+
+        assertThat(textScreen.getJoinedText(), equalTo("\n" + line1 + "\n" + line2 + "\n"));
+    }
+
+    @Test
+    public void scrollNegativeMultiple() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        String line3 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(3, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line3);
+
+        textScreen.scroll(-3);
+
+        assertThat(textScreen.getJoinedText(), equalTo("\n\n\n"));
+    }
+
+    @Test
+    public void scrollNegativeCallsUpdate() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        String line3 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(3, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line3);
+        int expected = new Random().nextInt(100);
+
+        textScreen.scroll(0 - expected);
+
+        assertThat(textScreen.count, equalTo(expected));
+    }
+
+    @Test
+    public void scrollNegativeMultipleIncludingTop() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        String line3 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(3, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line3);
+
+        textScreen.scroll(-3);
+
+        assertThat(textScreen.getJoinedText(), equalTo("\n\n\n"));
+    }
+
+    @Test
+    public void scrollNegativeMultipleBeyondTop() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(2, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+
+        textScreen.scroll(-3);
+
+        assertThat(textScreen.getJoinedText(), equalTo("\n\n"));
+    }
+
+    @Test
+    public void scrollNegativeMultipleSingleRowScreen() {
+        String line = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(1, 25));
+        textScreen.print(line);
+
+        textScreen.scroll(-3);
+
+        assertThat(textScreen.getJoinedText(), equalTo("\n"));
+    }
+
     private Position randomRowZeroPosition() {
         return new Position(0, new Random().nextInt(50));
     }
@@ -260,12 +497,15 @@ public class TextScreenTest {
     }
 
     private static class TestTextScreen extends TextScreen {
+        private int count;
+
         TestTextScreen(Extent extent) {
             super(extent);
         }
 
         @Override
         void update() {
+            this.count++;
         }
     }
 }

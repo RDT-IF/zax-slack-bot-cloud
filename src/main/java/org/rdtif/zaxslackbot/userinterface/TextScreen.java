@@ -64,18 +64,35 @@ abstract class TextScreen {
         screenLines.set(cursorPosition.getRow(), new TextScreenLine(left + string + right));
     }
 
-    public void scroll(int lines) {
-//        if (lines == 0) {
-//            return;
-//        }
-//
-//        for (int i = 0; i < lines; i++) {
-//            screenLines.get(i).setText(screenLines.get(i + 1).getText());
-//        }
-//        screenLines.get(lines).setText("");
+    void eraseLine() {
+        screenLines.set(cursorPosition.getRow(), new TextScreenLine(""));
     }
 
-    public void eraseLine() {
-//        screenLines.get(cursorPosition.getRow()).setText("");
+    void scroll(int lines) {
+        if (lines >= 0) {
+            scrollUp(lines);
+        } else {
+            scrollDown(0 - lines);
+        }
+    }
+
+    private void scrollUp(int lines) {
+        for (int j = 0; j < lines; j++) {
+            for (int i = 0; i < size.getRows() - 1; i++) {
+                screenLines.set(i, new TextScreenLine(screenLines.get(i + 1).getText()));
+            }
+            screenLines.set(size.getRows() - 1, new TextScreenLine(""));
+            update();
+        }
+    }
+
+    private void scrollDown(int lines) {
+        for (int j = 0; j < lines; j++) {
+            for (int i = size.getRows() - 1; i > 0; i--) {
+                screenLines.set(i, new TextScreenLine(screenLines.get(i - 1).getText()));
+            }
+            screenLines.set(0, new TextScreenLine(""));
+            update();
+        }
     }
 }
