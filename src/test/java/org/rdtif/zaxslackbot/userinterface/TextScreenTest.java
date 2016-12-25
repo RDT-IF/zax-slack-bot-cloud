@@ -36,7 +36,7 @@ public class TextScreenTest {
     @Test
     public void moveCursorBy() {
         TestTextScreen textScreen = new TestTextScreen(new Extent(50, 50));
-        Extent extent = randomExtent(40, 40);
+        Extent extent = randomExtent();
 
         textScreen.moveCursorBy(extent);
 
@@ -93,7 +93,7 @@ public class TextScreenTest {
     @Test
     public void moveCursorTo() {
         TestTextScreen textScreen = new TestTextScreen(new Extent(50, 50));
-        Position position = randomPosition(50, 50);
+        Position position = randomPosition();
 
         textScreen.moveCursorTo(position);
 
@@ -192,7 +192,7 @@ public class TextScreenTest {
     public void printStringInMiddleOfLine() {
         String original = RandomStringUtils.randomAlphanumeric(100);
         String newPortion = "~" + RandomStringUtils.randomAlphanumeric(25) + "~";
-        Position position = randomPosition(50);
+        Position position = randomRowZeroPosition();
         String expected = original.replaceFirst(original.substring(position.getColumn(), position.getColumn() + 27), newPortion) + "\n";
 
         TestTextScreen textScreen = new TestTextScreen(new Extent(1, 100));
@@ -247,15 +247,15 @@ public class TextScreenTest {
         textScreen.print(line);
     }
 
-    private Position randomPosition(int columnLimit) {
-        return new Position(0, new Random().nextInt(columnLimit));
+    private Position randomRowZeroPosition() {
+        return new Position(0, new Random().nextInt(50));
     }
-    private Position randomPosition(int rowLimit, int columnLimit) {
-        return new Position(new Random().nextInt(rowLimit), new Random().nextInt(columnLimit));
+    private Position randomPosition() {
+        return new Position(new Random().nextInt(50), new Random().nextInt(50));
     }
 
-    private Extent randomExtent(int rowLimit, int columnLimit) {
-        return new Extent(new Random().nextInt(rowLimit), new Random().nextInt(columnLimit));
+    private Extent randomExtent() {
+        return new Extent(new Random().nextInt(40), new Random().nextInt(40));
     }
 
     private static class TestTextScreen extends TextScreen {
