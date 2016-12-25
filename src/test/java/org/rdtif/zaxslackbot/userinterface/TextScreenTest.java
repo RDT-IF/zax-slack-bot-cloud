@@ -16,7 +16,7 @@ public class TextScreenTest {
     private static final Extent TINY_EXTENT = new Extent(1, 1);
 
     @Test
-    public  void getCursorPositionNeverReturnsNull() {
+    public void getCursorPositionNeverReturnsNull() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
 
         Position position = textScreen.getCursorPosition();
@@ -25,7 +25,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public  void cursorPositionDefaultsToZeroZero() {
+    public void cursorPositionDefaultsToZeroZero() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
 
         Position position = textScreen.getCursorPosition();
@@ -149,7 +149,7 @@ public class TextScreenTest {
 
     @Test
     public void getJoinedTextNeverReturnNull() {
-        String text = new TestTextScreen(new Extent(1,1)).getJoinedText();
+        String text = new TestTextScreen(new Extent(1, 1)).getJoinedText();
         assertThat(text, notNullValue());
     }
 
@@ -250,6 +250,7 @@ public class TextScreenTest {
     private Position randomRowZeroPosition() {
         return new Position(0, new Random().nextInt(50));
     }
+
     private Position randomPosition() {
         return new Position(new Random().nextInt(50), new Random().nextInt(50));
     }
@@ -264,6 +265,7 @@ public class TextScreenTest {
         }
 
         @Override
-        void update() {}
+        void update() {
+        }
     }
 }

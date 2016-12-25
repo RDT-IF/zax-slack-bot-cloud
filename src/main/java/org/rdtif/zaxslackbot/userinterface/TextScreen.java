@@ -38,7 +38,7 @@ abstract class TextScreen {
 
     private boolean isValid(Position position) {
         return position.getRow() < 0 || position.getRow() >= size.getRows()
-            || position.getColumn() < 0 || position.getColumn() >= size.getColumns();
+                || position.getColumn() < 0 || position.getColumn() >= size.getColumns();
     }
 
     String getJoinedText() {
@@ -58,7 +58,7 @@ abstract class TextScreen {
 
         String left = text.substring(0, cursorPosition.getColumn());
         String right = "";
-        if (cursorPosition.getColumn() + string.length() <  text.length()) {
+        if (cursorPosition.getColumn() + string.length() < text.length()) {
             right = text.substring(cursorPosition.getColumn() + string.length());
         }
         screenLines.set(cursorPosition.getRow(), new TextScreenLine(left + string + right));
