@@ -8,11 +8,14 @@ class SlackTextScreen extends TextScreen {
     private final SlackChannel slackChannel;
     private String slackMessageTimeStamp;
 
-    SlackTextScreen(SlackSession slackSession, SlackChannel slackChannel) {
-        super(new Extent(25, 80));
+    SlackTextScreen(SlackSession slackSession, SlackChannel slackChannel, Extent size) {
+        super(size);
         this.slackSession = slackSession;
         this.slackChannel = slackChannel;
-        this.slackMessageTimeStamp = slackSession.sendMessage(slackChannel, "FOOBARBAZ").getReply().getTimestamp();
+    }
+
+    void initialize() {
+        slackMessageTimeStamp = slackSession.sendMessage(slackChannel, "Display loading...").getReply().getTimestamp();
     }
 
     void update() {
