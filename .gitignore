@@ -3,3 +3,5 @@ build
 .idea
 configuration.properties
 games/*.z*
+out/
+stories/
