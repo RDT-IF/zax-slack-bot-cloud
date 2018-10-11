@@ -2,23 +2,23 @@ package org.rdtif.zaxslackbot.interpreter;
 
 import java.util.List;
 
-public class LanguageResponse {
+class LanguageResponse {
     private String name;
     private List<String> responses;
 
-    public String getName() {
+    String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
 
-    public List<String> getResponses() {
+    List<String> getResponses() {
         return responses;
     }
 
-    public void setResponses(List<String> responses) {
+    void setResponses(List<String> responses) {
         this.responses = responses;
     }
 }

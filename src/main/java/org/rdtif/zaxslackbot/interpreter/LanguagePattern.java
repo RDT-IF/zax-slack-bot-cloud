@@ -31,18 +31,18 @@ public class LanguagePattern {
         return responses;
     }
 
-    public void setResponses(List<LanguageResponse> responses) {
+    void setResponses(List<LanguageResponse> responses) {
         this.responses = responses;
     }
 
-    public String responseForFirst() {
+    String responseForFirst() {
         if (responses.size() > 0) {
             return selectResponse(responses.get(0).getResponses());
         }
         return DEFAULT_MESSAGE;
     }
 
-    public String responseFor(String name) {
+    String responseFor(String name) {
         return responses.stream()
                 .filter(response -> name.equalsIgnoreCase(response.getName()))
                 .findFirst()

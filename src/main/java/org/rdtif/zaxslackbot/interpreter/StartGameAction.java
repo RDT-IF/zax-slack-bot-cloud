@@ -1,7 +1,6 @@
 package org.rdtif.zaxslackbot.interpreter;
 
 import com.google.inject.Inject;
-import com.zaxsoft.zax.zmachine.ZCPU;
 import org.rdtif.zaxslackbot.GameRepository;
 
 import java.util.regex.Matcher;

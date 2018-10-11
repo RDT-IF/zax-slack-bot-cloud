@@ -1,6 +1,5 @@
 package org.rdtif.zaxslackbot;
 
-import java.net.URI;
 import java.util.Properties;
 
 class ZaxSlackBotConfiguration {

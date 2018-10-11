@@ -29,7 +29,7 @@ public class LanguageProcessor {
         return LanguagePattern.DEFAULT_MESSAGE;
     }
 
-    public void registerPattern(LanguagePattern languagePattern) {
+    void registerPattern(LanguagePattern languagePattern) {
         if (languagePattern == null || languagePattern.getPattern() == null) {
             return;
         }
