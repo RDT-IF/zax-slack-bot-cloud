@@ -2,6 +2,7 @@
 build
 .idea
 configuration.properties
+configuration-backup.properties
 games/*.z*
 out/
 stories/
