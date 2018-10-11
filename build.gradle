@@ -9,22 +9,19 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
+def excludeHamcrest = { exclude module: 'hamcrest-core' }
+def excludeJunit = { exclude module: 'junit' }
+
 dependencies {
-    compile 'com.google.inject:guice:4.1.0'
-    compile 'com.github.RDT-IF:zax:0.92-SNAPSHOT-5'
-    compile 'com.github.Ullink:simple-slack-api:0.6.0', {
-        exclude module: 'junit'
-    }
+    compile group: 'com.google.inject',  name: 'guice',            version: '4.2.1'
+    compile group: 'com.github.RDT-IF',  name: 'zax',              version: '0.92-SNAPSHOT-5'
+    compile group: 'com.github.Ullink',  name: 'simple-slack-api', version: "0.6.0", excludeJunit
+    compile group: 'org.apache.commons', name: 'commons-lang3',    version: '3.8.1'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind',    version: '2.9.7'
 
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
-    compile 'org.apache.commons:commons-lang3:3.5'
-
-    testCompile 'junit:junit:4.12', {
-        exclude module: 'hamcrest-core'
-    }
-    testCompile 'org.hamcrest:hamcrest-all:1.3'
-    testCompile 'org.mockito:mockito-core:2.3.5'
-    testCompile 'org.apache.commons:commons-lang3:3.5'
+    testCompile group: 'junit',        name: 'junit',        version: '4.12',   excludeHamcrest
+    testCompile group: 'org.mockito',  name: 'mockito-core', version: '2.23.0', excludeHamcrest
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
 }
 
 jar {
