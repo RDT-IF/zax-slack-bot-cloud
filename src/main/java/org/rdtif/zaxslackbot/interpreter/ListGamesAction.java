@@ -1,10 +1,10 @@
 package org.rdtif.zaxslackbot.interpreter;
 
+import org.rdtif.zaxslackbot.GameRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.rdtif.zaxslackbot.GameRepository;
 
 class ListGamesAction implements Action {
     private final GameRepository repository;
@@ -31,7 +31,7 @@ class ListGamesAction implements Action {
         } else {
             String last = "and " + names.remove(names.size() - 1);
             names.add(last);
-            return names.stream().collect(Collectors.joining(", "));
+            return String.join(", ", names);
         }
     }
 }

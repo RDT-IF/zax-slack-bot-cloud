@@ -1,15 +1,14 @@
 package org.rdtif.zaxslackbot.interpreter;
 
-import java.io.IOException;
-import java.util.Map;
-import javax.inject.Singleton;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import org.apache.commons.codec.language.bm.Lang;
 import org.rdtif.zaxslackbot.GameRepository;
+
+import javax.inject.Singleton;
+import java.io.IOException;
+import java.util.Map;
 
 public class InterpreterModule extends AbstractModule {
     private final ObjectMapper mapper = new ObjectMapper();
