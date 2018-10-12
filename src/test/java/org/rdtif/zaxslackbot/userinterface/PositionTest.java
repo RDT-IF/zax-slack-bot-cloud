@@ -2,12 +2,12 @@ package org.rdtif.zaxslackbot.userinterface;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Random;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
-
-import java.util.Random;
 
 class PositionTest {
     @Test

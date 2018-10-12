@@ -1,7 +1,7 @@
 package org.rdtif.zaxslackbot.interpreter;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.rdtif.zaxslackbot.GameRepository;
 
 import java.util.Arrays;
@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class StartGameActionTest {
+class StartGameActionTest {
     private static final String DEFAULT_MESSAGE = RandomStringUtils.randomAlphabetic(13);
     private static final String START_MESSAGE = RandomStringUtils.randomAlphabetic(12);
 
@@ -21,14 +21,14 @@ public class StartGameActionTest {
     private final LanguagePattern languagePattern = createPattern();
 
     @Test
-    public void returnDefaultMessageIfGameDoesNotExist() {
+    void returnDefaultMessageIfGameDoesNotExist() {
         String badGameName = RandomStringUtils.randomAlphabetic(12);
         String message = startGameAction.execute("play " + badGameName, languagePattern);
         assertThat(message, equalTo(DEFAULT_MESSAGE));
     }
 
     @Test
-    public void returnStartMessageWithGameName() {
+    void returnStartMessageWithGameName() {
         String gameName = RandomStringUtils.randomAlphabetic(12);
         String input = "play " + gameName;
 

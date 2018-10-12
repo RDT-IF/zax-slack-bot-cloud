@@ -10,9 +10,9 @@ import java.util.Objects;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class LanguageProcessorTest {
+class LanguageProcessorTest {
     private static final String TEST_ACTION_RESPONSE = RandomStringUtils.randomAlphanumeric(12);
     private static final Map<LanguageAction, Action> actionMap = ImmutableMap.<LanguageAction, Action>builder()
             .put(LanguageAction.ListGames, new TestAction())
@@ -20,30 +20,30 @@ public class LanguageProcessorTest {
     private final LanguageProcessor languageProcessor = new LanguageProcessor(actionMap);
 
     @Test
-    public void returnDefaultResponseWhenNoRegisteredPatterns() {
+    void returnDefaultResponseWhenNoRegisteredPatterns() {
         assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguagePattern.DEFAULT_MESSAGE));
     }
 
     @Test
-    public void returnDefaultResponseWhenInputIsUnknown() {
+    void returnDefaultResponseWhenInputIsUnknown() {
         languageProcessor.registerPattern(createLanguagePattern("/doesnt/g", "matter"));
         assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguagePattern.DEFAULT_MESSAGE));
     }
 
     @Test
-    public void doNotRegisterNullPattern() {
+    void doNotRegisterNullPattern() {
         languageProcessor.registerPattern(null);
         assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguagePattern.DEFAULT_MESSAGE));
     }
 
     @Test
-    public void doNotRegisterLanguagePatternWhenNoPatternPresent() {
+    void doNotRegisterLanguagePatternWhenNoPatternPresent() {
         languageProcessor.registerPattern(new LanguagePattern());
         assertThat(languageProcessor.responseTo(RandomStringUtils.randomAlphabetic(10)), equalTo(LanguagePattern.DEFAULT_MESSAGE));
     }
 
     @Test
-    public void caseInsensitiveMatching() {
+    void caseInsensitiveMatching() {
         String input = RandomStringUtils.randomAlphabetic(10);
         String response = RandomStringUtils.randomAlphabetic(8);
         languageProcessor.registerPattern(createLanguagePattern(input.toUpperCase(), response));
@@ -52,7 +52,7 @@ public class LanguageProcessorTest {
     }
 
     @Test
-    public void returnResponseWhenInputMatchesPattern() {
+    void returnResponseWhenInputMatchesPattern() {
         String input = RandomStringUtils.randomAlphabetic(10);
         String response = RandomStringUtils.randomAlphabetic(8);
         languageProcessor.registerPattern(createLanguagePattern(input, response));
@@ -61,7 +61,7 @@ public class LanguageProcessorTest {
     }
 
     @Test
-    public void returnRandomResponseFromMatchingPattern() {
+    void returnRandomResponseFromMatchingPattern() {
         String input = RandomStringUtils.randomAlphabetic(10);
         String response = RandomStringUtils.randomAlphabetic(8);
         String response2 = RandomStringUtils.randomAlphabetic(9);
@@ -92,7 +92,7 @@ public class LanguageProcessorTest {
     }
 
     @Test
-    public void matchCorrectLanguagePattern() {
+    void matchCorrectLanguagePattern() {
         String input = RandomStringUtils.randomAlphabetic(10);
         String response = RandomStringUtils.randomAlphabetic(8);
         languageProcessor.registerPattern(createLanguagePattern(RandomStringUtils.randomAlphanumeric(12), ""));
@@ -102,7 +102,7 @@ public class LanguageProcessorTest {
     }
 
     @Test
-    public void returnDefaultResponseIfPatternHasNoResponses() {
+    void returnDefaultResponseIfPatternHasNoResponses() {
         String input = RandomStringUtils.randomAlphabetic(10);
         LanguagePattern languagePattern = new LanguagePattern();
         languagePattern.setPattern(input);
@@ -112,7 +112,7 @@ public class LanguageProcessorTest {
     }
 
     @Test
-    public void useSpecifiedAction() {
+    void useSpecifiedAction() {
         String input = RandomStringUtils.randomAlphabetic(10);
         LanguagePattern languagePattern = new LanguagePattern();
         languagePattern.setPattern(input);
