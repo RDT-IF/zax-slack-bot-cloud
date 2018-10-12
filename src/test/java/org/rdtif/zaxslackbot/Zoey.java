@@ -63,7 +63,7 @@ public class Zoey {
 
     public static void deleteFile(String filePath) {
         try {
-            Files.delete(Paths.get(filePath));
+            Files.deleteIfExists(Paths.get(filePath));
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
