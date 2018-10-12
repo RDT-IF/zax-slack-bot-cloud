@@ -6,8 +6,8 @@ import com.ullink.slack.simpleslackapi.SlackSession;
 import com.ullink.slack.simpleslackapi.SlackUser;
 import com.ullink.slack.simpleslackapi.events.SlackMessagePosted;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.rdtif.zaxslackbot.interpreter.LanguageProcessor;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class MessagePostedListenerTest {
+class MessagePostedListenerTest {
     private final SlackPersona persona = mock(SlackPersona.class);
     private final SlackUser sender = mock(SlackUser.class);
     private final SlackSession slackSession = mock(SlackSession.class);
@@ -29,8 +29,8 @@ public class MessagePostedListenerTest {
 
     private String id;
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         id = RandomStringUtils.randomAlphabetic(5);
         when(persona.getId()).thenReturn(id);
         when(slackSession.sessionPersona()).thenReturn(persona);
@@ -38,7 +38,7 @@ public class MessagePostedListenerTest {
     }
 
     @Test
-    public void doNotTalkToBots() {
+    void doNotTalkToBots() {
         when(sender.isBot()).thenReturn(true);
         when(messagePosted.getSender()).thenReturn(sender);
 
@@ -48,7 +48,7 @@ public class MessagePostedListenerTest {
     }
 
     @Test
-    public void doNotSpeakUnlessSpokenTo() {
+    void doNotSpeakUnlessSpokenTo() {
         String message = RandomStringUtils.randomAlphabetic(10);
 
         when(sender.isBot()).thenReturn(false);
@@ -61,7 +61,7 @@ public class MessagePostedListenerTest {
     }
 
     @Test
-    public void speakWhenSpokenTo() {
+    void speakWhenSpokenTo() {
         String tag = "<@" + id + ">";
         String message = RandomStringUtils.randomAlphabetic(10);
 
@@ -77,7 +77,7 @@ public class MessagePostedListenerTest {
     }
 
     @Test
-    public void speakWhenSpokenToInDirectMessage() {
+    void speakWhenSpokenToInDirectMessage() {
         String message = RandomStringUtils.randomAlphabetic(10);
 
         when(sender.isBot()).thenReturn(false);

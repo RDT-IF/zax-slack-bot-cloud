@@ -21,12 +21,12 @@ class InterpreterModuleTest {
     private final Injector injector = Guice.createInjector(new ZaxSlackBotModule());
 
     @BeforeAll
-    static void beforeAll() throws IOException {
+    static void beforeAll() {
         Zoey.createConfigurationFile();
     }
 
     @AfterAll
-    static void afterAll() throws IOException {
+    static void afterAll() {
         Zoey.deleteConfigurationFile();
     }
 
