@@ -18,7 +18,7 @@ test {
 
 dependencies {
     compile group: 'com.google.inject',  name: 'guice',            version: '4.2.1'
-    compile group: 'com.github.RDT-IF',  name: 'zax',              version: '0.92-SNAPSHOT-5'
+    compile group: 'com.github.RDT-IF',  name: 'zax',              version: '0.92-ALPHA-6'
     compile group: 'com.github.Ullink',  name: 'simple-slack-api', version: "0.6.0", excludeJunit
     compile group: 'org.apache.commons', name: 'commons-lang3',    version: '3.8.1'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind',    version: '2.9.7'
