@@ -2,7 +2,7 @@ package org.rdtif.zaxslackbot.interpreter;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
-import org.rdtif.zaxslackbot.GameRepository;
+import org.rdtif.zaxslackbot.GameFileRepository;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -16,7 +16,7 @@ class StartGameActionTest {
     private static final String DEFAULT_MESSAGE = RandomStringUtils.randomAlphabetic(13);
     private static final String START_MESSAGE = RandomStringUtils.randomAlphabetic(12);
 
-    private final GameRepository repository = mock(GameRepository.class);
+    private final GameFileRepository repository = mock(GameFileRepository.class);
     private final StartGameAction startGameAction = new StartGameAction(repository);
     private final LanguagePattern languagePattern = createPattern();
 

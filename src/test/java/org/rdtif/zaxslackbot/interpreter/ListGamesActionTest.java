@@ -11,12 +11,12 @@ import java.util.Collections;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
-import org.rdtif.zaxslackbot.GameRepository;
+import org.rdtif.zaxslackbot.GameFileRepository;
 
 class ListGamesActionTest {
     private static final String GAMES_MESSAGE = RandomStringUtils.randomAlphabetic(13);
     private static final String DEFAULT_MESSAGE = RandomStringUtils.randomAlphabetic(13);
-    private final GameRepository repository = mock(GameRepository.class);
+    private final GameFileRepository repository = mock(GameFileRepository.class);
     private final ListGamesAction action = new ListGamesAction(repository);
 
     @Test
