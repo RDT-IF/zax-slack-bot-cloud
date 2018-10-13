@@ -10,17 +10,17 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
-import org.rdtif.zaxslackbot.GameRepository;
+import org.junit.jupiter.api.Test;
+import org.rdtif.zaxslackbot.GameFileRepository;
 
-public class ListGamesActionTest {
+class ListGamesActionTest {
     private static final String GAMES_MESSAGE = RandomStringUtils.randomAlphabetic(13);
     private static final String DEFAULT_MESSAGE = RandomStringUtils.randomAlphabetic(13);
-    private final GameRepository repository = mock(GameRepository.class);
+    private final GameFileRepository repository = mock(GameFileRepository.class);
     private final ListGamesAction action = new ListGamesAction(repository);
 
     @Test
-    public void neverReturnNull() {
+    void neverReturnNull() {
         when(repository.fileNames()).thenReturn(Collections.emptyList());
         String response = action.execute("", createPattern());
 
@@ -28,7 +28,7 @@ public class ListGamesActionTest {
     }
 
     @Test
-    public void returnFileListNone() {
+    void returnFileListNone() {
         when(repository.fileNames()).thenReturn(Collections.emptyList());
         String response = action.execute("", createPattern());
 
@@ -36,7 +36,7 @@ public class ListGamesActionTest {
     }
 
     @Test
-    public void returnFileListOne() {
+    void returnFileListOne() {
         when(repository.fileNames()).thenReturn(Collections.singletonList("file1"));
         String response = action.execute("", createPattern());
 
@@ -44,7 +44,7 @@ public class ListGamesActionTest {
     }
 
     @Test
-    public void returnFileListTwo() {
+    void returnFileListTwo() {
         when(repository.fileNames()).thenReturn(Arrays.asList("file1", "file2"));
         String response = action.execute("", createPattern());
 
@@ -52,7 +52,7 @@ public class ListGamesActionTest {
     }
 
     @Test
-    public void returnFileListThreeOrMore() {
+    void returnFileListThreeOrMore() {
         when(repository.fileNames()).thenReturn(Arrays.asList("file1", "file2", "file3"));
         String response = action.execute("", createPattern());
 

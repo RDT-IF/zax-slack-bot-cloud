@@ -1,22 +1,20 @@
 package org.rdtif.zaxslackbot.userinterface;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TextScreenTest {
-    @Rule public ExpectedException thrown = ExpectedException.none();
+class TextScreenTest {
     private static final Extent TINY_EXTENT = new Extent(1, 1);
 
     @Test
-    public void getCursorPositionNeverReturnsNull() {
+    void getCursorPositionNeverReturnsNull() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
 
         Position position = textScreen.getCursorPosition();
@@ -25,7 +23,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void cursorPositionDefaultsToZeroZero() {
+    void cursorPositionDefaultsToZeroZero() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
 
         Position position = textScreen.getCursorPosition();
@@ -34,7 +32,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void moveCursorBy() {
+    void moveCursorBy() {
         TestTextScreen textScreen = new TestTextScreen(new Extent(50, 50));
         Extent extent = randomExtent();
 
@@ -45,53 +43,45 @@ public class TextScreenTest {
     }
 
     @Test
-    public void moveCursorUpByTooManyRows() {
+    void moveCursorUpByTooManyRows() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
         int rows = 0 - new Random().nextInt(100) + 1;
         Extent extent = new Extent(rows, 0);
 
-        thrown.expect(IndexOutOfBoundsException.class);
-        thrown.expectMessage("Attempt to move cursor to invalid position " + new Position(extent.getRows(), extent.getColumns()));
-
-        textScreen.moveCursorBy(extent);
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> textScreen.moveCursorBy(extent));
+        assertThat(exception.getMessage(), equalTo("Attempt to move cursor to invalid position " + new Position(extent.getRows(), extent.getColumns())));
     }
 
     @Test
-    public void moveCursorDownByTooManyRows() {
+    void moveCursorDownByTooManyRows() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
         Extent extent = new Extent(new Random().nextInt(100) + 1, 0);
 
-        thrown.expect(IndexOutOfBoundsException.class);
-        thrown.expectMessage("Attempt to move cursor to invalid position " + new Position(extent.getRows(), extent.getColumns()));
-
-        textScreen.moveCursorBy(extent);
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> textScreen.moveCursorBy(extent));
+        assertThat(exception.getMessage(), equalTo("Attempt to move cursor to invalid position " + new Position(extent.getRows(), extent.getColumns())));
     }
 
     @Test
-    public void moveCursorLeftByTooManyColumns() {
+    void moveCursorLeftByTooManyColumns() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
         int columns = 0 - new Random().nextInt(100) + 2;
         Extent extent = new Extent(0, columns);
 
-        thrown.expect(IndexOutOfBoundsException.class);
-        thrown.expectMessage("Attempt to move cursor to invalid position " + new Position(extent.getRows(), extent.getColumns()));
-
-        textScreen.moveCursorBy(extent);
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> textScreen.moveCursorBy(extent));
+        assertThat(exception.getMessage(), equalTo("Attempt to move cursor to invalid position " + new Position(extent.getRows(), extent.getColumns())));
     }
 
     @Test
-    public void moveCursorRightByTooManyColumns() {
+    void moveCursorRightByTooManyColumns() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
         Extent extent = new Extent(0, new Random().nextInt(100) + 1);
 
-        thrown.expect(IndexOutOfBoundsException.class);
-        thrown.expectMessage("Attempt to move cursor to invalid position " + new Position(extent.getRows(), extent.getColumns()));
-
-        textScreen.moveCursorBy(extent);
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> textScreen.moveCursorBy(extent));
+        assertThat(exception.getMessage(), equalTo("Attempt to move cursor to invalid position " + new Position(extent.getRows(), extent.getColumns())));
     }
 
     @Test
-    public void moveCursorTo() {
+    void moveCursorTo() {
         TestTextScreen textScreen = new TestTextScreen(new Extent(50, 50));
         Position position = randomPosition();
 
@@ -102,59 +92,51 @@ public class TextScreenTest {
     }
 
     @Test
-    public void moveCursorToRowTooLow() {
+    void moveCursorToRowTooLow() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
         int row = 0 - new Random().nextInt(100) + 2;
         Position position = new Position(row, 0);
 
-        thrown.expect(IndexOutOfBoundsException.class);
-        thrown.expectMessage("Attempt to move cursor to invalid position " + position);
-
-        textScreen.moveCursorTo(position);
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> textScreen.moveCursorTo(position));
+        assertThat(exception.getMessage(), equalTo("Attempt to move cursor to invalid position " + position));
     }
 
     @Test
-    public void moveCursorToRowTooHigh() {
+    void moveCursorToRowTooHigh() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
         Position position = new Position(new Random().nextInt(100) + 1, 0);
 
-        thrown.expect(IndexOutOfBoundsException.class);
-        thrown.expectMessage("Attempt to move cursor to invalid position " + position);
-
-        textScreen.moveCursorTo(position);
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> textScreen.moveCursorTo(position));
+        assertThat(exception.getMessage(), equalTo("Attempt to move cursor to invalid position " + position));
     }
 
     @Test
-    public void moveCursorToColumnTooLow() {
+    void moveCursorToColumnTooLow() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
         int column = 0 - new Random().nextInt(100) + 1;
         Position position = new Position(0, column);
 
-        thrown.expect(IndexOutOfBoundsException.class);
-        thrown.expectMessage("Attempt to move cursor to invalid position " + position);
-
-        textScreen.moveCursorTo(position);
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> textScreen.moveCursorTo(position));
+        assertThat(exception.getMessage(), equalTo("Attempt to move cursor to invalid position " + position));
     }
 
     @Test
-    public void moveCursorToColumnTooHigh() {
+    void moveCursorToColumnTooHigh() {
         TestTextScreen textScreen = new TestTextScreen(TINY_EXTENT);
         Position position = new Position(0, new Random().nextInt(100) + 1);
 
-        thrown.expect(IndexOutOfBoundsException.class);
-        thrown.expectMessage("Attempt to move cursor to invalid position " + position);
-
-        textScreen.moveCursorTo(position);
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> textScreen.moveCursorTo(position));
+        assertThat(exception.getMessage(), equalTo("Attempt to move cursor to invalid position " + position));
     }
 
     @Test
-    public void getJoinedTextNeverReturnNull() {
+    void getJoinedTextNeverReturnNull() {
         String text = new TestTextScreen(new Extent(1, 1)).getJoinedText();
         assertThat(text, notNullValue());
     }
 
     @Test
-    public void getJoinedTextContainsPrintedLine() {
+    void getJoinedTextContainsPrintedLine() {
         String line = RandomStringUtils.randomAlphanumeric(25);
         TestTextScreen textScreen = new TestTextScreen(new Extent(1, 25));
         textScreen.print(line);
@@ -165,7 +147,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void getJoinedTextContainsAllPrintedLines() {
+    void getJoinedTextContainsAllPrintedLines() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         String line3 = RandomStringUtils.randomAlphanumeric(25);
@@ -183,13 +165,13 @@ public class TextScreenTest {
     }
 
     @Test
-    public void getJoinedTextSeparatesLinesWithNewline() {
+    void getJoinedTextSeparatesLinesWithNewline() {
         String text = new TestTextScreen(new Extent(3, 1)).getJoinedText();
         assertThat(text, equalTo("\n\n\n"));
     }
 
     @Test
-    public void printStringInMiddleOfLine() {
+    void printStringInMiddleOfLine() {
         String original = RandomStringUtils.randomAlphanumeric(100);
         String newPortion = "~" + RandomStringUtils.randomAlphanumeric(25) + "~";
         Position position = randomRowZeroPosition();
@@ -205,7 +187,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void printStringInMiddleOfLineNewPortionLonger() {
+    void printStringInMiddleOfLineNewPortionLonger() {
         String original = RandomStringUtils.randomAlphanumeric(15);
         String newPortion = "~" + RandomStringUtils.randomAlphanumeric(25) + "~";
         Position position = new Position(0, 5);
@@ -221,7 +203,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void printStringPositionedBeyondCurrentLengthOfOutput() {
+    void printStringPositionedBeyondCurrentLengthOfOutput() {
         String original = RandomStringUtils.randomAlphanumeric(1);
         String newPortion = "~" + RandomStringUtils.randomAlphanumeric(25) + "~";
         Position position = new Position(0, 5);
@@ -237,18 +219,17 @@ public class TextScreenTest {
     }
 
     @Test
-    public void preventPrintFromExceedingColumnWidth() {
+    void preventPrintFromExceedingColumnWidth() {
         String line = RandomStringUtils.randomAlphanumeric(50);
         TestTextScreen textScreen = new TestTextScreen(new Extent(1, 25));
 
-        thrown.expect(IndexOutOfBoundsException.class);
-        thrown.expectMessage("Attempt to print a string beyond the edge of screen");
 
-        textScreen.print(line);
+        Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> textScreen.print(line));
+        assertThat(exception.getMessage(), equalTo("Attempt to print a string beyond the edge of screen"));
     }
 
     @Test
-    public void eraseLine() {
+    void eraseLine() {
         String line = RandomStringUtils.randomAlphanumeric(25);
         TestTextScreen textScreen = new TestTextScreen(new Extent(1, 25));
         textScreen.print(line);
@@ -260,7 +241,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void eraseLineUsesCursorPosition() {
+    void eraseLineUsesCursorPosition() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         String line3 = RandomStringUtils.randomAlphanumeric(25);
@@ -280,7 +261,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollOne() {
+    void scrollOne() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         String line3 = RandomStringUtils.randomAlphanumeric(25);
@@ -297,7 +278,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollMultiple() {
+    void scrollMultiple() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         String line3 = RandomStringUtils.randomAlphanumeric(25);
@@ -314,7 +295,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollCallsUpdate() {
+    void scrollCallsUpdate() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         String line3 = RandomStringUtils.randomAlphanumeric(25);
@@ -332,7 +313,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollMultipleIncludingBottom() {
+    void scrollMultipleIncludingBottom() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         String line3 = RandomStringUtils.randomAlphanumeric(25);
@@ -349,7 +330,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollMultipleBeyondBottom() {
+    void scrollMultipleBeyondBottom() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         TestTextScreen textScreen = new TestTextScreen(new Extent(2, 25));
@@ -363,7 +344,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollMultipleSingleRowScreen() {
+    void scrollMultipleSingleRowScreen() {
         String line = RandomStringUtils.randomAlphanumeric(25);
         TestTextScreen textScreen = new TestTextScreen(new Extent(1, 25));
         textScreen.print(line);
@@ -374,7 +355,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollZero() {
+    void scrollZero() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         String line3 = RandomStringUtils.randomAlphanumeric(25);
@@ -391,7 +372,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollNegativeOne() {
+    void scrollNegativeOne() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         String line3 = RandomStringUtils.randomAlphanumeric(25);
@@ -408,7 +389,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollNegativeMultiple() {
+    void scrollNegativeMultiple() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         String line3 = RandomStringUtils.randomAlphanumeric(25);
@@ -425,7 +406,24 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollNegativeCallsUpdate() {
+    void scrollNegativeMultipleIncludingTop() {
+        String line1 = RandomStringUtils.randomAlphanumeric(25);
+        String line2 = RandomStringUtils.randomAlphanumeric(25);
+        String line3 = RandomStringUtils.randomAlphanumeric(25);
+        TestTextScreen textScreen = new TestTextScreen(new Extent(3, 25));
+        textScreen.print(line1);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line2);
+        textScreen.moveCursorBy(new Extent(1, 0));
+        textScreen.print(line3);
+
+        textScreen.scroll(-3);
+
+        assertThat(textScreen.getJoinedText(), equalTo("\n\n\n"));
+    }
+
+    @Test
+    void scrollNegativeCallsUpdate() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         String line3 = RandomStringUtils.randomAlphanumeric(25);
@@ -443,24 +441,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollNegativeMultipleIncludingTop() {
-        String line1 = RandomStringUtils.randomAlphanumeric(25);
-        String line2 = RandomStringUtils.randomAlphanumeric(25);
-        String line3 = RandomStringUtils.randomAlphanumeric(25);
-        TestTextScreen textScreen = new TestTextScreen(new Extent(3, 25));
-        textScreen.print(line1);
-        textScreen.moveCursorBy(new Extent(1, 0));
-        textScreen.print(line2);
-        textScreen.moveCursorBy(new Extent(1, 0));
-        textScreen.print(line3);
-
-        textScreen.scroll(-3);
-
-        assertThat(textScreen.getJoinedText(), equalTo("\n\n\n"));
-    }
-
-    @Test
-    public void scrollNegativeMultipleBeyondTop() {
+    void scrollNegativeMultipleBeyondTop() {
         String line1 = RandomStringUtils.randomAlphanumeric(25);
         String line2 = RandomStringUtils.randomAlphanumeric(25);
         TestTextScreen textScreen = new TestTextScreen(new Extent(2, 25));
@@ -474,7 +455,7 @@ public class TextScreenTest {
     }
 
     @Test
-    public void scrollNegativeMultipleSingleRowScreen() {
+    void scrollNegativeMultipleSingleRowScreen() {
         String line = RandomStringUtils.randomAlphanumeric(25);
         TestTextScreen textScreen = new TestTextScreen(new Extent(1, 25));
         textScreen.print(line);

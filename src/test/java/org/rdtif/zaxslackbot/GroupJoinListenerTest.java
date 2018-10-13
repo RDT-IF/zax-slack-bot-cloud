@@ -4,16 +4,16 @@ import com.ullink.slack.simpleslackapi.SlackChannel;
 import com.ullink.slack.simpleslackapi.SlackSession;
 import com.ullink.slack.simpleslackapi.events.SlackEventType;
 import com.ullink.slack.simpleslackapi.events.SlackGroupJoined;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class GroupJoinListenerTest {
+class GroupJoinListenerTest {
     private final GroupJoinListener listener = new GroupJoinListener();
 
     @Test
-    public void verifyGreeting() {
+    void verifyGreeting() {
         SlackSession session = mock(SlackSession.class);
         SlackChannel channel = mock(SlackChannel.class);
         GroupJoinedEvent event = new GroupJoinedEvent(channel);
@@ -27,7 +27,7 @@ public class GroupJoinListenerTest {
     private static class GroupJoinedEvent implements SlackGroupJoined {
         private final SlackChannel channel;
 
-        public GroupJoinedEvent(SlackChannel channel) {
+        GroupJoinedEvent(SlackChannel channel) {
             this.channel = channel;
         }
 

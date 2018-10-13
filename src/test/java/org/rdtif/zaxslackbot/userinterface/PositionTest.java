@@ -1,17 +1,17 @@
 package org.rdtif.zaxslackbot.userinterface;
 
+import org.junit.jupiter.api.Test;
+
+import java.util.Random;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 
-import java.util.Random;
-
-import org.junit.Test;
-
-public class PositionTest {
+class PositionTest {
     @Test
-    public void constructorValuesAreUsed() {
+    void constructorValuesAreUsed() {
         int row = new Random().nextInt();
         int column = new Random().nextInt();
         Position position = new Position(row, column);
@@ -21,14 +21,14 @@ public class PositionTest {
     }
 
     @Test
-    public void translateByNeverReturnsNull() {
+    void translateByNeverReturnsNull() {
         Position position = new Position(0, 0).translateBy(new Extent(0, 0));
 
         assertThat(position, notNullValue());
     }
 
     @Test
-    public void translateByReturnsCorrectPosition() {
+    void translateByReturnsCorrectPosition() {
         int rows = new Random().nextInt();
         int columns = new Random().nextInt();
         Position position = new Position(0, 0).translateBy(new Extent(rows, columns));
@@ -38,7 +38,7 @@ public class PositionTest {
     }
 
     @Test
-    public void translateByReturnsCorrectPositionAccountingForCurrentPosition() {
+    void translateByReturnsCorrectPositionAccountingForCurrentPosition() {
         int rows = new Random().nextInt();
         int columns = new Random().nextInt();
         int row = new Random().nextInt();
@@ -50,7 +50,7 @@ public class PositionTest {
     }
 
     @Test
-    public void toStringReturn() {
+    void toStringReturn() {
         Position position = randomPosition();
         String expected = "(" + position.getRow() + ", " + position.getColumn() + ")";
 
@@ -60,7 +60,7 @@ public class PositionTest {
     }
 
     @Test
-    public void equalsForSelfReturnsTrue() {
+    void equalsForSelfReturnsTrue() {
         Position position = randomPosition();
 
         //noinspection EqualsWithItself
@@ -68,7 +68,7 @@ public class PositionTest {
     }
 
     @Test
-    public void equalsForSameRowColumnReturnsTrue() {
+    void equalsForSameRowColumnReturnsTrue() {
         Position position1 = randomPosition();
         Position position2 = new Position(position1.getRow(), position1.getColumn());
 
@@ -76,7 +76,7 @@ public class PositionTest {
     }
 
     @Test
-    public void equalsIsSymmetric() {
+    void equalsIsSymmetric() {
         Position position1 = randomPosition();
         Position position2 = new Position(position1.getRow(), position1.getColumn());
 
@@ -85,7 +85,7 @@ public class PositionTest {
     }
 
     @Test
-    public void equalsForSameRowDifferentColumnReturnsFalse() {
+    void equalsForSameRowDifferentColumnReturnsFalse() {
         Position position1 = randomPosition();
         Position position2 = new Position(position1.getRow(), position1.getColumn() + 1);
 
@@ -93,7 +93,7 @@ public class PositionTest {
     }
 
     @Test
-    public void equalsForDifferentRowSameColumnReturnsFalse() {
+    void equalsForDifferentRowSameColumnReturnsFalse() {
         Position position1 = randomPosition();
         Position position2 = new Position(position1.getRow() + 1, position1.getColumn());
 
@@ -101,7 +101,7 @@ public class PositionTest {
     }
 
     @Test
-    public void equalsForDifferentRowDifferentColumnReturnsFalse() {
+    void equalsForDifferentRowDifferentColumnReturnsFalse() {
         Position position1 = randomPosition();
         Position position2 = new Position(position1.getRow() + 1, position1.getColumn() + 1);
 
@@ -109,7 +109,7 @@ public class PositionTest {
     }
 
     @Test
-    public void equalsForNullReturnsFalse() {
+    void equalsForNullReturnsFalse() {
         Position position = randomPosition();
 
         //noinspection ObjectEqualsNull
@@ -117,7 +117,7 @@ public class PositionTest {
     }
 
     @Test
-    public void equalsForOtherObjectReturnsFalse() {
+    void equalsForOtherObjectReturnsFalse() {
         Position position = randomPosition();
 
         //noinspection EqualsBetweenInconvertibleTypes
@@ -125,7 +125,7 @@ public class PositionTest {
     }
 
     @Test
-    public void hashCodesAreReflexive() {
+    void hashCodesAreReflexive() {
         Position position = randomPosition();
 
         //noinspection EqualsWithItself
@@ -133,7 +133,7 @@ public class PositionTest {
     }
 
     @Test
-    public void hashCodesForSameRowColumnAreEqual() {
+    void hashCodesForSameRowColumnAreEqual() {
         Position position1 = randomPosition();
         Position position2 = new Position(position1.getRow(), position1.getColumn());
 
@@ -141,7 +141,7 @@ public class PositionTest {
     }
 
     @Test
-    public void hashCodesForSameRowDifferentColumnAreDifferent() {
+    void hashCodesForSameRowDifferentColumnAreDifferent() {
         Position position1 = randomPosition();
         Position position2 = new Position(position1.getRow(), position1.getColumn() + 1);
 
@@ -149,7 +149,7 @@ public class PositionTest {
     }
 
     @Test
-    public void hashCodesForDifferentRowSameColumnAreDifferent() {
+    void hashCodesForDifferentRowSameColumnAreDifferent() {
         Position position1 = randomPosition();
         Position position2 = new Position(position1.getRow() + 1, position1.getColumn());
 
@@ -158,7 +158,7 @@ public class PositionTest {
     }
 
     @Test
-    public void hashCodesForDifferentRowDifferentColumnAreDifferent() {
+    void hashCodesForDifferentRowDifferentColumnAreDifferent() {
         Position position1 = randomPosition();
         Position position2 = new Position(position1.getRow() + 1, position1.getColumn() + 1);
 

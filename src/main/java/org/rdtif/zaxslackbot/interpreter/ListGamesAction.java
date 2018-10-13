@@ -1,15 +1,14 @@
 package org.rdtif.zaxslackbot.interpreter;
 
-import org.rdtif.zaxslackbot.GameRepository;
+import org.rdtif.zaxslackbot.GameFileRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 class ListGamesAction implements Action {
-    private final GameRepository repository;
+    private final GameFileRepository repository;
 
-    ListGamesAction(GameRepository repository) {
+    ListGamesAction(GameFileRepository repository) {
         this.repository = repository;
     }
 

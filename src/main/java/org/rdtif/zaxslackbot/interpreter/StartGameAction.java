@@ -1,24 +1,24 @@
 package org.rdtif.zaxslackbot.interpreter;
 
 import com.google.inject.Inject;
-import org.rdtif.zaxslackbot.GameRepository;
+import org.rdtif.zaxslackbot.GameFileRepository;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StartGameAction implements Action {
-    private final GameRepository gameRepository;
+    private final GameFileRepository gameFileRepository;
 
     @Inject
-    public StartGameAction(GameRepository repository) {
-        gameRepository = repository;
+    public StartGameAction(GameFileRepository repository) {
+        gameFileRepository = repository;
     }
 
     @Override
     public String execute(String input, LanguagePattern pattern) {
         String gameName = extractGameName(input, pattern);
 
-        if (gameRepository.fileNames().contains(gameName)) {
+        if (gameFileRepository.fileNames().contains(gameName)) {
 //            ZCPU cpu = new ZCPU(new SlackZUserInterface());
 //            cpu.initialize("games/anchor.z8");
 //            cpu.run();

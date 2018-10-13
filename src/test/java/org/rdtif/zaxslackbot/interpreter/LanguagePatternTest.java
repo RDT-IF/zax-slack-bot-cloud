@@ -10,25 +10,25 @@ import java.util.Collections;
 import java.util.Objects;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class LanguagePatternTest {
+class LanguagePatternTest {
     @Test
-    public void patternDefaultsToEmpty() {
+    void patternDefaultsToEmpty() {
         LanguagePattern pattern = new LanguagePattern();
 
         assertThat(pattern.getPattern(), isEmptyString());
     }
 
     @Test
-    public void defaultAction() {
+    void defaultAction() {
         LanguagePattern pattern = new LanguagePattern();
 
         assertThat(pattern.getAction(), equalTo(LanguageAction.Default));
     }
 
     @Test
-    public void responseForShouldNeverReturnNull() {
+    void responseForShouldNeverReturnNull() {
         LanguagePattern pattern = new LanguagePattern();
 
         String languageResponse = pattern.responseFor(RandomStringUtils.randomAlphabetic(12));
@@ -37,7 +37,7 @@ public class LanguagePatternTest {
     }
 
     @Test
-    public void returnLanguageResponseForName() {
+    void returnLanguageResponseForName() {
         String name = RandomStringUtils.randomAlphabetic(13);
         String expected = RandomStringUtils.randomAlphabetic(13);
         LanguagePattern pattern = createLanguagePattern(createLanguageResponse(name, expected));
@@ -48,7 +48,7 @@ public class LanguagePatternTest {
     }
 
     @Test
-    public void returnLanguageResponseForNameWithoutResponses() {
+    void returnLanguageResponseForNameWithoutResponses() {
         String name = RandomStringUtils.randomAlphabetic(13);
         LanguagePattern pattern = createLanguagePattern(name);
 
@@ -58,7 +58,7 @@ public class LanguagePatternTest {
     }
 
     @Test
-    public void returnEmptyResponseForNonExistentName() {
+    void returnEmptyResponseForNonExistentName() {
         LanguageResponse expected = new LanguageResponse();
         expected.setName(RandomStringUtils.randomAlphabetic(13));
         LanguagePattern pattern = createLanguagePattern(expected);
@@ -69,7 +69,7 @@ public class LanguagePatternTest {
     }
 
     @Test
-    public void returnRandomResponseFromMatchingPattern() {
+    void returnRandomResponseFromMatchingPattern() {
         String input = RandomStringUtils.randomAlphabetic(10);
         String response = RandomStringUtils.randomAlphabetic(8);
         String response2 = RandomStringUtils.randomAlphabetic(9);
