@@ -8,7 +8,7 @@ import com.zaxsoft.zax.zmachine.ZUserInterface;
 public class SlackZUserInterface implements ZUserInterface {
     @Override
     public void fatal(String message) {
-
+        throw new ZaxFatalException(message);
     }
 
     @Override
