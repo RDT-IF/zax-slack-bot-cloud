@@ -19,4 +19,11 @@ class SlackZUserInterfaceTest {
         ZaxFatalException exception = assertThrows(ZaxFatalException.class, () -> new SlackZUserInterface().fatal(message));
         assertThat(exception.getMessage(), equalTo(message));
     }
+
+    @Test
+    void defaultFontProportionalShouldReturnFalse() {
+        SlackZUserInterface userInterface = new SlackZUserInterface();
+        assertThat(userInterface.defaultFontProportional(), equalTo(false));
+    }
+
 }

@@ -13,22 +13,22 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public void initialize(int version) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void setTerminatingCharacters(Vector characters) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean hasStatusLine() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean hasUpperWindow() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -38,141 +38,141 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public boolean hasColors() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean hasBoldface() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean hasItalic() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean hasFixedWidth() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean hasTimedInput() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Dimension getScreenCharacters() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Dimension getScreenUnits() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Dimension getFontSize() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Dimension getWindowSize(int window) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public int getDefaultForeground() {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public int getDefaultBackground() {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Point getCursorPosition() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void showStatusBar(String s, int a, int b, boolean flag) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void splitScreen(int lines) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void setCurrentWindow(int window) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void setCursorPosition(int x, int y) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void setColor(int foreground, int background) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void setTextStyle(int style) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void setFont(int font) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public int readLine(StringBuffer buffer, int time) {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public int readChar(int time) {
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void showString(String string) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void scrollWindow(int lines) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void eraseLine(int size) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void eraseWindow(int window) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public String getFilename(String title, String suggested, boolean saveFlag) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void quit() {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void restart() {
-
+        throw new UnsupportedOperationException();
     }
 }
