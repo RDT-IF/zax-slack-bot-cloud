@@ -1,17 +1,24 @@
 package org.rdtif.zaxslackbot.interpreter;
 
 import com.google.inject.Inject;
+import com.zaxsoft.zax.zmachine.ZCPU;
 import org.rdtif.zaxslackbot.GameFileRepository;
+import org.rdtif.zaxslackbot.ZaxSlackBotConfiguration;
+import org.rdtif.zaxslackbot.userinterface.SlackZUserInterface;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StartGameAction implements Action {
+    private final ZaxSlackBotConfiguration configuration;
     private final GameFileRepository gameFileRepository;
+    private final ZCpuFactory zCpuFactory;
 
     @Inject
-    public StartGameAction(GameFileRepository repository) {
-        gameFileRepository = repository;
+    public StartGameAction(ZaxSlackBotConfiguration configuration, GameFileRepository gameFileRepository, ZCpuFactory zCpuFactory) {
+        this.configuration = configuration;
+        this.gameFileRepository = gameFileRepository;
+        this.zCpuFactory = zCpuFactory;
     }
 
     @Override
@@ -19,9 +26,9 @@ public class StartGameAction implements Action {
         String gameName = extractGameName(input, pattern);
 
         if (gameFileRepository.fileNames().contains(gameName)) {
-//            ZCPU cpu = new ZCPU(new SlackZUserInterface());
-//            cpu.initialize("games/anchor.z8");
-//            cpu.run();
+            ZCPU cpu = zCpuFactory.create(new SlackZUserInterface());
+            cpu.initialize(configuration.getGameDirectory() + gameName);
+            cpu.run();
             return pattern.responseFor("start") + " " + gameName;
         }
 

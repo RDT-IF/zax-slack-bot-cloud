@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import org.rdtif.zaxslackbot.GameFileRepository;
+import org.rdtif.zaxslackbot.ZaxSlackBotConfiguration;
 
 import javax.inject.Singleton;
 import java.io.IOException;
@@ -20,10 +21,10 @@ public class InterpreterModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public Map<LanguageAction, Action> providesActionMap(GameFileRepository repository) {
+    public Map<LanguageAction, Action> providesActionMap(ZaxSlackBotConfiguration configuration, GameFileRepository repository, ZCpuFactory zCpuFactory) {
         return ImmutableMap.<LanguageAction, Action>builder()
                 .put(LanguageAction.ListGames, new ListGamesAction(repository))
-                .put(LanguageAction.StartGame, new StartGameAction(repository))
+                .put(LanguageAction.StartGame, new StartGameAction(configuration, repository, zCpuFactory))
                 .build();
     }
 
