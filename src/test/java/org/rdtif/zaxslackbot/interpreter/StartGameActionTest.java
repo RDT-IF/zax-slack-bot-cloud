@@ -3,9 +3,11 @@ package org.rdtif.zaxslackbot.interpreter;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.rdtif.zaxslackbot.GameFileRepository;
+import org.rdtif.zaxslackbot.ZaxSlackBotConfiguration;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Properties;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -17,7 +19,7 @@ class StartGameActionTest {
     private static final String START_MESSAGE = RandomStringUtils.randomAlphabetic(12);
 
     private final GameFileRepository repository = mock(GameFileRepository.class);
-    private final StartGameAction startGameAction = new StartGameAction(repository);
+    private final StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(new Properties()), repository);
     private final LanguagePattern languagePattern = createPattern();
 
     @Test

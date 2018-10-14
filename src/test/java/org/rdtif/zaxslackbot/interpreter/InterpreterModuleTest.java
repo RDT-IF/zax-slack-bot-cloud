@@ -35,4 +35,13 @@ class InterpreterModuleTest {
 
         assertThat(action, instanceOf(ListGamesAction.class));
     }
+
+    @Test
+    void actionMapContainsStartGame() {
+        Map<LanguageAction, Action> map = injector.getInstance(Key.get(new TypeLiteral<Map<LanguageAction, Action>>() {
+        }));
+        Action action = map.get(LanguageAction.StartGame);
+
+        assertThat(action, instanceOf(StartGameAction.class));
+    }
 }

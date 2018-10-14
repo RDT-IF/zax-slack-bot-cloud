@@ -2,15 +2,18 @@ package org.rdtif.zaxslackbot.interpreter;
 
 import com.google.inject.Inject;
 import org.rdtif.zaxslackbot.GameFileRepository;
+import org.rdtif.zaxslackbot.ZaxSlackBotConfiguration;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StartGameAction implements Action {
+    private final ZaxSlackBotConfiguration configuration;
     private final GameFileRepository gameFileRepository;
 
     @Inject
-    public StartGameAction(GameFileRepository repository) {
+    public StartGameAction(ZaxSlackBotConfiguration configuration, GameFileRepository repository) {
+        this.configuration = configuration;
         gameFileRepository = repository;
     }
 
