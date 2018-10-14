@@ -122,6 +122,4 @@ class StartGameActionTest {
         properties.setProperty(GAME_DIRECTORY_PROPERTY_NAME, RandomStringUtils.randomAlphabetic(13));
         return properties;
     }
-
-
 }
