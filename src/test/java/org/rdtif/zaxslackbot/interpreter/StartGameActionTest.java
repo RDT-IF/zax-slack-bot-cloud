@@ -101,7 +101,7 @@ class StartGameActionTest {
 
         startGameAction.execute(input, languagePattern);
 
-        verify(zcpu).run();
+        verify(zcpu).start();
     }
 
     private LanguagePattern createPattern() {

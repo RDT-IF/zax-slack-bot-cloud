@@ -28,7 +28,7 @@ public class StartGameAction implements Action {
         if (gameFileRepository.fileNames().contains(gameName)) {
             ZCPU cpu = zCpuFactory.create(new SlackZUserInterface());
             cpu.initialize(configuration.getGameDirectory() + gameName);
-            cpu.run();
+            cpu.start();
             return pattern.responseFor("start") + " " + gameName;
         }
 
