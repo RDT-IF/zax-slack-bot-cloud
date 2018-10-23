@@ -21,7 +21,7 @@ class MessagePostedListener implements SlackMessagePostedListener {
             String messageContent = event.getMessageContent();
             String tag = "<@" + session.sessionPersona().getId() + ">";
             if (event.getChannel().isDirect() || messageContent.contains(tag)) {
-                String message = languageProcessor.responseTo(messageContent.replaceAll(tag, "").trim());
+                String message = languageProcessor.responseTo(event.getChannel(), messageContent.replaceAll(tag, "").trim());
                 session.sendMessage(event.getChannel(), message);
             }
         }

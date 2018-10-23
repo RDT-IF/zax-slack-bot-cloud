@@ -1,5 +1,7 @@
 package org.rdtif.zaxslackbot.interpreter;
 
+import com.ullink.slack.simpleslackapi.SlackChannel;
+import com.ullink.slack.simpleslackapi.SlackSession;
 import com.zaxsoft.zax.zmachine.ZCPU;
 import com.zaxsoft.zax.zmachine.ZUserInterface;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -28,8 +30,10 @@ class StartGameActionTest {
     private final LanguagePattern languagePattern = createPattern();
     private final ZCpuFactory zCpuFactory = mock(ZCpuFactory.class);
     private final ZCPU zcpu = mock(ZCPU.class);
+    private final SlackSession session = mock(SlackSession.class);
+    private final SlackChannel channel = mock(SlackChannel.class);
     private final GameFileRepository repository = mock(GameFileRepository.class);
-    private final StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(createProperties()), repository, zCpuFactory);
+    private final StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(createProperties()), session, repository, zCpuFactory);
 
     @BeforeEach
     void beforeEach() {
@@ -39,7 +43,7 @@ class StartGameActionTest {
     @Test
     void returnDefaultMessageIfGameDoesNotExist() {
         String badGameName = RandomStringUtils.randomAlphabetic(12);
-        String message = startGameAction.execute("play " + badGameName, languagePattern);
+        String message = startGameAction.execute(channel, "play " + badGameName, languagePattern);
         assertThat(message, equalTo(DEFAULT_MESSAGE));
     }
 
@@ -49,7 +53,7 @@ class StartGameActionTest {
         String input = "play " + gameName;
 
         when(repository.fileNames()).thenReturn(Collections.singletonList(gameName));
-        String message = startGameAction.execute(input, languagePattern);
+        String message = startGameAction.execute(channel, input, languagePattern);
 
         assertThat(message, equalTo(START_MESSAGE + " " + gameName));
     }
@@ -60,7 +64,7 @@ class StartGameActionTest {
         String input = "play " + gameName;
 
         when(repository.fileNames()).thenReturn(Collections.singletonList(gameName));
-        startGameAction.execute(input, languagePattern);
+        startGameAction.execute(channel, input, languagePattern);
 
         verify(zCpuFactory).create(any(ZUserInterface.class));
     }
@@ -71,7 +75,7 @@ class StartGameActionTest {
         String input = "play " + gameName;
 
         when(repository.fileNames()).thenReturn(Collections.singletonList(gameName));
-        startGameAction.execute(input, languagePattern);
+        startGameAction.execute(channel, input, languagePattern);
 
         verify(zcpu).initialize(anyString());
     }
@@ -81,13 +85,13 @@ class StartGameActionTest {
         String gameDirectory = RandomStringUtils.randomAlphabetic(14);
         Properties properties = new Properties();
         properties.setProperty(GAME_DIRECTORY_PROPERTY_NAME, gameDirectory);
-        StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(properties), repository, zCpuFactory);
+        StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(properties), null, repository, zCpuFactory);
         String gameName = RandomStringUtils.randomAlphabetic(12);
         String input = "play " + gameName;
 
         when(repository.fileNames()).thenReturn(Collections.singletonList(gameName));
 
-        startGameAction.execute(input, languagePattern);
+        startGameAction.execute(channel, input, languagePattern);
 
         verify(zcpu).initialize(gameDirectory + "/" + gameName);
     }
@@ -99,7 +103,7 @@ class StartGameActionTest {
 
         when(repository.fileNames()).thenReturn(Collections.singletonList(gameName));
 
-        startGameAction.execute(input, languagePattern);
+        startGameAction.execute(channel, input, languagePattern);
 
         verify(zcpu).start();
     }

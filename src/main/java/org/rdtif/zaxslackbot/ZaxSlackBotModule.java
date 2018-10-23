@@ -22,7 +22,7 @@ public class ZaxSlackBotModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public SlackSession providesSlackConnection(ZaxSlackBotConfiguration configuration, GroupJoinListener groupJoinListener, MessagePostedListener messagePostedListener) {
+    public SlackSession providesSlackSession(ZaxSlackBotConfiguration configuration, GroupJoinListener groupJoinListener, MessagePostedListener messagePostedListener) {
         SlackSession session = SlackSessionFactory.createWebSocketSlackSession(configuration.getApiToken());
         session.addGroupJoinedListener(groupJoinListener);
         session.addMessagePostedListener(messagePostedListener);

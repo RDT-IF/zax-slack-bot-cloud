@@ -3,12 +3,12 @@ package org.rdtif.zaxslackbot.userinterface;
 import com.ullink.slack.simpleslackapi.SlackChannel;
 import com.ullink.slack.simpleslackapi.SlackSession;
 
-class SlackTextScreen extends TextScreen {
+public class SlackTextScreen extends TextScreen {
     private final SlackSession slackSession;
     private final SlackChannel slackChannel;
     private String slackMessageTimeStamp;
 
-    SlackTextScreen(SlackSession slackSession, SlackChannel slackChannel, Extent size) {
+    public SlackTextScreen(SlackSession slackSession, SlackChannel slackChannel, Extent size) {
         super(size);
         this.slackSession = slackSession;
         this.slackChannel = slackChannel;

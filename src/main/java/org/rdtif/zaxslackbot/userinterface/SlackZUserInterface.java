@@ -6,6 +6,12 @@ import java.util.Vector;
 import com.zaxsoft.zax.zmachine.ZUserInterface;
 
 public class SlackZUserInterface implements ZUserInterface {
+    private final SlackTextScreen screen;
+
+    public SlackZUserInterface(SlackTextScreen screen) {
+        this.screen = screen;
+    }
+
     @Override
     public void fatal(String message) {
         throw new ZaxFatalException(message);
