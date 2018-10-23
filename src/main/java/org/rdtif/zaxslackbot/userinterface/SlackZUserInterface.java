@@ -13,13 +13,13 @@ public class SlackZUserInterface implements ZUserInterface {
     }
 
     @Override
-    public void fatal(String message) {
-        throw new ZaxFatalException(message);
+    public void initialize(int version) {
+        screen.initialize();
     }
 
     @Override
-    public void initialize(int version) {
-        throw new UnsupportedOperationException();
+    public void fatal(String message) {
+        throw new ZaxFatalException(message);
     }
 
     @Override

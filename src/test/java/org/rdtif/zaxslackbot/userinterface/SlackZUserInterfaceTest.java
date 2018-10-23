@@ -7,10 +7,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class SlackZUserInterfaceTest {
     private final SlackTextScreen slackTextScreen = mock(SlackTextScreen.class);
     private final SlackZUserInterface slackZUserInterface = new SlackZUserInterface(slackTextScreen);
+
+    @Test
+    void initializeInitializesScreen() {
+        slackZUserInterface.initialize(0);
+
+        verify(slackTextScreen).initialize();
+    }
 
     @Test
     void fatalThrowsException() {
