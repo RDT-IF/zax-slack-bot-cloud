@@ -21,10 +21,18 @@ class SlackZUserInterfaceTest {
     }
 
     @Test
-    void food() {
+    void initializeCallsUpdate() {
+        slackZUserInterface.initialize(0);
+
+        verify(slackTextScreen).update();
+    }
+
+    @Test
+    void displayMessageWhenFatal() {
         String message = RandomStringUtils.randomAlphabetic(13);
 
-        slackZUserInterface.fatal(message);
+        assertThrows(ZaxFatalException.class, () -> new SlackZUserInterface(slackTextScreen).fatal(message));
+
 
         verify(slackTextScreen).print(message);
     }
