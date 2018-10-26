@@ -21,6 +21,15 @@ class SlackZUserInterfaceTest {
     }
 
     @Test
+    void food() {
+        String message = RandomStringUtils.randomAlphabetic(13);
+
+        slackZUserInterface.fatal(message);
+
+        verify(slackTextScreen).print(message);
+    }
+
+    @Test
     void fatalThrowsException() {
         assertThrows(ZaxFatalException.class, () -> new SlackZUserInterface(slackTextScreen).fatal(RandomStringUtils.randomAlphabetic(13)));
     }

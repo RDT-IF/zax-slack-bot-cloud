@@ -19,7 +19,8 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public void fatal(String message) {
-        throw new ZaxFatalException(message);
+        screen.print(message);
+        screen.update();
     }
 
     @Override
