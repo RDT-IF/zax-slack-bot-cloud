@@ -55,4 +55,15 @@ class SlackZUserInterfaceTest {
         assertThat(userInterface.defaultFontProportional(), equalTo(false));
     }
 
+    @Test
+    void hasColorsShouldReturnFalse() {
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        assertThat(userInterface.hasColors(), equalTo(false));
+    }
+
+    @Test
+    void hasFixedWidthShouldReturnTrue() {
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        assertThat(userInterface.hasFixedWidth(), equalTo(true));
+    }
 }

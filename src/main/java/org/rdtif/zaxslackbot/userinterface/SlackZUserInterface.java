@@ -26,6 +26,21 @@ public class SlackZUserInterface implements ZUserInterface {
     }
 
     @Override
+    public boolean defaultFontProportional() {
+        return false;
+    }
+
+    @Override
+    public boolean hasColors() {
+        return false;
+    }
+
+    @Override
+    public boolean hasFixedWidth() {
+        return true;
+    }
+
+    @Override
     public void setTerminatingCharacters(Vector characters) {
         throw new UnsupportedOperationException();
     }
@@ -41,27 +56,12 @@ public class SlackZUserInterface implements ZUserInterface {
     }
 
     @Override
-    public boolean defaultFontProportional() {
-        return false;
-    }
-
-    @Override
-    public boolean hasColors() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public boolean hasBoldface() {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean hasItalic() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean hasFixedWidth() {
         throw new UnsupportedOperationException();
     }
 
