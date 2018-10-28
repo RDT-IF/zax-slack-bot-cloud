@@ -38,29 +38,6 @@ class MessagePostedListenerTest {
     }
 
     @Test
-    void doNotTalkToBots() {
-        when(sender.isBot()).thenReturn(true);
-        when(messagePosted.getSender()).thenReturn(sender);
-
-        messagePostedListener.onEvent(messagePosted, slackSession);
-
-        verify(slackSession, never()).sendMessage(any(SlackChannel.class), any(String.class));
-    }
-
-    @Test
-    void doNotSpeakUnlessSpokenTo() {
-        String message = RandomStringUtils.randomAlphabetic(10);
-
-        when(sender.isBot()).thenReturn(false);
-        when(messagePosted.getSender()).thenReturn(sender);
-        when(messagePosted.getMessageContent()).thenReturn(message);
-
-        messagePostedListener.onEvent(messagePosted, slackSession);
-
-        verify(slackSession, never()).sendMessage(any(SlackChannel.class), any(String.class));
-    }
-
-    @Test
     void speakWhenSpokenTo() {
         String tag = "<@" + id + ">";
         String message = RandomStringUtils.randomAlphabetic(10);
@@ -92,6 +69,47 @@ class MessagePostedListenerTest {
         verify(slackSession).sendMessage(eq(channel), eq(message));
     }
 
+    @Test
+    void whenAValidConversationResultsInAnException() {
+        String tag = "<@" + id + ">";
+        String message = RandomStringUtils.randomAlphabetic(10);
+        RuntimeException exception = mock(RuntimeException.class);
+        MessagePostedListener messagePostedListener = new MessagePostedListener(new ExceptionThrowingProcessor(exception));
+
+        when(sender.isBot()).thenReturn(false);
+        when(messagePosted.getSender()).thenReturn(sender);
+        when(messagePosted.getMessageContent()).thenReturn(tag + " " + message);
+
+        when(messagePosted.getChannel()).thenReturn(channel);
+
+        messagePostedListener.onEvent(messagePosted, slackSession);
+
+        verify(exception).printStackTrace();
+    }
+
+    @Test
+    void doNotTalkToBots() {
+        when(sender.isBot()).thenReturn(true);
+        when(messagePosted.getSender()).thenReturn(sender);
+
+        messagePostedListener.onEvent(messagePosted, slackSession);
+
+        verify(slackSession, never()).sendMessage(any(SlackChannel.class), any(String.class));
+    }
+
+    @Test
+    void doNotSpeakUnlessSpokenTo() {
+        String message = RandomStringUtils.randomAlphabetic(10);
+
+        when(sender.isBot()).thenReturn(false);
+        when(messagePosted.getSender()).thenReturn(sender);
+        when(messagePosted.getMessageContent()).thenReturn(message);
+
+        messagePostedListener.onEvent(messagePosted, slackSession);
+
+        verify(slackSession, never()).sendMessage(any(SlackChannel.class), any(String.class));
+    }
+
     private static class EchoProcessor extends LanguageProcessor {
         EchoProcessor() {
             super(null);
@@ -100,6 +118,20 @@ class MessagePostedListenerTest {
         @Override
         public String responseTo(SlackChannel channel, String input) {
             return input;
+        }
+    }
+
+    private static class ExceptionThrowingProcessor extends LanguageProcessor {
+        private final RuntimeException exception;
+
+        ExceptionThrowingProcessor(RuntimeException exception) {
+            super(null);
+            this.exception = exception;
+        }
+
+        @Override
+        public String responseTo(String input) {
+            throw exception;
         }
     }
 }
