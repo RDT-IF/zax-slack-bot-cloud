@@ -6,6 +6,11 @@ import java.awt.*;
 import java.util.Vector;
 
 public class SlackZUserInterface implements ZUserInterface {
+    // These are my best guess based on observations -- scaling will change the actual.
+    private static final int FONT_WIDTH_IN_PIXELS = 8;
+    private static final int FONT_HEIGHT_IN_PIXELS = 16;
+    private static final int Z_MACHINE_BLACK = 2;
+    private static final int Z_MACHINE_WHITE = 9;
     private final SlackTextScreen screen;
 
     public SlackZUserInterface(SlackTextScreen screen) {
@@ -28,6 +33,28 @@ public class SlackZUserInterface implements ZUserInterface {
     @Override
     public Dimension getScreenCharacters() {
         return new Dimension(screen.getSize().getColumns(), screen.getSize().getRows());
+    }
+
+    @Override
+    public Dimension getFontSize() {
+        return new Dimension(FONT_WIDTH_IN_PIXELS, FONT_HEIGHT_IN_PIXELS);
+    }
+
+    @Override
+    public Dimension getScreenUnits() {
+        Dimension fontSizeInPixels = getFontSize();
+        Dimension screenSizeInCharacters = getScreenCharacters();
+        return new Dimension(screenSizeInCharacters.width * fontSizeInPixels.width, screenSizeInCharacters.height * fontSizeInPixels.height);
+    }
+
+    @Override
+    public int getDefaultForeground() {
+       return Z_MACHINE_BLACK;
+    }
+
+    @Override
+    public int getDefaultBackground() {
+        return Z_MACHINE_WHITE;
     }
 
     @Override
@@ -76,27 +103,7 @@ public class SlackZUserInterface implements ZUserInterface {
     }
 
     @Override
-    public Dimension getScreenUnits() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Dimension getFontSize() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public Dimension getWindowSize(int window) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public int getDefaultForeground() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public int getDefaultBackground() {
         throw new UnsupportedOperationException();
     }
 
