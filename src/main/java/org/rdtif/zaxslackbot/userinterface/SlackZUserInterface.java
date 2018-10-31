@@ -1,9 +1,9 @@
 package org.rdtif.zaxslackbot.userinterface;
 
+import com.zaxsoft.zax.zmachine.ZUserInterface;
+
 import java.awt.*;
 import java.util.Vector;
-
-import com.zaxsoft.zax.zmachine.ZUserInterface;
 
 public class SlackZUserInterface implements ZUserInterface {
     private final SlackTextScreen screen;
@@ -26,6 +26,31 @@ public class SlackZUserInterface implements ZUserInterface {
     }
 
     @Override
+    public Dimension getScreenCharacters() {
+        return new Dimension(screen.getSize().getColumns(), screen.getSize().getRows());
+    }
+
+    @Override
+    public boolean hasBoldface() {
+        return true;
+    }
+
+    @Override
+    public boolean hasFixedWidth() {
+        return true;
+    }
+
+    @Override
+    public boolean hasItalic() {
+        return true;
+    }
+
+    @Override
+    public boolean hasTimedInput() {
+        return false;
+    }
+
+    @Override
     public boolean defaultFontProportional() {
         return false;
     }
@@ -33,11 +58,6 @@ public class SlackZUserInterface implements ZUserInterface {
     @Override
     public boolean hasColors() {
         return false;
-    }
-
-    @Override
-    public boolean hasFixedWidth() {
-        return true;
     }
 
     @Override
@@ -52,26 +72,6 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public boolean hasUpperWindow() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean hasBoldface() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean hasItalic() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean hasTimedInput() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Dimension getScreenCharacters() {
         throw new UnsupportedOperationException();
     }
 

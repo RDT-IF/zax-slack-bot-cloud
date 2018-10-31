@@ -130,7 +130,7 @@ class MessagePostedListenerTest {
         }
 
         @Override
-        public String responseTo(String input) {
+        public String responseTo(SlackChannel channel, String input) {
             throw exception;
         }
     }

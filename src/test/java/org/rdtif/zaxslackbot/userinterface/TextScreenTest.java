@@ -2,6 +2,7 @@ package org.rdtif.zaxslackbot.userinterface;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
+import org.rdtif.zaxslackbot.Zoey;
 
 import java.util.Random;
 
@@ -12,6 +13,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TextScreenTest {
     private static final Extent TINY_EXTENT = new Extent(1, 1);
+
+    @Test
+    void getSizeNeverReturnsNull() {
+        TestTextScreen textScreen = new TestTextScreen(Zoey.randomExtent());
+
+        Extent size = textScreen.getSize();
+
+        assertThat(size, notNullValue());
+    }
+
+    @Test
+    void getSizeReturnsSize() {
+        Extent expected = Zoey.randomExtent();
+        TestTextScreen textScreen = new TestTextScreen(expected);
+
+        Extent size = textScreen.getSize();
+
+        assertThat(size, equalTo(expected));
+    }
 
     @Test
     void getCursorPositionNeverReturnsNull() {
@@ -34,7 +54,7 @@ class TextScreenTest {
     @Test
     void moveCursorBy() {
         TestTextScreen textScreen = new TestTextScreen(new Extent(50, 50));
-        Extent extent = randomExtent();
+        Extent extent = Zoey.randomExtent();
 
         textScreen.moveCursorBy(extent);
 
@@ -83,7 +103,7 @@ class TextScreenTest {
     @Test
     void moveCursorTo() {
         TestTextScreen textScreen = new TestTextScreen(new Extent(50, 50));
-        Position position = randomPosition();
+        Position position = Zoey.randomPosition();
 
         textScreen.moveCursorTo(position);
 
@@ -467,14 +487,6 @@ class TextScreenTest {
 
     private Position randomRowZeroPosition() {
         return new Position(0, new Random().nextInt(50));
-    }
-
-    private Position randomPosition() {
-        return new Position(new Random().nextInt(50), new Random().nextInt(50));
-    }
-
-    private Extent randomExtent() {
-        return new Extent(new Random().nextInt(40), new Random().nextInt(40));
     }
 
     private static class TestTextScreen extends TextScreen {

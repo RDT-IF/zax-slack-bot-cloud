@@ -1,5 +1,8 @@
 package org.rdtif.zaxslackbot;
 
+import org.rdtif.zaxslackbot.userinterface.Extent;
+import org.rdtif.zaxslackbot.userinterface.Position;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 import java.util.Properties;
+import java.util.Random;
 
 @SuppressWarnings("WeakerAccess")
 public class Zoey {
@@ -44,5 +48,13 @@ public class Zoey {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    public static Extent randomExtent() {
+        return new Extent(new Random().nextInt(40), new Random().nextInt(40));
+    }
+
+    public static Position randomPosition() {
+        return new Position(new Random().nextInt(50), new Random().nextInt(50));
     }
 }

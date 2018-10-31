@@ -2,12 +2,16 @@ package org.rdtif.zaxslackbot.userinterface;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
+import org.rdtif.zaxslackbot.Zoey;
+
+import java.awt.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class SlackZUserInterfaceTest {
     private final SlackTextScreen slackTextScreen = mock(SlackTextScreen.class);
@@ -50,6 +54,37 @@ class SlackZUserInterfaceTest {
     }
 
     @Test
+    void getScreenCharactersReturnsDimensionFromTextScreenExtent() {
+        Extent size = Zoey.randomExtent();
+        when(slackTextScreen.getSize()).thenReturn(size);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+
+        Dimension characters = userInterface.getScreenCharacters();
+
+        assertThat(characters.height, equalTo(size.getRows()));
+        assertThat(characters.width, equalTo(size.getColumns()));
+    }
+
+    @Test
+    void hasBoldFaceShouldReturnTrue() {
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        assertThat(userInterface.hasBoldface(), equalTo(true));
+    }
+
+    @Test
+    void hasItalicShouldReturnTrue() {
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        assertThat(userInterface.hasItalic(), equalTo(true));
+    }
+
+    @Test
+    void hasFixedWidthShouldReturnTrue() {
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        assertThat(userInterface.hasFixedWidth(), equalTo(true));
+    }
+
+
+    @Test
     void defaultFontProportionalShouldReturnFalse() {
         SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
         assertThat(userInterface.defaultFontProportional(), equalTo(false));
@@ -62,8 +97,8 @@ class SlackZUserInterfaceTest {
     }
 
     @Test
-    void hasFixedWidthShouldReturnTrue() {
+    void hasTimedInputShouldReturnFalse() {
         SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
-        assertThat(userInterface.hasFixedWidth(), equalTo(true));
+        assertThat(userInterface.hasTimedInput(), equalTo(false));
     }
 }

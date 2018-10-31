@@ -21,6 +21,10 @@ abstract class TextScreen {
 
     abstract void update();
 
+    Extent getSize() {
+        return size;
+    }
+
     Position getCursorPosition() {
         return cursorPosition;
     }
