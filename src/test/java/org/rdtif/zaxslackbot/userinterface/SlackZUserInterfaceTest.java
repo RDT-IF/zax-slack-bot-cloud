@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.rdtif.zaxslackbot.Zoey;
 
 import java.awt.*;
+import java.util.Random;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -37,11 +38,18 @@ class SlackZUserInterfaceTest {
     }
 
     @Test
+    void eraseWindow() {
+        int window = new Random().nextInt(1);
+        slackZUserInterface.eraseWindow(window);
+
+        verify(slackTextScreen).eraseWindow(window);
+    }
+
+    @Test
     void displayMessageWhenFatal() {
         String message = RandomStringUtils.randomAlphabetic(13);
 
         assertThrows(ZaxFatalException.class, () -> new SlackZUserInterface(slackTextScreen).fatal(message));
-
 
         verify(slackTextScreen).print(message);
     }

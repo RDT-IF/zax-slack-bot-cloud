@@ -48,6 +48,11 @@ public class SlackZUserInterface implements ZUserInterface {
     }
 
     @Override
+    public void eraseWindow(int window) {
+        screen.eraseWindow(window);
+    }
+
+    @Override
     public int getDefaultForeground() {
        return Z_MACHINE_BLACK;
     }
@@ -169,11 +174,6 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public void eraseLine(int size) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void eraseWindow(int window) {
         throw new UnsupportedOperationException();
     }
 
