@@ -7,7 +7,9 @@ import org.rdtif.zaxslackbot.Zoey;
 import java.util.Random;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -246,6 +248,28 @@ class TextScreenTest {
 
         Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> textScreen.print(line));
         assertThat(exception.getMessage(), equalTo("Attempt to print a string beyond the edge of screen"));
+    }
+
+    @Test
+    void eraseWindow() {
+        String[] lines = {
+                RandomStringUtils.randomAlphanumeric(25),
+                RandomStringUtils.randomAlphanumeric(25),
+                RandomStringUtils.randomAlphanumeric(25)
+        };
+        TestTextScreen textScreen = new TestTextScreen(new Extent(lines.length, 25));
+        for (int i = 0; i < lines.length; i++) {
+            textScreen.moveCursorTo(new Position(i, 0));
+            textScreen.print(lines[i]);
+        }
+
+        textScreen.eraseWindow(0);
+
+        String joinedText = textScreen.getJoinedText();
+        for (String line : lines) {
+            assertThat(joinedText, not(containsString(line)));
+        }
+
     }
 
     @Test

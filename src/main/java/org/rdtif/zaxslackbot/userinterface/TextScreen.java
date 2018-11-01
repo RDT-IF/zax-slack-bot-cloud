@@ -1,10 +1,10 @@
 package org.rdtif.zaxslackbot.userinterface;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
 
 abstract class TextScreen {
     private final List<TextScreenLine> screenLines;
@@ -97,6 +97,12 @@ abstract class TextScreen {
             }
             screenLines.set(0, new TextScreenLine(""));
             update();
+        }
+    }
+
+    void eraseWindow(int window) {
+        for (int i = 0; i < screenLines.size(); i++) {
+            screenLines.set(i, new TextScreenLine(""));
         }
     }
 }
