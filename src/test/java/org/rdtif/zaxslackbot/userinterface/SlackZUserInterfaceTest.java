@@ -27,7 +27,7 @@ class SlackZUserInterfaceTest {
     void initializeInitializesScreen() {
         slackZUserInterface.initialize(0);
 
-        verify(slackTextScreen).initialize();
+        verify(slackTextScreen).initialize(0);
     }
 
     @Test

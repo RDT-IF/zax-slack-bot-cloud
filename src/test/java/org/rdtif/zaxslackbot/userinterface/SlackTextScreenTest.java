@@ -38,7 +38,7 @@ class SlackTextScreenTest {
 
     @Test
     void updateSendsMessage() {
-        textScreen.initialize();
+        textScreen.initialize(0);
 
         textScreen.update();
 
@@ -48,7 +48,7 @@ class SlackTextScreenTest {
     @Test
     void wrapMessageInBackticks() {
         String line = RandomStringUtils.randomAlphanumeric(25);
-        textScreen.initialize();
+        textScreen.initialize(0);
         textScreen.print(line);
 
         textScreen.update();
@@ -60,7 +60,7 @@ class SlackTextScreenTest {
     void escapeTripleBackTicksInContent() {
         String line = "```";
         String expected = "`" + (char) 11 + "`" + (char) 11 + "`" + "\n";
-        textScreen.initialize();
+        textScreen.initialize(0);
         textScreen.print(line);
 
         textScreen.update();

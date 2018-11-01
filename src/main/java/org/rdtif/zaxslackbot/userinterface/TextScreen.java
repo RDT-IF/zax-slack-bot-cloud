@@ -10,6 +10,8 @@ abstract class TextScreen {
     private final List<TextScreenLine> screenLines;
     private final Extent size;
     private Position cursorPosition = new Position(0, 0);
+    private int upperWindowBottomRowPointer = -1;
+    private int version;
 
     TextScreen(Extent size) {
         this.size = size;
@@ -17,6 +19,10 @@ abstract class TextScreen {
         for (int i = 0; i < size.getRows(); i++) {
             screenLines.add(new TextScreenLine(""));
         }
+    }
+
+    void setVersion(int version) {
+        this.version = version;
     }
 
     abstract void update();
@@ -100,9 +106,41 @@ abstract class TextScreen {
         }
     }
 
+    boolean hasUpperWindow() {
+        return version >= 3;
+    }
+
+    Extent getWindowSize(int window) {
+        if (upperWindowBottomRowPointer == -1) {
+            switch (window) {
+                case 0:
+                    return new Extent(0, 0);
+                case 1:
+                    return size;
+            }
+            return size;
+        }
+
+        switch (window) {
+            case 0:
+                return new Extent(upperWindowBottomRowPointer + 1, size.getColumns());
+            case 1:
+                return new Extent(size.getRows() - upperWindowBottomRowPointer - 1, size.getColumns());
+        }
+        return new Extent(0, 0);
+    }
+
+    void splitScreen(int upperWindowLines) {
+        this.upperWindowBottomRowPointer = upperWindowLines - 1;
+    }
+
     void eraseWindow(int window) {
         for (int i = 0; i < screenLines.size(); i++) {
             screenLines.set(i, new TextScreenLine(""));
         }
+    }
+
+    int getVersion() {
+        return version;
     }
 }

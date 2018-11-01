@@ -15,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TextScreenTest {
     private static final Extent TINY_EXTENT = new Extent(1, 1);
+    private static final int UPPER_WINDOW_NUMBER = 0;
+    private static final int LOWER_WINDOW_NUMBER = 1;
 
     @Test
     void getSizeNeverReturnsNull() {
@@ -33,6 +35,92 @@ class TextScreenTest {
         Extent size = textScreen.getSize();
 
         assertThat(size, equalTo(expected));
+    }
+
+    @Test
+    void hasUpperWindowReturnsTrueForVersionGreaterThan3() {
+        TestTextScreen textScreen = new TestTextScreen(new Extent(10, 80));
+        textScreen.setVersion(new Random().nextInt(5) + 3);
+
+        assertThat(textScreen.hasUpperWindow(), equalTo(true));
+    }
+
+    @Test
+    void hasUpperWindowReturnsFalseForLessThanThree() {
+        TestTextScreen textScreen = new TestTextScreen(new Extent(10, 80));
+        textScreen.setVersion(new Random().nextInt(3));
+
+        assertThat(textScreen.hasUpperWindow(), equalTo(false));
+    }
+
+    @Test
+    void getWindowSizeNeverReturnsNullForUpperWindow() {
+        TestTextScreen textScreen = new TestTextScreen(new Extent(10, 80));
+
+        textScreen.splitScreen(5);
+        Extent size = textScreen.getWindowSize(UPPER_WINDOW_NUMBER);
+
+        assertThat(size, notNullValue());
+    }
+
+    @Test
+    void getWindowSizeNeverReturnsNullForLowerWindow() {
+        TestTextScreen textScreen = new TestTextScreen(new Extent(10, 80));
+
+        textScreen.splitScreen(5);
+        Extent size = textScreen.getWindowSize(LOWER_WINDOW_NUMBER);
+
+        assertThat(size, notNullValue());
+    }
+
+    @Test
+    void getWindowSizeForUpperScreenWhenSplitReturnsUpperWindowDimension() {
+        TestTextScreen textScreen = new TestTextScreen(new Extent(10, 80));
+
+        textScreen.splitScreen(5);
+        Extent size = textScreen.getWindowSize(UPPER_WINDOW_NUMBER);
+
+        assertThat(size.getRows(), equalTo(5));
+    }
+
+    @Test
+    void getWindowSizeForLowerScreenWhenSplitReturnsLowerWindowDimension() {
+        TestTextScreen textScreen = new TestTextScreen(new Extent(10, 80));
+
+        textScreen.splitScreen(5);
+        Extent size = textScreen.getWindowSize(LOWER_WINDOW_NUMBER);
+
+        assertThat(size.getRows(), equalTo(5));
+    }
+
+    @Test
+    void getWindowSizeForUpperScreenLackingSplitReturnsEmptyDimension() {
+        Extent expected = new Extent(10, 80);
+        TestTextScreen textScreen = new TestTextScreen(expected);
+
+        Extent size = textScreen.getWindowSize(UPPER_WINDOW_NUMBER);
+
+        assertThat(size, equalTo(new Extent(0, 0)));
+    }
+
+    @Test
+    void getWindowSizeForLowerScreenLackingSplitReturnsEntireScreenDimension() {
+        Extent expected = new Extent(10, 80);
+        TestTextScreen textScreen = new TestTextScreen(expected);
+
+        Extent size = textScreen.getWindowSize(LOWER_WINDOW_NUMBER);
+
+        assertThat(size, equalTo(expected));
+    }
+
+    @Test
+    void splitScreenWellSplitsTheScreen() {
+        TestTextScreen textScreen = new TestTextScreen(new Extent(10, 80));
+
+        textScreen.splitScreen(5);
+        Extent size = textScreen.getWindowSize(LOWER_WINDOW_NUMBER);
+
+        assertThat(size.getRows(), equalTo(5));
     }
 
     @Test

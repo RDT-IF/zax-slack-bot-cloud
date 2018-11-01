@@ -16,7 +16,8 @@ public class SlackTextScreen extends TextScreen {
         this.slackChannel = slackChannel;
     }
 
-    void initialize() {
+    void initialize(int version) {
+        super.setVersion(version);
         slackMessageTimeStamp = slackSession.sendMessage(slackChannel, "Display loading...").getReply().getTimestamp();
     }
 

@@ -19,7 +19,7 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public void initialize(int version) {
-        screen.initialize();
+        screen.initialize(version);
         screen.update();
     }
 
@@ -45,6 +45,26 @@ public class SlackZUserInterface implements ZUserInterface {
         Dimension fontSizeInPixels = getFontSize();
         Dimension screenSizeInCharacters = getScreenCharacters();
         return new Dimension(screenSizeInCharacters.width * fontSizeInPixels.width, screenSizeInCharacters.height * fontSizeInPixels.height);
+    }
+
+    @Override
+    public boolean hasUpperWindow() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Dimension getWindowSize(int window) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void splitScreen(int lines) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setCurrentWindow(int window) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -103,32 +123,12 @@ public class SlackZUserInterface implements ZUserInterface {
     }
 
     @Override
-    public boolean hasUpperWindow() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public Dimension getWindowSize(int window) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public Point getCursorPosition() {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void showStatusBar(String s, int a, int b, boolean flag) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void splitScreen(int lines) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setCurrentWindow(int window) {
         throw new UnsupportedOperationException();
     }
 
