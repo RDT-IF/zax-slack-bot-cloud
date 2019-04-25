@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
 abstract class TextScreen {
@@ -12,6 +13,7 @@ abstract class TextScreen {
     private Position cursorPosition = new Position(0, 0);
     private int upperWindowBottomRowPointer = -1;
     private int version;
+    private int currentWindow;
 
     TextScreen(Extent size) {
         this.size = size;
@@ -56,22 +58,50 @@ abstract class TextScreen {
     }
 
     void print(String string) {
-        if (cursorPosition.getColumn() + string.length() > size.getColumns()) {
-            throw new IndexOutOfBoundsException("Attempt to print a string beyond the edge of screen");
-        }
+        StringTokenizer tokenizer = new StringTokenizer(string, "\b\n\r", true);
 
-        TextScreenLine line = screenLines.get(cursorPosition.getRow());
-        String text = line.getText();
-        if (cursorPosition.getColumn() > text.length()) {
-            text = StringUtils.rightPad(text, cursorPosition.getColumn());
-        }
+        // Now process one token at a time.
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            switch (token) {
+               case "\b":
+                   break;
+               case "\n":
+                   break;
+               case "\r":
+                   break;
+                default:
+                    printSubstring(token);
 
-        String left = text.substring(0, cursorPosition.getColumn());
-        String right = "";
-        if (cursorPosition.getColumn() + string.length() < text.length()) {
-            right = text.substring(cursorPosition.getColumn() + string.length());
+            }
         }
-        screenLines.set(cursorPosition.getRow(), new TextScreenLine(left + string + right));
+    }
+
+    private void printSubstring(String token) {
+        while (!token.isEmpty()) {
+            int charactersRemainingInCurrentRow = size.getColumns() - cursorPosition.getColumn();
+            int nextLength = charactersRemainingInCurrentRow < token.length() ? charactersRemainingInCurrentRow : token.length();
+            System.out.println(cursorPosition);
+            System.out.println(screenLines);
+            TextScreenLine line = screenLines.get(cursorPosition.getRow());
+            String currentText = line.getText();
+
+            if (cursorPosition.getColumn() > currentText.length()) {
+                currentText = StringUtils.rightPad(currentText, cursorPosition.getColumn());
+            }
+
+            String left = currentText.substring(0, cursorPosition.getColumn());
+            String right = "";
+
+            if (cursorPosition.getColumn() + nextLength < currentText.length()) {
+                right = currentText.substring(cursorPosition.getColumn() + nextLength);
+            }
+            screenLines.set(cursorPosition.getRow(), new TextScreenLine(left + token.substring(0, nextLength) + right));
+            token = token.substring(nextLength);
+            if (!token.isEmpty()) {
+                cursorPosition = new Position(cursorPosition.getRow() + 1, 0);
+            }
+        }
     }
 
     void eraseLine() {
@@ -116,9 +146,9 @@ abstract class TextScreen {
                 case 0:
                     return new Extent(0, 0);
                 case 1:
+                default:
                     return size;
             }
-            return size;
         }
 
         switch (window) {
@@ -142,5 +172,21 @@ abstract class TextScreen {
 
     int getVersion() {
         return version;
+    }
+
+    void setTextStyle(int style) {
+
+    }
+
+    void setCurrentWindow(int currentWindow) {
+        this.currentWindow = currentWindow;
+    }
+
+    int getCurrentWindow() {
+        return currentWindow;
+    }
+
+    void setCursorPosition(int x, int y) {
+        cursorPosition = new Position(x, y);
     }
 }

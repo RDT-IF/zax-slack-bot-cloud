@@ -59,12 +59,12 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public void splitScreen(int lines) {
-        throw new UnsupportedOperationException();
+        screen.splitScreen(lines);
     }
 
     @Override
     public void setCurrentWindow(int window) {
-        throw new UnsupportedOperationException();
+        screen.setCurrentWindow(window);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public void setCursorPosition(int x, int y) {
-        throw new UnsupportedOperationException();
+        screen.setCursorPosition(x, y);
     }
 
     @Override
@@ -144,7 +144,7 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public void setTextStyle(int style) {
-        throw new UnsupportedOperationException();
+        screen.setTextStyle(style);
     }
 
     @Override
@@ -159,12 +159,17 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public int readChar(int time) {
-        throw new UnsupportedOperationException();
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return 32;
     }
 
     @Override
     public void showString(String string) {
-        throw new UnsupportedOperationException();
+        screen.print(string);
     }
 
     @Override

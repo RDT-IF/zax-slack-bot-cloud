@@ -21,7 +21,7 @@ public class SlackTextScreen extends TextScreen {
         slackMessageTimeStamp = slackSession.sendMessage(slackChannel, "Display loading...").getReply().getTimestamp();
     }
 
-    void update() {
+    public void update() {
         String replaceActualBackTicks = "`" + (char) 11 + "`" + (char) 11 + "`";
         String message = "```\n" + getJoinedText().replaceAll("```", replaceActualBackTicks) + "\n```";
         SlackMessageHandle<SlackMessageReply> slackMessageReplySlackMessageHandle = slackSession.updateMessage(slackMessageTimeStamp, slackChannel, message);
