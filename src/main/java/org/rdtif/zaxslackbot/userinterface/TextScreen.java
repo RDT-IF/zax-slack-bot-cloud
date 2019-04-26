@@ -19,7 +19,7 @@ abstract class TextScreen {
         this.size = size;
         screenLines = new ArrayList<>(size.getRows());
         for (int i = 0; i < size.getRows(); i++) {
-            screenLines.add(new TextScreenLine(""));
+            screenLines.add(new TextScreenLine(" "));
         }
     }
 
@@ -49,8 +49,7 @@ abstract class TextScreen {
     }
 
     private boolean isValid(Position position) {
-        return position.getRow() < 0 || position.getRow() >= size.getRows()
-                || position.getColumn() < 0 || position.getColumn() >= size.getColumns();
+        return position.getRow() < 0 || position.getRow() >= size.getRows() || position.getColumn() < 0 || position.getColumn() >= size.getColumns();
     }
 
     String getJoinedText() {
@@ -64,15 +63,26 @@ abstract class TextScreen {
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
             switch (token) {
-               case "\b":
-                   break;
-               case "\n":
-                   break;
-               case "\r":
-                   break;
+                case "\b":
+                    if (cursorPosition.getColumn() == 0) {
+                        cursorPosition = new Position(cursorPosition.getRow() - 1, size.getColumns() - 1);
+                    } else {
+                        cursorPosition = new Position(cursorPosition.getRow(), cursorPosition.getColumn() - 1);
+                    }
+                    StringBuilder builder = new StringBuilder(screenLines.get(cursorPosition.getRow()).getText());
+                    builder.setCharAt(cursorPosition.getColumn(), ' ');
+                    screenLines.set(cursorPosition.getRow(), new TextScreenLine(builder.toString()));
+                    break;
+                case "\n":
+                    // Move to the beginning of the next line
+                    goToStartOfNextLine();
+                    break;
+                case "\r":
+                    // Move to the beginning of the current line
+                    cursorPosition = new Position(cursorPosition.getRow(), 0);
+                    break;
                 default:
                     printSubstring(token);
-
             }
         }
     }
@@ -81,8 +91,11 @@ abstract class TextScreen {
         while (!token.isEmpty()) {
             int charactersRemainingInCurrentRow = size.getColumns() - cursorPosition.getColumn();
             int nextLength = charactersRemainingInCurrentRow < token.length() ? charactersRemainingInCurrentRow : token.length();
-            System.out.println(cursorPosition);
-            System.out.println(screenLines);
+            if (token.length() > charactersRemainingInCurrentRow) {
+                while (!isValidWrapCharacter(token.charAt(nextLength - 1))) {
+                    nextLength--;
+                }
+            }
             TextScreenLine line = screenLines.get(cursorPosition.getRow());
             String currentText = line.getText();
 
@@ -98,14 +111,35 @@ abstract class TextScreen {
             }
             screenLines.set(cursorPosition.getRow(), new TextScreenLine(left + token.substring(0, nextLength) + right));
             token = token.substring(nextLength);
+            update();
             if (!token.isEmpty()) {
-                cursorPosition = new Position(cursorPosition.getRow() + 1, 0);
+                goToStartOfNextLine();
             }
         }
     }
 
+    private boolean isValidWrapCharacter(Character character) {
+        return Character.isWhitespace(character)
+                || (character == '.')
+                || (character == '!')
+                || (character == '?')
+                || (character == ':')
+                || (character == ';')
+                || (character == ',')
+                ;
+    }
+
+    private void goToStartOfNextLine() {
+        if (cursorPosition.getRow() + 1 == size.getRows()) {
+            scrollUp(1);
+            cursorPosition = new Position(cursorPosition.getRow(), 0);
+        } else {
+            cursorPosition = new Position(cursorPosition.getRow() + 1, 0);
+        }
+    }
+
     void eraseLine() {
-        screenLines.set(cursorPosition.getRow(), new TextScreenLine(""));
+        screenLines.set(cursorPosition.getRow(), new TextScreenLine(" "));
     }
 
     void scroll(int lines) {

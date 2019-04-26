@@ -39,7 +39,7 @@ public class StartGameAction implements Action {
             ZCPU cpu = zCpuFactory.create(new SlackZUserInterface(screen));
             cpu.initialize(configuration.getGameDirectory() + gameName);
             cpu.start();
-            Executors.newSingleThreadExecutor().execute(() -> new SlackLoop().run(screen));
+            //Executors.newSingleThreadExecutor().execute(() -> new SlackLoop().run(screen));
             return pattern.responseFor("start") + " " + gameName;
         }
 
