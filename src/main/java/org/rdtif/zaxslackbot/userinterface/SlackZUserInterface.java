@@ -1,8 +1,12 @@
 package org.rdtif.zaxslackbot.userinterface;
 
+import com.google.common.eventbus.Subscribe;
 import com.zaxsoft.zax.zmachine.ZUserInterface;
+import org.rdtif.zaxslackbot.PlayerInputEvent;
 
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Vector;
 
 public class SlackZUserInterface implements ZUserInterface {
@@ -12,6 +16,8 @@ public class SlackZUserInterface implements ZUserInterface {
     private static final int Z_MACHINE_BLACK = 2;
     private static final int Z_MACHINE_WHITE = 9;
     private final SlackTextScreen screen;
+    private final Object playerInputLock = new Object();
+    private Queue<String> playerInput = new LinkedList<>();
 
     public SlackZUserInterface(SlackTextScreen screen) {
         this.screen = screen;
@@ -74,7 +80,7 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public int getDefaultForeground() {
-       return Z_MACHINE_BLACK;
+        return Z_MACHINE_BLACK;
     }
 
     @Override
@@ -153,18 +159,27 @@ public class SlackZUserInterface implements ZUserInterface {
     }
 
     @Override
-    public int readLine(StringBuffer buffer, int time) {
-        throw new UnsupportedOperationException();
+    public int readChar(int time) {
+        //noinspection StatementWithEmptyBody
+        while (playerInput.isEmpty()) {
+        }
+        synchronized (playerInputLock) {
+            String nextPlayerInput = playerInput.poll();
+            System.out.println(nextPlayerInput);
+            return nextPlayerInput.charAt(0);
+        }
     }
 
     @Override
-    public int readChar(int time) {
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    public int readLine(StringBuffer buffer, int time) {
+        //noinspection StatementWithEmptyBody
+        while (playerInput.isEmpty()) {
         }
-        return 32;
+        synchronized (playerInputLock) {
+            String nextPlayerInput = playerInput.poll();
+            buffer.append(nextPlayerInput);
+            return nextPlayerInput.charAt(nextPlayerInput.length() - 1);
+        }
     }
 
     @Override
@@ -195,5 +210,14 @@ public class SlackZUserInterface implements ZUserInterface {
     @Override
     public void restart() {
         throw new UnsupportedOperationException();
+    }
+
+    @SuppressWarnings("UnstableApiUsage")
+    @Subscribe
+    public void respondTo(PlayerInputEvent event) {
+        synchronized (playerInputLock) {
+            System.out.println("EVENT REC:" + event.getPlayerInput());
+            playerInput.add(event.getPlayerInput());
+        }
     }
 }

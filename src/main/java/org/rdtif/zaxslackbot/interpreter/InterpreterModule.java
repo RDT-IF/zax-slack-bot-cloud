@@ -2,6 +2,7 @@ package org.rdtif.zaxslackbot.interpreter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.ullink.slack.simpleslackapi.SlackSession;
@@ -24,7 +25,7 @@ public class InterpreterModule extends AbstractModule {
     public Map<LanguageAction, Action> providesActionMap(ZaxSlackBotConfiguration configuration, GameFileRepository repository, ZCpuFactory zCpuFactory, SlackSession session) {
         return ImmutableMap.<LanguageAction, Action>builder()
                 .put(LanguageAction.ListGames, new ListGamesAction(repository))
-                .put(LanguageAction.StartGame, new StartGameAction(configuration, session, repository, zCpuFactory))
+                .put(LanguageAction.StartGame, new StartGameAction(configuration, session, repository, zCpuFactory, new EventBus()))
                 .build();
     }
 

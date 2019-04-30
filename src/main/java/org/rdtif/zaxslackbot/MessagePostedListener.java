@@ -1,5 +1,6 @@
 package org.rdtif.zaxslackbot;
 
+import com.google.common.eventbus.EventBus;
 import com.ullink.slack.simpleslackapi.SlackSession;
 import com.ullink.slack.simpleslackapi.events.SlackMessagePosted;
 import com.ullink.slack.simpleslackapi.listeners.SlackMessagePostedListener;
@@ -9,10 +10,12 @@ import javax.inject.Inject;
 
 class MessagePostedListener implements SlackMessagePostedListener {
     private final LanguageProcessor languageProcessor;
+    private final EventBus eventBus;
 
     @Inject
-    MessagePostedListener(LanguageProcessor languageProcessor) {
+    MessagePostedListener(LanguageProcessor languageProcessor, EventBus eventBus) {
         this.languageProcessor = languageProcessor;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -26,6 +29,9 @@ class MessagePostedListener implements SlackMessagePostedListener {
                 if (event.getChannel().isDirect() || messageContent.contains(tag)) {
                     String message = languageProcessor.responseTo(event.getChannel(), messageContent.replaceAll(tag, "").trim());
                     session.sendMessage(event.getChannel(), message);
+                } else {
+                    System.out.println("EVENT FIRE:" + messageContent);
+                    eventBus.post(new PlayerInputEvent(messageContent));
                 }
             }
         } catch (Exception exception) {

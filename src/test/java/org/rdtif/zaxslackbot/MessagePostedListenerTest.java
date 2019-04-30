@@ -1,5 +1,6 @@
 package org.rdtif.zaxslackbot;
 
+import com.google.common.eventbus.EventBus;
 import com.ullink.slack.simpleslackapi.SlackChannel;
 import com.ullink.slack.simpleslackapi.SlackPersona;
 import com.ullink.slack.simpleslackapi.SlackSession;
@@ -25,7 +26,7 @@ class MessagePostedListenerTest {
     private final SlackChannel channel = mock(SlackChannel.class);
 
     private final LanguageProcessor languageProcessor = new EchoProcessor();
-    private final MessagePostedListener messagePostedListener = new MessagePostedListener(languageProcessor);
+    private final MessagePostedListener messagePostedListener = new MessagePostedListener(languageProcessor, new EventBus());
 
     private String id;
 
@@ -74,7 +75,7 @@ class MessagePostedListenerTest {
         String tag = "<@" + id + ">";
         String message = RandomStringUtils.randomAlphabetic(10);
         RuntimeException exception = mock(RuntimeException.class);
-        MessagePostedListener messagePostedListener = new MessagePostedListener(new ExceptionThrowingProcessor(exception));
+        MessagePostedListener messagePostedListener = new MessagePostedListener(new ExceptionThrowingProcessor(exception), new EventBus());
 
         when(sender.isBot()).thenReturn(false);
         when(messagePosted.getSender()).thenReturn(sender);

@@ -2,6 +2,7 @@ package org.rdtif.zaxslackbot;
 
 import javax.inject.Singleton;
 
+import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.ullink.slack.simpleslackapi.SlackSession;
@@ -27,5 +28,11 @@ public class ZaxSlackBotModule extends AbstractModule {
         session.addGroupJoinedListener(groupJoinListener);
         session.addMessagePostedListener(messagePostedListener);
         return session;
+    }
+
+    @Provides
+    @Singleton
+    public EventBus providesEventBus() {
+        return new EventBus();
     }
 }
