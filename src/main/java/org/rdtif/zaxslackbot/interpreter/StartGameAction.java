@@ -22,7 +22,7 @@ public class StartGameAction implements Action {
     @SuppressWarnings("UnstableApiUsage") private final EventBus eventBus;
 
     @Inject
-    public StartGameAction(ZaxSlackBotConfiguration configuration, SlackSession session, GameFileRepository gameFileRepository, ZCpuFactory zCpuFactory, EventBus eventBus) {
+    public StartGameAction(ZaxSlackBotConfiguration configuration, SlackSession session, GameFileRepository gameFileRepository, ZCpuFactory zCpuFactory, @SuppressWarnings("UnstableApiUsage") EventBus eventBus) {
         this.configuration = configuration;
         this.session = session;
         this.gameFileRepository = gameFileRepository;

@@ -22,10 +22,10 @@ public class InterpreterModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public Map<LanguageAction, Action> providesActionMap(ZaxSlackBotConfiguration configuration, GameFileRepository repository, ZCpuFactory zCpuFactory, SlackSession session) {
+    public Map<LanguageAction, Action> providesActionMap(ZaxSlackBotConfiguration configuration, GameFileRepository repository, ZCpuFactory zCpuFactory, SlackSession session, @SuppressWarnings("UnstableApiUsage") EventBus eventBus) {
         return ImmutableMap.<LanguageAction, Action>builder()
                 .put(LanguageAction.ListGames, new ListGamesAction(repository))
-                .put(LanguageAction.StartGame, new StartGameAction(configuration, session, repository, zCpuFactory, new EventBus()))
+                .put(LanguageAction.StartGame, new StartGameAction(configuration, session, repository, zCpuFactory, eventBus))
                 .build();
     }
 

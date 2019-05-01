@@ -10,10 +10,10 @@ import javax.inject.Inject;
 
 class MessagePostedListener implements SlackMessagePostedListener {
     private final LanguageProcessor languageProcessor;
-    private final EventBus eventBus;
+    @SuppressWarnings("UnstableApiUsage") private final EventBus eventBus;
 
     @Inject
-    MessagePostedListener(LanguageProcessor languageProcessor, EventBus eventBus) {
+    MessagePostedListener(LanguageProcessor languageProcessor, @SuppressWarnings("UnstableApiUsage") EventBus eventBus) {
         this.languageProcessor = languageProcessor;
         this.eventBus = eventBus;
     }

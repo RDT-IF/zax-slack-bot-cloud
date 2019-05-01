@@ -30,6 +30,7 @@ public class ZaxSlackBotModule extends AbstractModule {
         return session;
     }
 
+    @SuppressWarnings("UnstableApiUsage")
     @Provides
     @Singleton
     public EventBus providesEventBus() {
