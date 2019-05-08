@@ -30,7 +30,6 @@ class MessagePostedListener implements SlackMessagePostedListener {
                     String message = languageProcessor.responseTo(event.getChannel(), messageContent.replaceAll(tag, "").trim());
                     session.sendMessage(event.getChannel(), message);
                 } else {
-                    System.out.println("EVENT FIRE:" + messageContent);
                     eventBus.post(new PlayerInputEvent(messageContent));
                 }
             }

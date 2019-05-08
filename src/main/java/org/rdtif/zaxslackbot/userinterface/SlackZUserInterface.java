@@ -165,7 +165,6 @@ public class SlackZUserInterface implements ZUserInterface {
         }
         synchronized (playerInputLock) {
             String nextPlayerInput = playerInput.poll();
-            System.out.println(nextPlayerInput);
             return nextPlayerInput.charAt(0);
         }
     }
@@ -216,7 +215,6 @@ public class SlackZUserInterface implements ZUserInterface {
     @Subscribe
     public void respondTo(PlayerInputEvent event) {
         synchronized (playerInputLock) {
-            System.out.println("EVENT REC:" + event.getPlayerInput());
             playerInput.add(event.getPlayerInput());
         }
     }
