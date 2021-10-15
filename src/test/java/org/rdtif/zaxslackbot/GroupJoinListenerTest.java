@@ -24,10 +24,11 @@ class GroupJoinListenerTest {
         verify(session).sendMessage(channel, "Hi Everyone! Would you like to play a game?");
     }
 
-    private static class GroupJoinedEvent implements SlackGroupJoined {
+    private static class GroupJoinedEvent extends SlackGroupJoined {
         private final SlackChannel channel;
 
         GroupJoinedEvent(SlackChannel channel) {
+            super(channel);
             this.channel = channel;
         }
 
