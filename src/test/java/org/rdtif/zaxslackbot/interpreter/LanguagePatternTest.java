@@ -1,23 +1,23 @@
 package org.rdtif.zaxslackbot.interpreter;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.isEmptyString;
-import static org.hamcrest.Matchers.notNullValue;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 class LanguagePatternTest {
     @Test
     void patternDefaultsToEmpty() {
         LanguagePattern pattern = new LanguagePattern();
 
-        assertThat(pattern.getPattern(), isEmptyString());
+        assertThat(pattern.getPattern(), emptyString());
     }
 
     @Test

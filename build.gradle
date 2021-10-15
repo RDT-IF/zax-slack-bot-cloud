@@ -9,9 +9,6 @@ repositories {
     maven { url 'https://www.jitpack.io' }
 }
 
-def excludeHamcrest = { exclude module: 'hamcrest-core' }
-def excludeJunit = { exclude module: 'junit' }
-
 test {
     useJUnitPlatform()
 }
@@ -37,7 +34,7 @@ jar {
     manifest {
         attributes(
                 "Implementation-Title": "Zax",
-                "Implementation-Version": version,
+                "Implementation-Version": getArchiveVersion(),
                 'Main-Class': mainClassName
         )
     }
