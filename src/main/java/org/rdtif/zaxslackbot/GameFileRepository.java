@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 import javax.inject.Inject;
 
 public class GameFileRepository {
-    private static final Predicate<Path> FOR_REGULAR_FILES = (path -> Files.isRegularFile(path));
+    private static final Predicate<Path> FOR_REGULAR_FILES = (Files::isRegularFile);
     private static final Predicate<String> ENDS_WITH_Z_VERSION = Pattern.compile(".*\\.z[1-5|7-8]$").asPredicate();
     private final ZaxSlackBotConfiguration configuration;
 
@@ -28,5 +28,4 @@ public class GameFileRepository {
             throw new RuntimeException(exception);
         }
     }
-
 }
