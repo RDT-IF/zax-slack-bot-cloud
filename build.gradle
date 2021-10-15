@@ -8,6 +8,11 @@ repositories {
     mavenCentral()
     maven { url 'https://www.jitpack.io' }
 }
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(14)
+    }
+}
 
 test {
     useJUnitPlatform()
