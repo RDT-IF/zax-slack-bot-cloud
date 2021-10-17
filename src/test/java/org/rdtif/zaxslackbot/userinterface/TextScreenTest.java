@@ -277,7 +277,7 @@ class TextScreenTest {
     @Test
     void getJoinedTextSeparatesLinesWithNewline() {
         String text = new TestTextScreen(new Extent(3, 1)).getJoinedText();
-        assertThat(text, equalTo("\n\n\n"));
+        assertThat(text, equalTo(" \n \n \n"));
     }
 
     @Test
@@ -369,7 +369,7 @@ class TextScreenTest {
         textScreen.eraseLine();
 
         String text = textScreen.getJoinedText();
-        assertThat(text, equalTo("\n"));
+        assertThat(text, equalTo(" \n"));
     }
 
     @Test
@@ -388,7 +388,7 @@ class TextScreenTest {
 
         String text = textScreen.getJoinedText();
 
-        String expected = line1 + "\n\n" + line3 + "\n";
+        String expected = line1 + "\n \n" + line3 + "\n";
         assertThat(text, equalTo(expected));
     }
 
@@ -406,7 +406,7 @@ class TextScreenTest {
 
         textScreen.scroll(1);
 
-        assertThat(textScreen.getJoinedText(), equalTo(line2 + "\n" + line3 + "\n\n"));
+        assertThat(textScreen.getJoinedText(), equalTo(line2 + "\n" + line3 + "\n \n"));
     }
 
     @Test
@@ -423,7 +423,7 @@ class TextScreenTest {
 
         textScreen.scroll(3);
 
-        assertThat(textScreen.getJoinedText(), equalTo("\n\n\n\n\n\n\n\n\n\n"));
+        assertThat(textScreen.getJoinedText(), equalTo(" \n \n \n \n \n \n \n \n \n \n"));
     }
 
     @Test
@@ -441,7 +441,7 @@ class TextScreenTest {
 
         textScreen.scroll(expected);
 
-        assertThat(textScreen.count, equalTo(expected));
+        assertThat(textScreen.count, equalTo(expected + 3));
     }
 
     @Test
@@ -458,7 +458,7 @@ class TextScreenTest {
 
         textScreen.scroll(3);
 
-        assertThat(textScreen.getJoinedText(), equalTo("\n\n\n"));
+        assertThat(textScreen.getJoinedText(), equalTo(" \n \n \n"));
     }
 
     @Test
@@ -472,7 +472,7 @@ class TextScreenTest {
 
         textScreen.scroll(3);
 
-        assertThat(textScreen.getJoinedText(), equalTo("\n\n"));
+        assertThat(textScreen.getJoinedText(), equalTo(" \n \n"));
     }
 
     @Test
@@ -483,7 +483,7 @@ class TextScreenTest {
 
         textScreen.scroll(3);
 
-        assertThat(textScreen.getJoinedText(), equalTo("\n"));
+        assertThat(textScreen.getJoinedText(), equalTo(" \n"));
     }
 
     @Test
@@ -569,7 +569,7 @@ class TextScreenTest {
 
         textScreen.scroll(0 - expected);
 
-        assertThat(textScreen.count, equalTo(expected));
+        assertThat(textScreen.count, equalTo(expected + 3));
     }
 
     @Test

@@ -155,7 +155,7 @@ abstract class TextScreen {
             for (int i = 0; i < size.getRows() - 1; i++) {
                 screenLines.set(i, new TextScreenLine(screenLines.get(i + 1).getText()));
             }
-            screenLines.set(size.getRows() - 1, new TextScreenLine(""));
+            screenLines.set(size.getRows() - 1, new TextScreenLine(" "));
             update();
         }
     }

@@ -17,7 +17,7 @@ public class SlackZUserInterface implements ZUserInterface {
     private static final int Z_MACHINE_WHITE = 9;
     private final SlackTextScreen screen;
     private final Object playerInputLock = new Object();
-    private Queue<String> playerInput = new LinkedList<>();
+    private final Queue<String> playerInput = new LinkedList<>();
 
     public SlackZUserInterface(SlackTextScreen screen) {
         this.screen = screen;
