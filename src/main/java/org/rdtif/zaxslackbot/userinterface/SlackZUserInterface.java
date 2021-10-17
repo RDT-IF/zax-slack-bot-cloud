@@ -130,7 +130,7 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public Point getCursorPosition() {
-        throw new UnsupportedOperationException();
+        return screen.getCursorPosition().toPoint();
     }
 
     @Override

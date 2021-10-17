@@ -1,5 +1,6 @@
 package org.rdtif.zaxslackbot.userinterface;
 
+import java.awt.*;
 import java.util.Objects;
 
 public class Position {
@@ -17,6 +18,10 @@ public class Position {
 
     int getColumn() {
         return column;
+    }
+
+    Point toPoint() {
+        return new Point(row, column);
     }
 
     Position translateBy(Extent extent) {

@@ -35,7 +35,7 @@ public class StartGameAction implements Action {
         String gameName = extractGameName(input, pattern);
 
         if (gameFileRepository.fileNames().contains(gameName)) {
-            SlackTextScreen screen = new SlackTextScreen(session, channel, new Extent(30, 80));
+            SlackTextScreen screen = new SlackTextScreen(session, channel, new Extent(25, 80));
             SlackZUserInterface userInterface = new SlackZUserInterface(screen);
             eventBus.register(userInterface);
             ZCPU cpu = zCpuFactory.create(userInterface);

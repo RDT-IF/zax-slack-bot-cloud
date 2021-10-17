@@ -221,6 +221,6 @@ abstract class TextScreen {
     }
 
     void setCursorPosition(int x, int y) {
-        cursorPosition = new Position(x, y);
+        cursorPosition = new Position(y, x);
     }
 }
