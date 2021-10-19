@@ -36,18 +36,16 @@ class MessagePostedListenerTest {
         when(persona.getId()).thenReturn(id);
         when(slackSession.sessionPersona()).thenReturn(persona);
         when(messagePosted.getChannel()).thenReturn(channel);
+        when(messagePosted.getSender()).thenReturn(sender);
     }
 
     @Test
     void speakWhenSpokenTo() {
         String tag = "<@" + id + ">";
-        String message = RandomStringUtils.randomAlphabetic(10);
+        String message = "a message";
 
         when(sender.isBot()).thenReturn(false);
-        when(messagePosted.getSender()).thenReturn(sender);
         when(messagePosted.getMessageContent()).thenReturn(tag + " " + message);
-
-        when(messagePosted.getChannel()).thenReturn(channel);
 
         messagePostedListener.onEvent(messagePosted, slackSession);
 
@@ -55,11 +53,26 @@ class MessagePostedListenerTest {
     }
 
     @Test
+    void doNotSpeakInEmptyWays() {
+        String tag = "<@" + id + ">";
+        String message = RandomStringUtils.randomAlphabetic(10);
+
+        when(sender.isBot()).thenReturn(false);
+        when(messagePosted.getMessageContent()).thenReturn(tag + " " + message);
+
+        when(messagePosted.getChannel()).thenReturn(channel);
+        MessagePostedListener messagePostedListener = new MessagePostedListener(new MockLanguageProcessor(""), new EventBus());
+
+        messagePostedListener.onEvent(messagePosted, slackSession);
+
+        verify(slackSession, never()).sendMessage(eq(channel), any(String.class));
+    }
+
+    @Test
     void speakWhenSpokenToInDirectMessage() {
         String message = RandomStringUtils.randomAlphabetic(10);
 
         when(sender.isBot()).thenReturn(false);
-        when(messagePosted.getSender()).thenReturn(sender);
         when(messagePosted.getMessageContent()).thenReturn(message);
 
         when(channel.isDirect()).thenReturn(true);
@@ -78,7 +91,6 @@ class MessagePostedListenerTest {
         MessagePostedListener messagePostedListener = new MessagePostedListener(new ExceptionThrowingProcessor(exception), new EventBus());
 
         when(sender.isBot()).thenReturn(false);
-        when(messagePosted.getSender()).thenReturn(sender);
         when(messagePosted.getMessageContent()).thenReturn(tag + " " + message);
 
         when(messagePosted.getChannel()).thenReturn(channel);
@@ -91,7 +103,6 @@ class MessagePostedListenerTest {
     @Test
     void doNotTalkToBots() {
         when(sender.isBot()).thenReturn(true);
-        when(messagePosted.getSender()).thenReturn(sender);
 
         messagePostedListener.onEvent(messagePosted, slackSession);
 
@@ -103,12 +114,25 @@ class MessagePostedListenerTest {
         String message = RandomStringUtils.randomAlphabetic(10);
 
         when(sender.isBot()).thenReturn(false);
-        when(messagePosted.getSender()).thenReturn(sender);
         when(messagePosted.getMessageContent()).thenReturn(message);
 
         messagePostedListener.onEvent(messagePosted, slackSession);
 
         verify(slackSession, never()).sendMessage(any(SlackChannel.class), any(String.class));
+    }
+
+    private static class MockLanguageProcessor extends LanguageProcessor {
+        private final String response;
+
+        MockLanguageProcessor(String response) {
+            super(null);
+            this.response = response;
+        }
+
+        @Override
+        public String responseTo(SlackChannel channel, String input) {
+            return response;
+        }
     }
 
     private static class EchoProcessor extends LanguageProcessor {
