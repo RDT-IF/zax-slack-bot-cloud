@@ -19,10 +19,10 @@ public class StartGameAction implements Action {
     private final SlackSession session;
     private final GameFileRepository gameFileRepository;
     private final ZCpuFactory zCpuFactory;
-    @SuppressWarnings("UnstableApiUsage") private final EventBus eventBus;
+    private final EventBus eventBus;
 
     @Inject
-    public StartGameAction(ZaxSlackBotConfiguration configuration, SlackSession session, GameFileRepository gameFileRepository, ZCpuFactory zCpuFactory, @SuppressWarnings("UnstableApiUsage") EventBus eventBus) {
+    public StartGameAction(ZaxSlackBotConfiguration configuration, SlackSession session, GameFileRepository gameFileRepository, ZCpuFactory zCpuFactory, EventBus eventBus) {
         this.configuration = configuration;
         this.session = session;
         this.gameFileRepository = gameFileRepository;
@@ -42,8 +42,7 @@ public class StartGameAction implements Action {
 
             cpu.initialize(configuration.getGameDirectory() + gameName);
             cpu.start();
-            //Executors.newSingleThreadExecutor().execute(() -> new SlackLoop().run(screen));
-            return pattern.responseFor("start") + " " + gameName;
+            return "";
         }
 
         return pattern.responseFor("default");

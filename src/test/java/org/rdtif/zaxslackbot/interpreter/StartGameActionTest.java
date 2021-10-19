@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Properties;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -49,14 +50,14 @@ class StartGameActionTest {
     }
 
     @Test
-    void returnStartMessageWithGameName() {
+    void returnEmptyResponseMessageForGameStart() {
         String gameName = RandomStringUtils.randomAlphabetic(12);
         String input = "play " + gameName;
 
         when(repository.fileNames()).thenReturn(Collections.singletonList(gameName));
         String message = startGameAction.execute(channel, input, languagePattern);
 
-        assertThat(message, equalTo(START_MESSAGE + " " + gameName));
+        assertThat(message, emptyString());
     }
 
     @Test
