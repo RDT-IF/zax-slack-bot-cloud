@@ -333,7 +333,6 @@ class TextScreenTest {
         String line = RandomStringUtils.randomAlphanumeric(50);
         TestTextScreen textScreen = new TestTextScreen(new Extent(1, 25));
 
-
         Exception exception = assertThrows(IndexOutOfBoundsException.class, () -> textScreen.print(line));
         assertThat(exception.getMessage(), equalTo("Attempt to print a string beyond the edge of screen"));
     }
