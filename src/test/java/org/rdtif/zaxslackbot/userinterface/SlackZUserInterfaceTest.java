@@ -113,6 +113,7 @@ class SlackZUserInterfaceTest {
 
         assertThat(userInterface.getDefaultBackground(), equalTo(Z_MACHINE_WHITE));
     }
+
     @Test
     void hasBoldFaceShouldReturnTrue() {
         SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);

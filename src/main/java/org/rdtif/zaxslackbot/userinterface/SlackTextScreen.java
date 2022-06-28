@@ -1,22 +1,23 @@
 package org.rdtif.zaxslackbot.userinterface;
 
-import com.ullink.slack.simpleslackapi.SlackChannel;
-import com.ullink.slack.simpleslackapi.SlackSession;
+import org.rdtif.zaxslackbot.slack.SlackDisplayMessageMaker;
 
 public class SlackTextScreen extends TextScreen {
-    private final SlackDisplayMessageUpdater slackDisplayMessageUpdater;
+    private final org.rdtif.zaxslackbot.slack.SlackDisplayMessageUpdater updater;
+    private final SlackDisplayMessageMaker maker = new SlackDisplayMessageMaker();
 
-    public SlackTextScreen(SlackSession slackSession, SlackChannel slackChannel, Extent size) {
+    public SlackTextScreen(Extent size, org.rdtif.zaxslackbot.slack.SlackDisplayMessageUpdater updater) {
         super(size);
-        slackDisplayMessageUpdater = new SlackDisplayMessageUpdater(slackSession, slackChannel.getId());
+        this.updater = updater;
     }
 
     void initialize(int version) {
         super.setVersion(version);
-        slackDisplayMessageUpdater.postMessage("Display loading...");
+        updater.initialize(maker.makeMessageOf("Display loading..."));
     }
 
-    public void update() {
-        slackDisplayMessageUpdater.updateMessage(getJoinedText());
+    @Override
+    void update() {
+        updater.update(maker.makeMessageOf(getJoinedText()));
     }
 }

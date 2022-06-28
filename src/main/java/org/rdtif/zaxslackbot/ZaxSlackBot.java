@@ -1,22 +1,23 @@
 package org.rdtif.zaxslackbot;
 
-import javax.inject.Inject;
-
 import com.google.inject.Guice;
+import org.rdtif.zaxslackbot.slack.SlackApplicationServer;
+
+import javax.inject.Inject;
 
 class ZaxSlackBot {
     public static void main(String... arguments) {
         Guice.createInjector(new ZaxSlackBotModule()).getInstance(ZaxSlackBot.class).run();
     }
 
-    private final SlackConnection connection;
+    private final SlackApplicationServer slackApplicationServer;
 
     @Inject
-    ZaxSlackBot(SlackConnection connection) {
-        this.connection = connection;
+    ZaxSlackBot(SlackApplicationServer slackApplicationServer) {
+        this.slackApplicationServer = slackApplicationServer;
     }
 
     void run() {
-        connection.connect();
+        slackApplicationServer.start();
     }
 }

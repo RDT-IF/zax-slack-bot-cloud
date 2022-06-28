@@ -18,11 +18,4 @@ class ZaxSlackBotModuleTest {
 
         assertThat(configuration, notNullValue());
     }
-
-    @Test
-    void providesSlackConnection() {
-        SlackConnection connection = injector.getInstance(SlackConnection.class);
-
-        assertThat(connection, notNullValue());
-    }
 }

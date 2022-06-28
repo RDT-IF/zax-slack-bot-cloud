@@ -11,13 +11,23 @@ import static org.hamcrest.Matchers.equalTo;
 class ZaxSlackBotConfigurationTest {
     @Test
     void getApiTokenFromProperties() {
-        String apiToken = RandomStringUtils.randomAlphabetic(13);
-        Properties properties = new Properties();
-        properties.setProperty("api-token", apiToken);
+        ZaxSlackBotConfiguration configuration = createConfiguration();
 
-        ZaxSlackBotConfiguration configuration = new ZaxSlackBotConfiguration(properties);
+        assertThat(configuration.getApiToken(), equalTo("apiToken"));
+    }
 
-        assertThat(configuration.getApiToken(), equalTo(apiToken));
+    @Test
+    void getSlackClientSecretFromProperties() {
+        ZaxSlackBotConfiguration configuration = createConfiguration();
+
+        assertThat(configuration.getSlackClientSecret(), equalTo("slackClientSecret"));
+    }
+
+    @Test
+    void getSlackSigningSecretFromProperties() {
+        ZaxSlackBotConfiguration configuration = createConfiguration();
+
+        assertThat(configuration.getSlackSigningSecret(), equalTo("slackSigningSecret"));
     }
 
     @Test
@@ -40,5 +50,13 @@ class ZaxSlackBotConfigurationTest {
         ZaxSlackBotConfiguration configuration = new ZaxSlackBotConfiguration(properties);
 
         assertThat(configuration.getGameDirectory(), equalTo(gameDirectory + "/"));
+    }
+
+    private ZaxSlackBotConfiguration createConfiguration() {
+        Properties properties = new Properties();
+        properties.setProperty("api-token", "apiToken");
+        properties.setProperty("slack-client-secret", "slackClientSecret");
+        properties.setProperty("slack-signing-secret", "slackSigningSecret");
+        return new ZaxSlackBotConfiguration(properties);
     }
 }

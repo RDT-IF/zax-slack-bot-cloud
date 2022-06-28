@@ -6,3 +6,4 @@ configuration-backup.properties
 games/*.z*
 out/
 stories/
+logs

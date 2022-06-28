@@ -21,16 +21,15 @@ class InterpreterModuleTest {
 
     @Test
     void providesActionMap() {
-        Map<LanguageAction, Action> map = injector.getInstance(Key.get(new TypeLiteral<Map<LanguageAction, Action>>() {
-        }));
+        @SuppressWarnings("Convert2Diamond") Map<LanguageAction, Action> map = injector.getInstance(Key.get(new TypeLiteral<Map<LanguageAction, Action>>() {}));
 
         assertThat(map, notNullValue());
     }
 
     @Test
     void actionMapContainsListGames() {
-        Map<LanguageAction, Action> map = injector.getInstance(Key.get(new TypeLiteral<Map<LanguageAction, Action>>() {
-        }));
+        @SuppressWarnings("Convert2Diamond") Map<LanguageAction, Action> map = injector.getInstance(Key.get(new TypeLiteral<Map<LanguageAction, Action>>() {}));
+
         Action action = map.get(LanguageAction.ListGames);
 
         assertThat(action, instanceOf(ListGamesAction.class));
@@ -38,8 +37,8 @@ class InterpreterModuleTest {
 
     @Test
     void actionMapContainsStartGame() {
-        Map<LanguageAction, Action> map = injector.getInstance(Key.get(new TypeLiteral<Map<LanguageAction, Action>>() {
-        }));
+        @SuppressWarnings("Convert2Diamond") Map<LanguageAction, Action> map = injector.getInstance(Key.get(new TypeLiteral<Map<LanguageAction, Action>>() {}));
+
         Action action = map.get(LanguageAction.StartGame);
 
         assertThat(action, instanceOf(StartGameAction.class));

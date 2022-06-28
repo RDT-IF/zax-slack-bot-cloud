@@ -1,8 +1,6 @@
 package org.rdtif.zaxslackbot.interpreter;
 
 import com.google.common.eventbus.EventBus;
-import com.ullink.slack.simpleslackapi.SlackChannel;
-import com.ullink.slack.simpleslackapi.SlackSession;
 import com.zaxsoft.zax.zmachine.ZCPU;
 import com.zaxsoft.zax.zmachine.ZUserInterface;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -10,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.rdtif.zaxslackbot.GameFileRepository;
 import org.rdtif.zaxslackbot.ZaxSlackBotConfiguration;
+import org.rdtif.zaxslackbot.slack.SlackClient;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,10 +31,8 @@ class StartGameActionTest {
     private final LanguagePattern languagePattern = createPattern();
     private final ZCpuFactory zCpuFactory = mock(ZCpuFactory.class);
     private final ZCPU zcpu = mock(ZCPU.class);
-    private final SlackSession session = mock(SlackSession.class);
-    private final SlackChannel channel = mock(SlackChannel.class);
     private final GameFileRepository repository = mock(GameFileRepository.class);
-    private final StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(createProperties()), session, repository, zCpuFactory, new EventBus());
+    private final StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(createProperties()), repository, zCpuFactory, mock(SlackClient.class));
 
     @BeforeEach
     void beforeEach() {
@@ -45,7 +42,7 @@ class StartGameActionTest {
     @Test
     void returnDefaultMessageIfGameDoesNotExist() {
         String badGameName = RandomStringUtils.randomAlphabetic(12);
-        String message = startGameAction.execute(channel, "play " + badGameName, languagePattern);
+        String message = startGameAction.execute("", "play " + badGameName, languagePattern);
         assertThat(message, equalTo(DEFAULT_MESSAGE));
     }
 
@@ -55,7 +52,7 @@ class StartGameActionTest {
         String input = "play " + gameName;
 
         when(repository.fileNames()).thenReturn(Collections.singletonList(gameName));
-        String message = startGameAction.execute(channel, input, languagePattern);
+        String message = startGameAction.execute("", input, languagePattern);
 
         assertThat(message, emptyString());
     }
@@ -66,7 +63,7 @@ class StartGameActionTest {
         String input = "play " + gameName;
 
         when(repository.fileNames()).thenReturn(Collections.singletonList(gameName));
-        startGameAction.execute(channel, input, languagePattern);
+        startGameAction.execute("", input, languagePattern);
 
         verify(zCpuFactory).create(any(ZUserInterface.class));
     }
@@ -77,7 +74,7 @@ class StartGameActionTest {
         String input = "play " + gameName;
 
         when(repository.fileNames()).thenReturn(Collections.singletonList(gameName));
-        startGameAction.execute(channel, input, languagePattern);
+        startGameAction.execute("", input, languagePattern);
 
         verify(zcpu).initialize(anyString());
     }
@@ -87,13 +84,13 @@ class StartGameActionTest {
         String gameDirectory = RandomStringUtils.randomAlphabetic(14);
         Properties properties = new Properties();
         properties.setProperty(GAME_DIRECTORY_PROPERTY_NAME, gameDirectory);
-        StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(properties), null, repository, zCpuFactory, new EventBus());
+        StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(properties), repository, zCpuFactory, mock(SlackClient.class));
         String gameName = RandomStringUtils.randomAlphabetic(12);
         String input = "play " + gameName;
 
         when(repository.fileNames()).thenReturn(Collections.singletonList(gameName));
 
-        startGameAction.execute(channel, input, languagePattern);
+        startGameAction.execute("", input, languagePattern);
 
         verify(zcpu).initialize(gameDirectory + "/" + gameName);
     }
@@ -105,7 +102,7 @@ class StartGameActionTest {
 
         when(repository.fileNames()).thenReturn(Collections.singletonList(gameName));
 
-        startGameAction.execute(channel, input, languagePattern);
+        startGameAction.execute("", input, languagePattern);
 
         verify(zcpu).start();
     }

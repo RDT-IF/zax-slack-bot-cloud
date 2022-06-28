@@ -1,5 +1,6 @@
 package org.rdtif.zaxslackbot;
 
+import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,7 +10,6 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.inject.Inject;
 
 public class GameFileRepository {
     private static final Predicate<Path> FOR_REGULAR_FILES = (Files::isRegularFile);

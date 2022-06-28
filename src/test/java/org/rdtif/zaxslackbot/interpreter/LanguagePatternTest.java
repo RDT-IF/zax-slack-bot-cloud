@@ -80,7 +80,7 @@ class LanguagePatternTest {
         boolean matchedResponse2 = false;
         boolean matchedResponse3 = false;
 
-        for (int i = 0; i < 100;++i) {
+        for (int i = 0; i < 100; ++i) {
             String result = pattern.responseFor("default");
 
             if (!matchedResponse1 && Objects.equals(result, response)) {

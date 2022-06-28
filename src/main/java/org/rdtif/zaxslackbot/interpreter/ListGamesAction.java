@@ -1,6 +1,5 @@
 package org.rdtif.zaxslackbot.interpreter;
 
-import com.ullink.slack.simpleslackapi.SlackChannel;
 import org.rdtif.zaxslackbot.GameFileRepository;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ class ListGamesAction implements Action {
     }
 
     @Override
-    public String execute(SlackChannel channel, String input, LanguagePattern pattern) {
+    public String execute(String channelID, String input, LanguagePattern pattern) {
         List<String> names = new ArrayList<>(repository.fileNames());
         if (names.size() == 0) {
             return pattern.responseFor("default");

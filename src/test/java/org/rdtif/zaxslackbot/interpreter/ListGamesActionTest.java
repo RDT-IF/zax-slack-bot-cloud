@@ -1,30 +1,28 @@
 package org.rdtif.zaxslackbot.interpreter;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Test;
+import org.rdtif.zaxslackbot.GameFileRepository;
+
+import java.util.Arrays;
+import java.util.Collections;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Arrays;
-import java.util.Collections;
-
-import com.ullink.slack.simpleslackapi.SlackChannel;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.Test;
-import org.rdtif.zaxslackbot.GameFileRepository;
-
 class ListGamesActionTest {
     private static final String GAMES_MESSAGE = RandomStringUtils.randomAlphabetic(13);
     private static final String DEFAULT_MESSAGE = RandomStringUtils.randomAlphabetic(13);
     private final GameFileRepository repository = mock(GameFileRepository.class);
-    private final SlackChannel channel = mock(SlackChannel.class);
     private final ListGamesAction action = new ListGamesAction(repository);
 
     @Test
     void neverReturnNull() {
         when(repository.fileNames()).thenReturn(Collections.emptyList());
-        String response = action.execute(channel, "", createPattern());
+        String response = action.execute("", "", createPattern());
 
         assertThat(response, notNullValue());
     }
@@ -32,7 +30,7 @@ class ListGamesActionTest {
     @Test
     void returnFileListNone() {
         when(repository.fileNames()).thenReturn(Collections.emptyList());
-        String response = action.execute(channel, "", createPattern());
+        String response = action.execute("", "", createPattern());
 
         assertThat(response, equalTo(DEFAULT_MESSAGE));
     }
@@ -40,7 +38,7 @@ class ListGamesActionTest {
     @Test
     void returnFileListOne() {
         when(repository.fileNames()).thenReturn(Collections.singletonList("file1"));
-        String response = action.execute(channel, "", createPattern());
+        String response = action.execute("", "", createPattern());
 
         assertThat(response, equalTo(GAMES_MESSAGE + "file1."));
     }
@@ -48,7 +46,7 @@ class ListGamesActionTest {
     @Test
     void returnFileListTwo() {
         when(repository.fileNames()).thenReturn(Arrays.asList("file1", "file2"));
-        String response = action.execute(channel, "", createPattern());
+        String response = action.execute("", "", createPattern());
 
         assertThat(response, equalTo(GAMES_MESSAGE + "file1 and file2."));
     }
@@ -56,7 +54,7 @@ class ListGamesActionTest {
     @Test
     void returnFileListThreeOrMore() {
         when(repository.fileNames()).thenReturn(Arrays.asList("file1", "file2", "file3"));
-        String response = action.execute(channel, "", createPattern());
+        String response = action.execute("", "", createPattern());
 
         assertThat(response, equalTo(GAMES_MESSAGE + "file1, file2, and file3."));
     }
