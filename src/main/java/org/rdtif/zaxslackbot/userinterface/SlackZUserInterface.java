@@ -1,6 +1,5 @@
 package org.rdtif.zaxslackbot.userinterface;
 
-import com.google.common.eventbus.Subscribe;
 import com.zaxsoft.zax.zmachine.ZUserInterface;
 import org.rdtif.zaxslackbot.PlayerInputEvent;
 
@@ -211,8 +210,6 @@ public class SlackZUserInterface implements ZUserInterface {
         throw new UnsupportedOperationException();
     }
 
-    @SuppressWarnings("UnstableApiUsage")
-    @Subscribe
     public void respondTo(PlayerInputEvent event) {
         synchronized (playerInputLock) {
             playerInput.add(event.getPlayerInput());

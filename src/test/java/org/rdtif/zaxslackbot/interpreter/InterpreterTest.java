@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.slack.api.methods.request.chat.ChatPostMessageRequest;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
-import org.rdtif.zaxslackbot.eventbus.AppMentionBusEvent;
 import org.rdtif.zaxslackbot.slack.SlackClient;
 
 import java.util.Arrays;
@@ -25,7 +24,7 @@ class InterpreterTest {
     @Test
     void returnResponseWhenInputMatchesPattern() {
         interpreter.registerPattern(createLanguagePattern("pattern", "some response"));
-        interpreter.interpret(new AppMentionBusEvent("channelID", "pattern"));
+        interpreter.interpret("channelID", "pattern");
 
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel("channelID")
@@ -37,7 +36,7 @@ class InterpreterTest {
     @Test
     void returnResponseWhenInputMatchesPatternIncludesChannelID() {
         interpreter.registerPattern(createLanguagePattern("pattern", "some response"));
-        interpreter.interpret(new AppMentionBusEvent("channelID", "pattern"));
+        interpreter.interpret("channelID", "pattern");
 
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel("channelID")
@@ -50,7 +49,7 @@ class InterpreterTest {
     void matchCorrectLanguagePattern() {
         interpreter.registerPattern(createLanguagePattern("matching pattern", "matching response"));
         interpreter.registerPattern(createLanguagePattern("non-matching pattern", "non-matching response"));
-        interpreter.interpret(new AppMentionBusEvent("channelID", "matching pattern"));
+        interpreter.interpret("channelID", "matching pattern");
 
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel("channelID")
@@ -62,7 +61,7 @@ class InterpreterTest {
     @Test
     void caseInsensitiveMatching() {
         interpreter.registerPattern(createLanguagePattern("PATTERN", "some response"));
-        interpreter.interpret(new AppMentionBusEvent("channelID", "pattern"));
+        interpreter.interpret("channelID", "pattern");
 
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel("channelID")
@@ -73,7 +72,7 @@ class InterpreterTest {
 
     @Test
     void noRegisteredPatterns() {
-        interpreter.interpret(new AppMentionBusEvent("channelID", "input"));
+        interpreter.interpret("channelID", "input");
 
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel("channelID")
@@ -85,7 +84,7 @@ class InterpreterTest {
     @Test
     void inputDoesNotMatchAnyPattern() {
         interpreter.registerPattern(createLanguagePattern("/some other pattern/g", "none matching pattern"));
-        interpreter.interpret(new AppMentionBusEvent("channelID", "input"));
+        interpreter.interpret("channelID", "input");
 
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel("channelID")
@@ -97,7 +96,7 @@ class InterpreterTest {
     @Test
     void returnDefaultResponseIfPatternHasNoResponses() {
         interpreter.registerPattern(createLanguagePattern("matching pattern"));
-        interpreter.interpret(new AppMentionBusEvent("channelID", "matching pattern"));
+        interpreter.interpret("channelID", "matching pattern");
 
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel("channelID")
@@ -109,7 +108,7 @@ class InterpreterTest {
     @Test
     void doNotRegisterNullPattern() {
         interpreter.registerPattern(null);
-        interpreter.interpret(new AppMentionBusEvent("channelID", "input"));
+        interpreter.interpret("channelID", "input");
 
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel("channelID")
@@ -121,7 +120,7 @@ class InterpreterTest {
     @Test
     void doNotRegisterPatternWithoutAPattern() {
         interpreter.registerPattern(new LanguagePattern());
-        interpreter.interpret(new AppMentionBusEvent("channelID", "input"));
+        interpreter.interpret("channelID", "input");
 
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel("channelID")
@@ -137,7 +136,7 @@ class InterpreterTest {
         languagePattern.setAction(LanguageAction.ListGames);
 
         interpreter.registerPattern(languagePattern);
-        interpreter.interpret(new AppMentionBusEvent("channelID", "input"));
+        interpreter.interpret("channelID", "input");
 
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel("channelID")

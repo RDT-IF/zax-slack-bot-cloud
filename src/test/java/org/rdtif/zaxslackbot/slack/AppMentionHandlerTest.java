@@ -4,17 +4,15 @@ import com.slack.api.app_backend.events.payload.AppMentionPayload;
 import com.slack.api.bolt.context.builtin.EventContext;
 import com.slack.api.bolt.response.Response;
 import com.slack.api.model.event.AppMentionEvent;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.rdtif.zaxslackbot.eventbus.AppMentionBusEvent;
 import org.rdtif.zaxslackbot.interpreter.Interpreter;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -27,9 +25,7 @@ class AppMentionHandlerTest {
         AppMentionHandler handler = new AppMentionHandler(interpreter);
         handler.apply(createPayload("event text"), new EventContext());
 
-        AppMentionBusEvent expected = new AppMentionBusEvent("event channel", "event text");
-
-        verify(interpreter).interpret(expected);
+        verify(interpreter).interpret("event channel", "event text");
     }
 
     @Test
@@ -39,9 +35,7 @@ class AppMentionHandlerTest {
         AppMentionHandler handler = new AppMentionHandler(interpreter);
         handler.apply(createPayload("<@ID> event text"), new EventContext());
 
-        AppMentionBusEvent expected = new AppMentionBusEvent("event channel", "event text");
-
-        verify(interpreter).interpret(expected);
+        verify(interpreter).interpret("event channel", "event text");
     }
 
     @ParameterizedTest
@@ -53,7 +47,7 @@ class AppMentionHandlerTest {
         AppMentionHandler handler = new AppMentionHandler(interpreter);
         handler.apply(createPayload("<@ID>" + text), new EventContext());
 
-        verify(interpreter, never()).interpret(any(AppMentionBusEvent.class));
+        verify(interpreter, never()).interpret(anyString(), anyString());
     }
 
     @Test
@@ -66,7 +60,6 @@ class AppMentionHandlerTest {
         assertThat(response.getStatusCode(), equalTo(200));
     }
 
-    @NotNull
     private AppMentionPayload createPayload(String eventText) {
         AppMentionPayload payload = new AppMentionPayload();
         AppMentionEvent event = new AppMentionEvent();
