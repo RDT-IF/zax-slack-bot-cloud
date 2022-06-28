@@ -1,5 +1,6 @@
 package org.rdtif.zaxslackbot.slack;
 
+import com.slack.api.model.block.InputBlock;
 import com.slack.api.model.block.LayoutBlock;
 import com.slack.api.model.block.SectionBlock;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,23 @@ class SlackDisplayMessageMakerTest {
 
         SectionBlock section = (SectionBlock) message.get(0);
         assertThat(section.getText().getText(), equalTo("```\nsome content\n```"));
+    }
+
+    @Test
+    void includeInputWindow() {
+        List<LayoutBlock> message = maker.makeMessageOf("");
+
+        assertThat(message.get(1).getType(), equalTo("input"));
+    }
+
+    @Test
+    void dd() {
+        List<LayoutBlock> message = maker.makeMessageOf("some content");
+
+        InputBlock inputBox = (InputBlock) message.get(1);
+        assertThat(inputBox.getElement(), notNullValue());
+        assertThat(inputBox.isOptional(), equalTo(true));
+        assertThat(inputBox.getLabel().getText(), equalTo("Command Input:"));
     }
 
     @Test
