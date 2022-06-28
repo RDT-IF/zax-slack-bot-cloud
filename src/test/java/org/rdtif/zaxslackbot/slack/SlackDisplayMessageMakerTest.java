@@ -45,7 +45,7 @@ class SlackDisplayMessageMakerTest {
     }
 
     @Test
-    void dd() {
+    void configureInputWindow() {
         List<LayoutBlock> message = maker.makeMessageOf("some content");
 
         InputBlock inputBox = (InputBlock) message.get(1);
