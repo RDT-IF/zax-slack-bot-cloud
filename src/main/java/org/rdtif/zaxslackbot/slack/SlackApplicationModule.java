@@ -29,6 +29,7 @@ public class SlackApplicationModule extends AbstractModule {
         App app = new App(appConfig);
         // TODO: Write test for this.
         app.event(AppMentionEvent.class, new AppMentionHandler(interpreter));
+        app.blockAction("ZX", new VH());
         return app;
     }
 

@@ -24,7 +24,7 @@ public class SlackDisplayMessageMaker {
 
         return asBlocks(
                 section(section -> section.text(markdownText(preformatted(escapeTripleBacktick(content))))),
-                input(input -> input.element(inputElement).label(new PlainTextObject("Command Input:", false)).optional(true))
+                input(input -> input.element(inputElement).label(new PlainTextObject("Command Input:", false)).optional(true).blockId("ZX"))
         );
     }
 
