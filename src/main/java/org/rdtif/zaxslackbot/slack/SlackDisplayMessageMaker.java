@@ -1,9 +1,11 @@
 package org.rdtif.zaxslackbot.slack;
 
 import com.slack.api.model.block.LayoutBlock;
+import com.slack.api.model.block.composition.DispatchActionConfig;
 import com.slack.api.model.block.composition.PlainTextObject;
 import com.slack.api.model.block.element.PlainTextInputElement;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.slack.api.model.block.Blocks.asBlocks;
@@ -13,9 +15,16 @@ import static com.slack.api.model.block.composition.BlockCompositions.markdownTe
 
 public class SlackDisplayMessageMaker {
     public List<LayoutBlock> makeMessageOf(String content) {
+        DispatchActionConfig dispatchActionConfig = new DispatchActionConfig();
+        dispatchActionConfig.setTriggerActionsOn(Arrays.asList("on_enter_pressed", "on_character_entered"));
+
+        PlainTextInputElement inputElement = new PlainTextInputElement();
+        inputElement.setFocusOnLoad(true);
+        inputElement.setDispatchActionConfig(dispatchActionConfig);
+
         return asBlocks(
                 section(section -> section.text(markdownText(preformatted(escapeTripleBacktick(content))))),
-                input(input -> input.element(new PlainTextInputElement()).label(new PlainTextObject("Command Input:", false)).optional(true))
+                input(input -> input.element(inputElement).label(new PlainTextObject("Command Input:", false)).optional(true))
         );
     }
 
