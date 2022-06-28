@@ -21,6 +21,7 @@ public class SlackDisplayMessageMaker {
         PlainTextInputElement inputElement = new PlainTextInputElement();
         inputElement.setFocusOnLoad(true);
         inputElement.setDispatchActionConfig(dispatchActionConfig);
+        inputElement.setActionId("ZA");
 
         return asBlocks(
                 section(section -> section.text(markdownText(preformatted(escapeTripleBacktick(content))))),
