@@ -72,6 +72,8 @@ class SlackDisplayMessageMakerTest {
         InputBlock inputBox = (InputBlock) message.get(1);
         assertThat(inputBox.isOptional(), equalTo(true));
         assertThat(inputBox.getLabel().getText(), equalTo("Command Input:"));
+        assertThat(inputBox.getDispatchAction(), equalTo(true));
+        assertThat(inputBox.getBlockId(), equalTo("input-window"));
     }
 
     @Test
