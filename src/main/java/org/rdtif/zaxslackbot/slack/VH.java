@@ -12,6 +12,6 @@ class VH implements BlockActionHandler {
     @Override
     public Response apply(BlockActionRequest blockActionRequest, ActionContext context) throws IOException, SlackApiException {
         System.out.println(blockActionRequest);
-        return null;
+        return context.ack();
     }
 }
