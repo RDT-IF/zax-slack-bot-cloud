@@ -23,6 +23,7 @@ public class SlackDisplayMessageUpdater {
     public void initialize(List<LayoutBlock> content) {
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel(channelID)
+                .text("foo")
                 .blocks(content)
                 .build();
         ChatPostMessageResponse response = slackClient.chatPostMessage(request);
@@ -33,6 +34,7 @@ public class SlackDisplayMessageUpdater {
         ChatUpdateRequest request = ChatUpdateRequest.builder()
                 .channel(channelID)
                 .ts(slackMessageTimestamp)
+                .text("foo")
                 .blocks(content)
                 .build();
         ChatUpdateResponse response = slackClient.chatUpdate(request);
