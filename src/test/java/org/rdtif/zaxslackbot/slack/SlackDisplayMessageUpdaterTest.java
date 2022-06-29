@@ -6,6 +6,7 @@ import com.slack.api.methods.response.chat.ChatPostMessageResponse;
 import com.slack.api.methods.response.chat.ChatUpdateResponse;
 import com.slack.api.model.block.LayoutBlock;
 import org.junit.jupiter.api.Test;
+import org.rdtif.zaxslackbot.userinterface.InputState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ class SlackDisplayMessageUpdaterTest {
         response.setTs("messageTimestamp");
         when(mockSlackClient.chatPostMessage(any(ChatPostMessageRequest.class))).thenReturn(response);
 
-        List<LayoutBlock> expectedContent = new SlackDisplayMessageMaker().makeMessageOf("some content");
+        List<LayoutBlock> expectedContent = new SlackDisplayMessageMaker(new InputState()).makeMessageOf("some content");
         updater.initialize(expectedContent);
         ChatPostMessageRequest request = ChatPostMessageRequest.builder()
                 .channel("channelID")
@@ -44,7 +45,7 @@ class SlackDisplayMessageUpdaterTest {
         response2.setTs("messageTimestamp2");
         when(mockSlackClient.chatUpdate(any(ChatUpdateRequest.class))).thenReturn(response2);
 
-        List<LayoutBlock> expectedContent = new SlackDisplayMessageMaker().makeMessageOf("some content");
+        List<LayoutBlock> expectedContent = new SlackDisplayMessageMaker(new InputState()).makeMessageOf("some content");
         updater.initialize(new ArrayList<>());
         updater.update(expectedContent);
         ChatUpdateRequest request = ChatUpdateRequest.builder()
@@ -65,7 +66,7 @@ class SlackDisplayMessageUpdaterTest {
         response2.setTs("messageTimestamp2");
         when(mockSlackClient.chatUpdate(any(ChatUpdateRequest.class))).thenReturn(response2);
 
-        List<LayoutBlock> expectedContent = new SlackDisplayMessageMaker().makeMessageOf("some content");
+        List<LayoutBlock> expectedContent = new SlackDisplayMessageMaker(new InputState()).makeMessageOf("some content");
         updater.initialize(new ArrayList<>());
         updater.update(expectedContent);
         ChatUpdateRequest request2 = ChatUpdateRequest.builder()

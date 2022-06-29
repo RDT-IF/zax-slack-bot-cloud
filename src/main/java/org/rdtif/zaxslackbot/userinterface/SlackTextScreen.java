@@ -1,14 +1,16 @@
 package org.rdtif.zaxslackbot.userinterface;
 
 import org.rdtif.zaxslackbot.slack.SlackDisplayMessageMaker;
+import org.rdtif.zaxslackbot.slack.SlackDisplayMessageUpdater;
 
 public class SlackTextScreen extends TextScreen {
-    private final org.rdtif.zaxslackbot.slack.SlackDisplayMessageUpdater updater;
-    private final SlackDisplayMessageMaker maker = new SlackDisplayMessageMaker();
+    private final SlackDisplayMessageUpdater updater;
+    private final SlackDisplayMessageMaker maker;
 
-    public SlackTextScreen(Extent size, org.rdtif.zaxslackbot.slack.SlackDisplayMessageUpdater updater) {
+    public SlackTextScreen(Extent size, SlackDisplayMessageUpdater updater, SlackDisplayMessageMaker maker) {
         super(size);
         this.updater = updater;
+        this.maker = maker;
     }
 
     void initialize(int version) {

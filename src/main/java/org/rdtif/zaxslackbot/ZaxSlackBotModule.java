@@ -4,7 +4,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import org.rdtif.zaxslackbot.interpreter.InterpreterModule;
 import org.rdtif.zaxslackbot.slack.SlackApplicationModule;
-import org.rdtif.zaxslackbot.userinterface.InputMode;
 import org.rdtif.zaxslackbot.userinterface.InputState;
 
 import javax.inject.Singleton;
@@ -25,6 +24,6 @@ public class ZaxSlackBotModule extends AbstractModule {
     @Provides
     @Singleton
     public InputState providesInputState() {
-        return new InputState(InputMode.Unknown, "");
+        return new InputState();
     }
 }

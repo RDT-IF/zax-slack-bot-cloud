@@ -32,7 +32,7 @@ class StartGameActionTest {
     private final ZCpuFactory zCpuFactory = mock(ZCpuFactory.class);
     private final ZCPU zcpu = mock(ZCPU.class);
     private final GameFileRepository repository = mock(GameFileRepository.class);
-    private final StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(createProperties()), repository, zCpuFactory, mock(SlackClient.class), new InputState(null, null));
+    private final StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(createProperties()), repository, zCpuFactory, mock(SlackClient.class), new InputState());
 
     @BeforeEach
     void beforeEach() {
@@ -84,7 +84,7 @@ class StartGameActionTest {
         String gameDirectory = RandomStringUtils.randomAlphabetic(14);
         Properties properties = new Properties();
         properties.setProperty(GAME_DIRECTORY_PROPERTY_NAME, gameDirectory);
-        StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(properties), repository, zCpuFactory, mock(SlackClient.class), new InputState(null, null));
+        StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(properties), repository, zCpuFactory, mock(SlackClient.class), new InputState());
         String gameName = RandomStringUtils.randomAlphabetic(12);
         String input = "play " + gameName;
 

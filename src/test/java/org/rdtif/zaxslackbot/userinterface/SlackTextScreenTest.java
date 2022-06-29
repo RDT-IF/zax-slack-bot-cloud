@@ -3,6 +3,7 @@ package org.rdtif.zaxslackbot.userinterface;
 import com.slack.api.model.block.LayoutBlock;
 import org.junit.jupiter.api.Test;
 import org.rdtif.zaxslackbot.slack.SlackDisplayMessageMaker;
+import org.rdtif.zaxslackbot.slack.SlackDisplayMessageUpdater;
 
 import java.util.List;
 
@@ -12,12 +13,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 class SlackTextScreenTest {
-    private final org.rdtif.zaxslackbot.slack.SlackDisplayMessageUpdater mockUpdater = mock(org.rdtif.zaxslackbot.slack.SlackDisplayMessageUpdater.class);
+    private final SlackDisplayMessageUpdater mockUpdater = mock(SlackDisplayMessageUpdater.class);
+    private final SlackDisplayMessageMaker displayMessageMaker = new SlackDisplayMessageMaker(new InputState());
 
     @Test
     void constructWithSize() {
         Extent size = new Extent(13, 17);
-        SlackTextScreen screen = new SlackTextScreen(size, mockUpdater);
+        SlackTextScreen screen = new SlackTextScreen(size, mockUpdater, displayMessageMaker);
 
         screen.initialize(5);
 
@@ -26,7 +28,7 @@ class SlackTextScreenTest {
 
     @Test
     void initializeVersion() {
-        SlackTextScreen screen = new SlackTextScreen(new Extent(0, 0), mockUpdater);
+        SlackTextScreen screen = new SlackTextScreen(new Extent(0, 0), mockUpdater, displayMessageMaker);
 
         screen.initialize(5);
 
@@ -35,8 +37,8 @@ class SlackTextScreenTest {
 
     @Test
     void initializePostsMessage() {
-        SlackTextScreen screen = new SlackTextScreen(new Extent(0, 0), mockUpdater);
-        List<LayoutBlock> message = new SlackDisplayMessageMaker().makeMessageOf("Display loading...");
+        SlackTextScreen screen = new SlackTextScreen(new Extent(0, 0), mockUpdater, displayMessageMaker);
+        List<LayoutBlock> message = new SlackDisplayMessageMaker(new InputState()).makeMessageOf("Display loading...");
 
         screen.initialize(5);
 
@@ -45,8 +47,8 @@ class SlackTextScreenTest {
 
     @Test
     void updateMessage() {
-        SlackTextScreen screen = new SlackTextScreen(new Extent(10, 10), mockUpdater);
-        List<LayoutBlock> message = new SlackDisplayMessageMaker().makeMessageOf(" \n \n \n \n \n \n \n \n \n \n");
+        SlackTextScreen screen = new SlackTextScreen(new Extent(10, 10), mockUpdater, displayMessageMaker);
+        List<LayoutBlock> message = new SlackDisplayMessageMaker(new InputState()).makeMessageOf(" \n \n \n \n \n \n \n \n \n \n");
 
         screen.update();
 
