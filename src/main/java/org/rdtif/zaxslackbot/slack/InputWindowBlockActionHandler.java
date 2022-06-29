@@ -21,6 +21,7 @@ class InputWindowBlockActionHandler implements BlockActionHandler {
             String value = blockActionRequest.getPayload().getActions().get(0).getValue();
             if (StringUtils.isNotEmpty(value)) {
                 inputState.currentInput = String.valueOf(value.charAt(0));
+                System.out.println("CurrentInput: `" + inputState.currentInput + "` ");
             }
         }
         return context.ack();
