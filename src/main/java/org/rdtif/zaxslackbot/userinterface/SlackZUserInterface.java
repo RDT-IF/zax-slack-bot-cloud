@@ -167,7 +167,11 @@ public class SlackZUserInterface implements ZUserInterface {
         screen.update();
         //noinspection StatementWithEmptyBody
         while (inputState.currentInput.isEmpty()) {
-            System.out.print(".");
+            try {
+                Thread.sleep(0);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         System.out.println(inputState.currentInput);
         char c = inputState.currentInput.charAt(0);
@@ -181,7 +185,13 @@ public class SlackZUserInterface implements ZUserInterface {
         inputState.mode = InputMode.Line;
         screen.update();
         //noinspection StatementWithEmptyBody
-        while (inputState.currentInput.isEmpty()) {}
+        while (inputState.currentInput.isEmpty()) {
+            try {
+                Thread.sleep(0);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         buffer.append(inputState.currentInput).append('\0');
         inputState.currentInput = "";
         return 0;
