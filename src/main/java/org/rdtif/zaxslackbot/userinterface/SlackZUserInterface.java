@@ -163,6 +163,7 @@ public class SlackZUserInterface implements ZUserInterface {
     @Override
     public int readChar(int time) {
         inputState.mode = InputMode.Character;
+        screen.update();
         //noinspection StatementWithEmptyBody
         while (inputState.currentInput.isEmpty()) {}
 
