@@ -31,6 +31,7 @@ public class SlackApplicationModule extends AbstractModule {
         // TODO: Write test for this.
         app.event(AppMentionEvent.class, new AppMentionHandler(interpreter));
         app.blockAction("input-window", new InputWindowBlockActionHandler(inputState));
+        app.blockAction("window-container", new InputWindowBlockActionHandler(inputState));
         return app;
     }
 
