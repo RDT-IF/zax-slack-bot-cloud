@@ -17,6 +17,9 @@ class InputWindowBlockActionHandler implements BlockActionHandler {
 
     @Override
     public Response apply(BlockActionRequest blockActionRequest, ActionContext context) {
+        System.out.println("-------------------------------------------------------");
+        System.out.println(blockActionRequest);
+        System.out.println("-------------------------------------------------------");
         if (inputState.mode == InputMode.Character) {
             String value = blockActionRequest.getPayload().getActions().get(0).getValue();
             if (StringUtils.isNotEmpty(value)) {
