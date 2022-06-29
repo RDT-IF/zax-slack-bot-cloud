@@ -1,6 +1,5 @@
 package org.rdtif.zaxslackbot.interpreter;
 
-import com.google.common.eventbus.EventBus;
 import com.zaxsoft.zax.zmachine.ZCPU;
 import com.zaxsoft.zax.zmachine.ZUserInterface;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -9,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.rdtif.zaxslackbot.GameFileRepository;
 import org.rdtif.zaxslackbot.ZaxSlackBotConfiguration;
 import org.rdtif.zaxslackbot.slack.SlackClient;
+import org.rdtif.zaxslackbot.userinterface.InputState;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,7 +32,7 @@ class StartGameActionTest {
     private final ZCpuFactory zCpuFactory = mock(ZCpuFactory.class);
     private final ZCPU zcpu = mock(ZCPU.class);
     private final GameFileRepository repository = mock(GameFileRepository.class);
-    private final StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(createProperties()), repository, zCpuFactory, mock(SlackClient.class));
+    private final StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(createProperties()), repository, zCpuFactory, mock(SlackClient.class), new InputState(null, null));
 
     @BeforeEach
     void beforeEach() {
@@ -84,7 +84,7 @@ class StartGameActionTest {
         String gameDirectory = RandomStringUtils.randomAlphabetic(14);
         Properties properties = new Properties();
         properties.setProperty(GAME_DIRECTORY_PROPERTY_NAME, gameDirectory);
-        StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(properties), repository, zCpuFactory, mock(SlackClient.class));
+        StartGameAction startGameAction = new StartGameAction(new ZaxSlackBotConfiguration(properties), repository, zCpuFactory, mock(SlackClient.class), new InputState(null, null));
         String gameName = RandomStringUtils.randomAlphabetic(12);
         String input = "play " + gameName;
 

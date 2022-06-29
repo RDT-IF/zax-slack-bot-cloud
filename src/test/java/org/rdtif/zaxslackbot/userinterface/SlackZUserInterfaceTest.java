@@ -21,7 +21,7 @@ class SlackZUserInterfaceTest {
     private static final int Z_MACHINE_BLACK = 2;
     private static final int Z_MACHINE_WHITE = 9;
     private final SlackTextScreen slackTextScreen = mock(SlackTextScreen.class);
-    private final SlackZUserInterface slackZUserInterface = new SlackZUserInterface(slackTextScreen);
+    private final SlackZUserInterface slackZUserInterface = new SlackZUserInterface(slackTextScreen, null);
 
     @Test
     void initializeInitializesScreen() {
@@ -39,6 +39,7 @@ class SlackZUserInterfaceTest {
 
     @Test
     void eraseWindow() {
+        //noinspection ConstantConditions
         int window = new Random().nextInt(1);
         slackZUserInterface.eraseWindow(window);
 
@@ -49,20 +50,20 @@ class SlackZUserInterfaceTest {
     void displayMessageWhenFatal() {
         String message = RandomStringUtils.randomAlphabetic(13);
 
-        assertThrows(ZaxFatalException.class, () -> new SlackZUserInterface(slackTextScreen).fatal(message));
+        assertThrows(ZaxFatalException.class, () -> new SlackZUserInterface(slackTextScreen, null).fatal(message));
 
         verify(slackTextScreen).print(message);
     }
 
     @Test
     void fatalThrowsException() {
-        assertThrows(ZaxFatalException.class, () -> new SlackZUserInterface(slackTextScreen).fatal(RandomStringUtils.randomAlphabetic(13)));
+        assertThrows(ZaxFatalException.class, () -> new SlackZUserInterface(slackTextScreen, null).fatal(RandomStringUtils.randomAlphabetic(13)));
     }
 
     @Test
     void fatalThrowsExceptionWithMessage() {
         String message = RandomStringUtils.randomAlphabetic(13);
-        ZaxFatalException exception = assertThrows(ZaxFatalException.class, () -> new SlackZUserInterface(slackTextScreen).fatal(message));
+        ZaxFatalException exception = assertThrows(ZaxFatalException.class, () -> new SlackZUserInterface(slackTextScreen, null).fatal(message));
         assertThat(exception.getMessage(), equalTo(message));
     }
 
@@ -70,7 +71,7 @@ class SlackZUserInterfaceTest {
     void getScreenCharactersReturnsDimensionFromTextScreenExtent() {
         Extent size = Zoey.randomExtent();
         when(slackTextScreen.getSize()).thenReturn(size);
-        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen, null);
 
         Dimension screenSizeInCharacters = userInterface.getScreenCharacters();
 
@@ -80,7 +81,7 @@ class SlackZUserInterfaceTest {
 
     @Test
     void getFontSizeReturnsEightBy16() {
-        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen, null);
 
         Dimension fontSizeInPixels = userInterface.getFontSize();
 
@@ -92,7 +93,7 @@ class SlackZUserInterfaceTest {
     void getScreenUnits() {
         Extent size = Zoey.randomExtent();
         when(slackTextScreen.getSize()).thenReturn(size);
-        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen, null);
 
         Dimension screenSizeInPixels = userInterface.getScreenUnits();
 
@@ -102,35 +103,35 @@ class SlackZUserInterfaceTest {
 
     @Test
     void getDefaultForeground() {
-        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen, null);
 
         assertThat(userInterface.getDefaultForeground(), equalTo(Z_MACHINE_BLACK));
     }
 
     @Test
     void getDefaultBackground() {
-        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen, null);
 
         assertThat(userInterface.getDefaultBackground(), equalTo(Z_MACHINE_WHITE));
     }
 
     @Test
     void hasBoldFaceShouldReturnTrue() {
-        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen, null);
 
         assertThat(userInterface.hasBoldface(), equalTo(true));
     }
 
     @Test
     void hasItalicShouldReturnTrue() {
-        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen, null);
 
         assertThat(userInterface.hasItalic(), equalTo(true));
     }
 
     @Test
     void hasFixedWidthShouldReturnTrue() {
-        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen, null);
 
         assertThat(userInterface.hasFixedWidth(), equalTo(true));
     }
@@ -138,21 +139,21 @@ class SlackZUserInterfaceTest {
 
     @Test
     void defaultFontProportionalShouldReturnFalse() {
-        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen, null);
 
         assertThat(userInterface.defaultFontProportional(), equalTo(false));
     }
 
     @Test
     void hasColorsShouldReturnFalse() {
-        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen, null);
 
         assertThat(userInterface.hasColors(), equalTo(false));
     }
 
     @Test
     void hasTimedInputShouldReturnFalse() {
-        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen);
+        SlackZUserInterface userInterface = new SlackZUserInterface(slackTextScreen, null);
 
         assertThat(userInterface.hasTimedInput(), equalTo(false));
     }

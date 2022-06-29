@@ -43,14 +43,14 @@ class SlackApplicationModuleTest {
 
     @Test
     void providesApplication() {
-        App app = new SlackApplicationModule().providesApp(new AppConfig(), null);
+        App app = new SlackApplicationModule().providesApp(new AppConfig(), null, null);
 
         assertThat(app, notNullValue());
     }
 
     @Test
     void providesApplicationWithConfig() {
-        App app = new SlackApplicationModule().providesApp(AppConfig.builder().clientSecret("clientSecret").build(), null);
+        App app = new SlackApplicationModule().providesApp(AppConfig.builder().clientSecret("clientSecret").build(), null, null);
 
         assertThat(app.config().getClientSecret(), equalTo("clientSecret"));
     }

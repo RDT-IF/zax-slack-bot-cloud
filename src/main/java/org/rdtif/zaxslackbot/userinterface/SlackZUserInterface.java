@@ -3,7 +3,8 @@ package org.rdtif.zaxslackbot.userinterface;
 import com.zaxsoft.zax.zmachine.ZUserInterface;
 import org.rdtif.zaxslackbot.PlayerInputEvent;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Point;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Vector;
@@ -15,11 +16,13 @@ public class SlackZUserInterface implements ZUserInterface {
     private static final int Z_MACHINE_BLACK = 2;
     private static final int Z_MACHINE_WHITE = 9;
     private final SlackTextScreen screen;
+    private final InputState inputState;
     private final Object playerInputLock = new Object();
     private final Queue<String> playerInput = new LinkedList<>();
 
-    public SlackZUserInterface(SlackTextScreen screen) {
+    public SlackZUserInterface(SlackTextScreen screen, InputState inputState) {
         this.screen = screen;
+        this.inputState = inputState;
     }
 
     @Override
@@ -159,13 +162,13 @@ public class SlackZUserInterface implements ZUserInterface {
 
     @Override
     public int readChar(int time) {
+        inputState.mode = InputMode.Character;
         //noinspection StatementWithEmptyBody
-        while (playerInput.isEmpty()) {
-        }
-        synchronized (playerInputLock) {
-            String nextPlayerInput = playerInput.poll();
-            return nextPlayerInput.charAt(0);
-        }
+        while (inputState.currentInput.isEmpty()) {}
+
+        char c = inputState.currentInput.charAt(0);
+        inputState.currentInput = "";
+        return c;
     }
 
     @Override

@@ -9,6 +9,7 @@ import com.slack.api.methods.MethodsClient;
 import com.slack.api.model.event.AppMentionEvent;
 import org.rdtif.zaxslackbot.ZaxSlackBotConfiguration;
 import org.rdtif.zaxslackbot.interpreter.Interpreter;
+import org.rdtif.zaxslackbot.userinterface.InputState;
 
 import javax.inject.Singleton;
 
@@ -25,10 +26,11 @@ public class SlackApplicationModule extends AbstractModule {
 
     @Provides
     @Singleton
-    App providesApp(AppConfig appConfig, Interpreter interpreter) {
+    App providesApp(AppConfig appConfig, Interpreter interpreter, InputState inputState) {
         App app = new App(appConfig);
         // TODO: Write test for this.
         app.event(AppMentionEvent.class, new AppMentionHandler(interpreter));
+        app.blockAction("input-window", new InputWindowBlockActionHandler(inputState));
         return app;
     }
 
