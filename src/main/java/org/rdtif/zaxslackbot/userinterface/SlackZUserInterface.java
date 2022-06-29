@@ -166,7 +166,9 @@ public class SlackZUserInterface implements ZUserInterface {
         inputState.mode = InputMode.Character;
         screen.update();
         //noinspection StatementWithEmptyBody
-        while (inputState.currentInput.isEmpty()) {}
+        while (inputState.currentInput.isEmpty()) {
+            System.out.print(".");
+        }
         System.out.println(inputState.currentInput);
         char c = inputState.currentInput.charAt(0);
         inputState.currentInput = "";
