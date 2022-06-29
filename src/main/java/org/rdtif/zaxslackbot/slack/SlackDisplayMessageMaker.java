@@ -4,8 +4,9 @@ import com.slack.api.model.block.LayoutBlock;
 import com.slack.api.model.block.composition.DispatchActionConfig;
 import com.slack.api.model.block.composition.PlainTextObject;
 import com.slack.api.model.block.element.PlainTextInputElement;
+import org.rdtif.zaxslackbot.userinterface.InputMode;
+import org.rdtif.zaxslackbot.userinterface.InputState;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.slack.api.model.block.Blocks.asBlocks;
@@ -14,9 +15,16 @@ import static com.slack.api.model.block.Blocks.section;
 import static com.slack.api.model.block.composition.BlockCompositions.markdownText;
 
 public class SlackDisplayMessageMaker {
+    private final InputState inputState;
+
+    public SlackDisplayMessageMaker(InputState inputState) {
+        this.inputState = inputState;
+    }
+
     public List<LayoutBlock> makeMessageOf(String content) {
         DispatchActionConfig dispatchActionConfig = new DispatchActionConfig();
-        dispatchActionConfig.setTriggerActionsOn(Arrays.asList("on_enter_pressed", "on_character_entered"));
+        String triggerAction = inputState.mode == InputMode.Character ? "on_character_entered" : "on_enter_pressed";
+        dispatchActionConfig.setTriggerActionsOn(List.of(triggerAction));
 
         PlainTextInputElement inputElement = new PlainTextInputElement();
         inputElement.setFocusOnLoad(true);

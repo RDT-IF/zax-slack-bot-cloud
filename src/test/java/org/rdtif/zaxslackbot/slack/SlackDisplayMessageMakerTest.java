@@ -6,17 +6,20 @@ import com.slack.api.model.block.SectionBlock;
 import com.slack.api.model.block.composition.DispatchActionConfig;
 import com.slack.api.model.block.element.PlainTextInputElement;
 import org.junit.jupiter.api.Test;
+import org.rdtif.zaxslackbot.userinterface.InputMode;
+import org.rdtif.zaxslackbot.userinterface.InputState;
 
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 
 class SlackDisplayMessageMakerTest {
-
-    private final SlackDisplayMessageMaker maker = new SlackDisplayMessageMaker();
+    private final InputState inputState = new InputState();
+    private final SlackDisplayMessageMaker maker = new SlackDisplayMessageMaker(inputState);
 
     @Test
     void neverReturnNull() {
@@ -56,13 +59,25 @@ class SlackDisplayMessageMakerTest {
     }
 
     @Test
-    void configureInputWindowToRespondToEnterAndTyping() {
+    void configureInputWindowToRespondToEnter() {
+        inputState.mode = InputMode.Line;
         List<LayoutBlock> message = maker.makeMessageOf("some content");
 
         PlainTextInputElement inputBoxElement = (PlainTextInputElement) ((InputBlock) message.get(1)).getElement();
         DispatchActionConfig dispatchActionConfig = inputBoxElement.getDispatchActionConfig();
         assertThat(dispatchActionConfig.getTriggerActionsOn(), hasItem("on_enter_pressed"));
+        assertThat(dispatchActionConfig.getTriggerActionsOn(), not(hasItem("on_character_entered")));
+    }
+
+    @Test
+    void configureInputWindowToRespondToTyping() {
+        inputState.mode = InputMode.Character;
+        List<LayoutBlock> message = maker.makeMessageOf("some content");
+
+        PlainTextInputElement inputBoxElement = (PlainTextInputElement) ((InputBlock) message.get(1)).getElement();
+        DispatchActionConfig dispatchActionConfig = inputBoxElement.getDispatchActionConfig();
         assertThat(dispatchActionConfig.getTriggerActionsOn(), hasItem("on_character_entered"));
+        assertThat(dispatchActionConfig.getTriggerActionsOn(), not(hasItem("on_enter_pressed")));
     }
 
     @Test
