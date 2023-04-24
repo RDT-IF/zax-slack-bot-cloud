@@ -10,7 +10,10 @@ import software.constructs.Construct;
 import java.util.UUID;
 
 public class ZaxBotCDKStack extends Stack {
-    private static final String CODE = "def main(event, context):\n" + "    print(\"I'm running!\")\n";
+    private static final String CODE = """
+            def main(event, context):
+                print("I'm running!")
+            """;
 
     public ZaxBotCDKStack(Construct scope, String id, StackProps properties) {
         super(scope, id, properties);
