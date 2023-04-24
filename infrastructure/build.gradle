@@ -1,13 +1,22 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
-group = 'org.rdtif.zaxbot'
+group = 'org.rdtif.zaxslackbot'
 version = '0.1'
-description = 'infrastructure'
+description = 'ZaxSlackBot CDK infrastructure'
+
+application {
+    mainClassName = 'org.rdtif.zaxslackbot.ZaxBotCDKApplication'
+}
 
 repositories {
     mavenCentral()
+    mavenLocal()
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2/')
+    }
 }
 
 dependencies {
@@ -18,4 +27,12 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
 }
