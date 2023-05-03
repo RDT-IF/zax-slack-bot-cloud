@@ -12,7 +12,7 @@ import java.util.UUID;
 public class ZaxBotCDKStack extends Stack {
     public ZaxBotCDKStack(Construct scope, String id, StackProps properties) {
         super(scope, id, properties);
-        SingletonFunction zaxBot = SingletonFunction.Builder.create(this, "zax-bot-lambda")
+        SingletonFunction.Builder.create(this, "zax-bot-lambda")
                 .description("Zax Bot Lambda")
                 .runtime(Runtime.JAVA_11)
                 .code(Code.fromAsset("../bot/build/libs/bot.jar"))
