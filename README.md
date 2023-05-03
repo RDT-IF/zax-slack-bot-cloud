@@ -11,6 +11,7 @@ AWS CDK will need to be available on your computer before deploying.
 * `cdk deploy` to deploy.
 
 ## TODO
+* Configuration sufficient that conversation with the bot reaches the function.
 * Storing state
   * Add an S3 bucket
   * Use the S3 bucket to store the state of the lambda
