@@ -1,0 +1,30 @@
+# IntelliJ
+.idea
+*.iml
+
+# Gradle
+.gradle
+
+# Build output directories
+build
+out
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+## Added by CDK init
+.classpath.txt
+target
+.classpath
+.project
+.settings
+.vscode
+
+

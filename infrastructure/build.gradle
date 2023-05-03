@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'org.rdtif.zaxslackbot'
+version = '0.1'
+description = 'ZaxSlackBot CDK infrastructure'
+
+application {
+    mainClassName = 'org.rdtif.zaxslackbot.ZaxBotCDKApplication'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'software.amazon.awscdk:aws-cdk-lib:2.73.0'
+    implementation 'software.constructs:constructs:[10.0.0,11.0.0)'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc) {
+    options.encoding = 'UTF-8'
+}
+
+build {
+    dependsOn(':bot:jar')
+}

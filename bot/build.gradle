@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.rdtif.zaxslackbot'
+version = ''
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.rdtif.zaxslackbot.ZaxBotRequestHandler'
+    }
+}
