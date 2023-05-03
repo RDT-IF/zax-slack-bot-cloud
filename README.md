@@ -12,6 +12,10 @@ AWS CDK will need to be available on your computer before deploying.
 
 ## TODO
 * Configuration sufficient that conversation with the bot reaches the function.
+  * AWS-y stuff here 
+  * Verify the authenticity of the incoming event in the code
+  * Respond to Slack's url_verification event (could this be routed?)
+  * ...
 * Storing state
   * Add an S3 bucket
   * Use the S3 bucket to store the state of the lambda
