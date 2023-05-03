@@ -11,9 +11,7 @@ AWS CDK will need to be available on your computer before deploying.
 * `cdk deploy` to deploy.
 
 ## TODO
-* Confirm/implement a mechanism by which the bot.jar is generated before infrastructure builds
 * Storing state
   * Add an S3 bucket
   * Use the S3 bucket to store the state of the lambda
     * Hm. How will connection strings work?
-    

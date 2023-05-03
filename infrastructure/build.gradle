@@ -33,6 +33,4 @@ tasks.withType(Javadoc) {
     options.encoding = 'UTF-8'
 }
 
-build {
-    dependsOn(':bot:jar')
-}
+run.dependsOn(':bot:jar')
