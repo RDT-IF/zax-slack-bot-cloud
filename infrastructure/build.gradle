@@ -26,10 +26,12 @@ test {
     useJUnitPlatform()
 }
 
+//noinspection ConfigurationAvoidance
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
+//noinspection ConfigurationAvoidance
 tasks.withType(Javadoc) {
     options.encoding = 'UTF-8'
 }
