@@ -21,8 +21,5 @@ public class ZaxBotCDKStack extends Stack {
                 .handler("org.rdtif.zaxslackbot.ZaxBotRequestHandler")
                 .uuid(UUID.randomUUID().toString())
                 .build();
-
-        FunctionUrlOptions functionUrlOptions = FunctionUrlOptions.builder().authType(FunctionUrlAuthType.NONE).build();
-        function.addFunctionUrl(functionUrlOptions);
     }
 }
