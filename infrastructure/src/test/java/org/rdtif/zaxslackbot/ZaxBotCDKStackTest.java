@@ -70,6 +70,39 @@ class ZaxBotCDKStackTest {
     }
 
     @Test
+    void postMethodIsPublic() {
+        App app = new App();
+
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+
+        Template template = Template.fromStack(stack);
+        template.resourceCountIs("AWS::ApiGateway::Method", 1);
+        template.hasResourceProperties("AWS::ApiGateway::Method", Collections.singletonMap("AuthorizationType", "NONE"));
+    }
+
+    @Test
+    void postMethodConfiguredWith200Response() {
+        App app = new App();
+
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+
+        Template template = Template.fromStack(stack);
+        template.resourceCountIs("AWS::ApiGateway::Method", 1);
+        template.hasResourceProperties("AWS::ApiGateway::Method", Collections.singletonMap("MethodResponses", Collections.singletonList(Collections.singletonMap("StatusCode", "200"))));
+    }
+
+    @Test
+    void supplyPOSTMethodWithIntegration() {
+        App app = new App();
+
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+
+        Template template = Template.fromStack(stack);
+        template.resourceCountIs("AWS::ApiGateway::Method", 1);
+        template.hasResourceProperties("AWS::ApiGateway::Method", Collections.singletonMap("Integration", Collections.singletonMap("IntegrationHttpMethod", "POST")));
+    }
+
+    @Test
     void assignsNameToGateway() {
         App app = new App();
 

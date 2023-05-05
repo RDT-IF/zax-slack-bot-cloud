@@ -3,7 +3,9 @@ package org.rdtif.zaxslackbot;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.apigateway.LambdaIntegration;
+import software.amazon.awscdk.services.apigateway.MethodOptions;
 import software.amazon.awscdk.services.apigateway.MethodResponse;
+import software.amazon.awscdk.services.apigateway.Resource;
 import software.amazon.awscdk.services.apigateway.RestApi;
 import software.amazon.awscdk.services.lambda.Code;
 import software.amazon.awscdk.services.lambda.Runtime;
@@ -28,6 +30,8 @@ public class ZaxBotCDKStack extends Stack {
                 .description("ZaxBot API Gateway")
                 .defaultIntegration(simpleIntegration)
                 .build();
-        api.getRoot().addMethod("POST").addMethodResponse(MethodResponse.builder().statusCode("200").build());
+        Resource resource = api.getRoot().addResource("slack");
+        MethodOptions options = MethodOptions.builder().apiKeyRequired(false).build();
+        resource.addMethod("POST", simpleIntegration, options).addMethodResponse(MethodResponse.builder().statusCode("200").build());
     }
 }
