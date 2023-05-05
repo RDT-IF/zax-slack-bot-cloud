@@ -7,9 +7,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 
 public class ZaxBotRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     @Override
-    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
-        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
-        response.setStatusCode(200);
-        return response;
+    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
+        return new SlackEventHandler(new ChallengeValidator()).handle(input.getBody());
     }
 }
