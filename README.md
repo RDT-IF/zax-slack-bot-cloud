@@ -7,6 +7,7 @@ AWS CDK will need to be available on your computer before deploying.
 * Set the following environment variables:
   * CDK_DEFAULT_REGION: The AWS region to which you wish to deploy.
   * CDK_DEFAULT_ACCOUNT: The AWS account to which you wish to deploy.
+  * ZAXBOT_SLACK_SIGNING_SECRET: The Slack signing secret for ZaxBot
 * `cdk diff` to review the changes the deployment will make.
 * `cdk deploy` to deploy.
 
