@@ -2,11 +2,12 @@ package org.rdtif.zaxslackbot;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.google.gson.Gson;
+import jakarta.inject.Inject;
 
 class SlackEventHandler {
     private final ChallengeValidator challengeValidator;
 
-    //@Inject
+    @Inject
     SlackEventHandler(ChallengeValidator challengeValidator) {
         this.challengeValidator = challengeValidator;
     }
