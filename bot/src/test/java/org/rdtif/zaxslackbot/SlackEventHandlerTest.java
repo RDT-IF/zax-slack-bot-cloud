@@ -1,5 +1,6 @@
 package org.rdtif.zaxslackbot;
 
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import org.junit.jupiter.api.Test;
 
@@ -25,8 +26,9 @@ class SlackEventHandlerTest {
         String body = "{\n" +
                 "    'challenge': '3eZbrw1aBm2rZgRNFdxV2595E9CY3gmdALWMmHkvFXO7tYXAYM8P'\n" +
                 "}";
+        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withBody(body);
 
-        APIGatewayProxyResponseEvent responseEvent = handler.handle(body);
+        APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
 
         assertThat(responseEvent.getStatusCode(), equalTo(400));
     }
@@ -36,7 +38,9 @@ class SlackEventHandlerTest {
         String body = "{\n" +
                 "    'type': 'url_verification'\n" +
                 "}";
-        APIGatewayProxyResponseEvent responseEvent = handler.handle(body);
+        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withBody(body);
+
+        APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
 
         assertThat(responseEvent.getStatusCode(), equalTo(401));
     }
@@ -48,8 +52,9 @@ class SlackEventHandlerTest {
                 + "    'challenge':'some valid challenge',"
                 + "    'type': 'url_verification'\n"
                 + "}";
+        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withBody(body);
 
-        APIGatewayProxyResponseEvent responseEvent = handler.handle(body);
+        APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
 
         assertThat(responseEvent.getStatusCode(), equalTo(200));
     }
@@ -61,8 +66,9 @@ class SlackEventHandlerTest {
                 + "    'challenge':'some invalid challenge',"
                 + "    'type': 'url_verification'\n"
                 + "}";
+        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withBody(body);
 
-        APIGatewayProxyResponseEvent responseEvent = handler.handle(body);
+        APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
 
         assertThat(responseEvent.getStatusCode(), equalTo(401));
     }

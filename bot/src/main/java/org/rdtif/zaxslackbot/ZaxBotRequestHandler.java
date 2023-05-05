@@ -9,9 +9,9 @@ import com.google.inject.Injector;
 
 public class ZaxBotRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     @Override
-    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent input, Context context) {
+    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent apiEvent, Context context) {
         Injector injector = Guice.createInjector();
         SlackEventHandler slackEventHandler = injector.getInstance(SlackEventHandler.class);
-        return slackEventHandler.handle(input.getBody());
+        return slackEventHandler.handle(apiEvent);
     }
 }
