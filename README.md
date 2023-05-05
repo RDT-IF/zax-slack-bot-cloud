@@ -1,5 +1,5 @@
-# zax-slack-bot-cloud
-An UI layer wrapped around Zax (a Java Z-Interpreter) designed for a cloud environment
+# Description
+A Slack UI layer wrapped around Zax (a Java Z-Interpreter) designed for a cloud environment
 
 # Deployment Instructions
 AWS CDK will need to be available on your computer before deploying.
@@ -10,7 +10,14 @@ AWS CDK will need to be available on your computer before deploying.
 * `cdk diff` to review the changes the deployment will make.
 * `cdk deploy` to deploy.
 
-## TODO
+# Useful commands
+* `cdk ls`          list all stacks in the app
+* `cdk synth`       emits the synthesized CloudFormation template
+* `cdk deploy`      deploy this stack to your default AWS account/region
+* `cdk diff`        compare deployed stack with current state
+* `cdk docs`        open CDK documentation
+
+# TODO
 * Configuration sufficient that conversation with the bot reaches the function.
   * Identify solution for storing the secret hash for Slack
   * Respond to Slack's url_verification event
