@@ -1,6 +1,5 @@
 package org.rdtif.zaxslackbot;
 
-import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import software.amazon.awscdk.App;
 import software.amazon.awscdk.Stack;
@@ -27,7 +26,6 @@ class ZaxBotCDKStackTest {
 
         Template template = Template.fromStack(stack);
         template.resourceCountIs("AWS::Lambda::Function", 1);
-        System.out.println(new Gson().toJson(template.toJSON()));
     }
 
 
