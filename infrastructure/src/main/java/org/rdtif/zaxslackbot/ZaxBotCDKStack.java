@@ -12,16 +12,20 @@ import software.amazon.awscdk.services.lambda.Runtime;
 import software.amazon.awscdk.services.lambda.SingletonFunction;
 import software.constructs.Construct;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
 
 public class ZaxBotCDKStack extends Stack {
-    public ZaxBotCDKStack(Construct scope, String id, StackProps properties) {
+    public ZaxBotCDKStack(Construct scope, String id, StackProps properties, String slackSigningSecret) {
         super(scope, id, properties);
+        Map<String, String> environment = Collections.singletonMap("SLACK_SIGNING_SECRET", slackSigningSecret);
         SingletonFunction function = SingletonFunction.Builder.create(this, "zax-bot-lambda")
                 .description("ZaxBot Lambda")
                 .runtime(Runtime.JAVA_11)
                 .code(Code.fromAsset("../bot/build/libs/bot.jar"))
                 .handler("org.rdtif.zaxslackbot.ZaxBotRequestHandler")
+                .environment(environment)
                 .uuid(UUID.randomUUID().toString())
                 .build();
         LambdaIntegration simpleIntegration = LambdaIntegration.Builder.create(function).build();
@@ -30,8 +34,9 @@ public class ZaxBotCDKStack extends Stack {
                 .description("ZaxBot API Gateway")
                 .defaultIntegration(simpleIntegration)
                 .build();
-        Resource resource = api.getRoot().addResource("slack");
+        Resource slackPath = api.getRoot().addResource("slack");
+        Resource eventsEndpoint = slackPath.addResource("events");
         MethodOptions options = MethodOptions.builder().apiKeyRequired(false).build();
-        resource.addMethod("POST", simpleIntegration, options).addMethodResponse(MethodResponse.builder().statusCode("200").build());
+        eventsEndpoint.addMethod("POST", simpleIntegration, options).addMethodResponse(MethodResponse.builder().statusCode("200").build());
     }
 }

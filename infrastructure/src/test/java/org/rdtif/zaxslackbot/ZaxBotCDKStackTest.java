@@ -1,5 +1,6 @@
 package org.rdtif.zaxslackbot;
 
+import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import software.amazon.awscdk.App;
 import software.amazon.awscdk.Stack;
@@ -12,17 +13,29 @@ class ZaxBotCDKStackTest {
     void createsLambdaFunction() {
         App app = new App();
 
-        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.resourceCountIs("AWS::Lambda::Function", 1);
     }
 
     @Test
+    void useProvidedSigningSecret() {
+        App app = new App();
+
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "TEST_SECRET");
+
+        Template template = Template.fromStack(stack);
+        template.resourceCountIs("AWS::Lambda::Function", 1);
+        System.out.println(new Gson().toJson(template.toJSON()));
+    }
+
+
+    @Test
     void assignsDescriptionToFunction() {
         App app = new App();
 
-        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.hasResourceProperties("AWS::Lambda::Function", Collections.singletonMap("Description", "ZaxBot Lambda"));
@@ -32,7 +45,7 @@ class ZaxBotCDKStackTest {
     void assignsCorrectHandler() {
         App app = new App();
 
-        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.hasResourceProperties("AWS::Lambda::Function", Collections.singletonMap("Handler", "org.rdtif.zaxslackbot.ZaxBotRequestHandler"));
@@ -42,7 +55,7 @@ class ZaxBotCDKStackTest {
     void assignsCorrectRuntime() {
         App app = new App();
 
-        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.hasResourceProperties("AWS::Lambda::Function", Collections.singletonMap("Runtime", "java11"));
@@ -52,7 +65,7 @@ class ZaxBotCDKStackTest {
     void createAPIGateway() {
         App app = new App();
 
-        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.resourceCountIs("AWS::ApiGateway::RestApi", 1);
@@ -62,7 +75,7 @@ class ZaxBotCDKStackTest {
     void supplyPOSTMethod() {
         App app = new App();
 
-        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.resourceCountIs("AWS::ApiGateway::Method", 1);
@@ -73,7 +86,7 @@ class ZaxBotCDKStackTest {
     void postMethodIsPublic() {
         App app = new App();
 
-        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.resourceCountIs("AWS::ApiGateway::Method", 1);
@@ -84,7 +97,7 @@ class ZaxBotCDKStackTest {
     void postMethodConfiguredWith200Response() {
         App app = new App();
 
-        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.resourceCountIs("AWS::ApiGateway::Method", 1);
@@ -95,7 +108,7 @@ class ZaxBotCDKStackTest {
     void supplyPOSTMethodWithIntegration() {
         App app = new App();
 
-        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.resourceCountIs("AWS::ApiGateway::Method", 1);
@@ -106,7 +119,7 @@ class ZaxBotCDKStackTest {
     void assignsNameToGateway() {
         App app = new App();
 
-        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.hasResourceProperties("AWS::ApiGateway::RestApi", Collections.singletonMap("Name", "ZaxBot API Gateway"));
@@ -116,7 +129,7 @@ class ZaxBotCDKStackTest {
     void assignsDescriptionToGateway() {
         App app = new App();
 
-        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null);
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.hasResourceProperties("AWS::ApiGateway::RestApi", Collections.singletonMap("Description", "ZaxBot API Gateway"));

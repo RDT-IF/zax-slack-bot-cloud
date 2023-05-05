@@ -6,13 +6,14 @@ import software.amazon.awscdk.StackProps;
 
 public class ZaxBotCDKApplication {
     public static void main(String... arguments) {
-        Environment environment = Environment.builder()
+        Environment deploymentEnvironment = Environment.builder()
                 .account(System.getenv("CDK_DEFAULT_ACCOUNT"))
                 .region(System.getenv("CDK_DEFAULT_REGION"))
                 .build();
+        StackProps stackProperties = StackProps.builder().env(deploymentEnvironment).build();
 
         App application = new App();
-        new ZaxBotCDKStack(application, "ZaxBotStack", StackProps.builder().env(environment).build());
+        new ZaxBotCDKStack(application, "ZaxBotStack", stackProperties, System.getenv("ZAXBOT_SLACK_SIGNING_SECRET"));
         application.synth();
     }
 }
