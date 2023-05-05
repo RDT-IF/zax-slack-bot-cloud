@@ -2,12 +2,14 @@ package org.rdtif.zaxslackbot;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 
-import java.util.Map;
-
-public class ZaxBotRequestHandler implements RequestHandler<Map<String, String>, String> {
+public class ZaxBotRequestHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
     @Override
-    public String handleRequest(Map<String, String> input, Context context) {
-        return "Input received: " + input;
+    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
+        APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
+        response.setStatusCode(200);
+        return response;
     }
 }
