@@ -1,6 +1,5 @@
 package org.rdtif.zaxslackbot;
 
-import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import software.amazon.awscdk.App;
 import software.amazon.awscdk.Stack;
@@ -68,11 +67,6 @@ class ZaxBotCDKStackTest {
         Template template = Template.fromStack(stack);
         template.resourceCountIs("AWS::ApiGateway::Method", 1);
         template.hasResourceProperties("AWS::ApiGateway::Method", Collections.singletonMap("HttpMethod", "POST"));
-    }
-
-    @Test
-    void supplyPOSTMethodResponse200() {
-        // TODO
     }
 
     @Test
