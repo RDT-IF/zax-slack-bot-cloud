@@ -6,23 +6,20 @@ import com.google.gson.Gson;
 import jakarta.inject.Inject;
 
 class SlackEventHandler {
-    private final ChallengeValidator challengeValidator;
+    private final SlackTimestampValidator slackTimestampValidator;
 
     @Inject
-    SlackEventHandler(ChallengeValidator challengeValidator) {
-        this.challengeValidator = challengeValidator;
+    SlackEventHandler(SlackTimestampValidator slackTimestampValidator) {
+        this.slackTimestampValidator = slackTimestampValidator;
     }
 
     APIGatewayProxyResponseEvent handle(APIGatewayProxyRequestEvent apiEvent) {
         SlackEvent slackEvent = new Gson().fromJson(apiEvent.getBody(), SlackEvent.class);
-        if (slackEvent == null || slackEvent.getType() == null) {
+        String timestamp = apiEvent.getHeaders().get("X-Slack-Request-Timestamp");
+        if (slackEvent == null || timestamp == null || slackEvent.getType() == null) {
             return RESPONSE_FOR_INVALID_REQUEST;
         }
-
-        if (slackEvent.getChallenge() == null) {
-            return RESPONSE_FOR_INVALID_AUTHENTICATION;
-        }
-        if (challengeValidator.valid(slackEvent.getChallenge())) {
+        if (slackTimestampValidator.validate(timestamp)) {
             return RESPONSE_FOR_VALID_REQUEST;
         }
         return RESPONSE_FOR_INVALID_AUTHENTICATION;
