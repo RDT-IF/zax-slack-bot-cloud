@@ -1,6 +1,8 @@
 package org.rdtif.zaxslackbot;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -27,6 +29,14 @@ class SlackSignatureValidatorTest {
     @Test
     void invalidSignature() {
         boolean validate = validator.validate("something is wrong here", "", "");
+
+        assertThat(validate, equalTo(false));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    void nullOrEmptySignature(String signature) {
+        boolean validate = validator.validate(signature, "", "");
 
         assertThat(validate, equalTo(false));
     }

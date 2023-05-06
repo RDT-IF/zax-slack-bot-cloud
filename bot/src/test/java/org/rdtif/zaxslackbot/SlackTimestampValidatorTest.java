@@ -1,6 +1,8 @@
 package org.rdtif.zaxslackbot;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import java.time.Instant;
 
@@ -42,6 +44,14 @@ class SlackTimestampValidatorTest {
         long timestamp = Instant.now().toEpochMilli() - (5 * 60 * 1000) - 1;
 
         boolean valid = validator.validate(String.valueOf(timestamp));
+
+        assertThat(valid, equalTo(false));
+    }
+
+    @ParameterizedTest
+    @NullAndEmptySource
+    void timeStampBelowValidRange(String timestamp) {
+        boolean valid = validator.validate(timestamp);
 
         assertThat(valid, equalTo(false));
     }

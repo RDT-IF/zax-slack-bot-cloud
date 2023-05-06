@@ -21,26 +21,15 @@ class SlackEventHandlerTest {
     private final SlackTimestampValidator timestampValidator = mock(SlackTimestampValidator.class);
     private final SlackSignatureValidator signatureValidator = mock(SlackSignatureValidator.class);
     private final SlackEventDispatcher dispatcher = mock(SlackEventDispatcher.class);
-    private final SlackEventHandler handler = new SlackEventHandler(timestampValidator, signatureValidator, dispatcher);
+    private final SlackEventValidator eventValidator = mock(SlackEventValidator.class);
+    private final SlackEventHandler handler = new SlackEventHandler(timestampValidator, signatureValidator, dispatcher, eventValidator);
 
     @Test
     void handleValidEvent() {
-        String body = "{\n"
-                + "    'challenge':'some challenge',"
-                + "    'type': 'url_verification'\n"
-                + "}";
-
-        Map<String, String> headers = ImmutableMap.of(
-                "X-Slack-Request-Timestamp", "valid timestamp",
-                "X-Slack-Signature", "valid signature");
-
-        when(timestampValidator.validate("valid timestamp")).thenReturn(true);
-        when(signatureValidator.validate("valid signature", "valid timestamp", body)).thenReturn(true);
+        when(eventValidator.validate(any())).thenReturn(true);
         when(dispatcher.dispatch(any(), any())).thenReturn(StandardResponses.RESPONSE_FOR_VALID_REQUEST);
 
-        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent()
-                .withBody(body)
-                .withHeaders(headers);
+        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent();
 
         APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
 
@@ -49,131 +38,26 @@ class SlackEventHandlerTest {
 
     @Test
     void callDispatcherForValidEvent() {
-        String body = "{\n"
-                + "    'challenge':'some challenge',"
-                + "    'type': 'url_verification'\n"
-                + "}";
+        when(eventValidator.validate(any())).thenReturn(true);
+        when(dispatcher.dispatch(any(), any())).thenReturn(StandardResponses.RESPONSE_FOR_VALID_REQUEST);
+        String body = "{}";
 
-        Map<String, String> headers = ImmutableMap.of(
-                "X-Slack-Request-Timestamp", "valid timestamp",
-                "X-Slack-Signature", "valid signature");
+        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withBody(body);
 
-        when(timestampValidator.validate("valid timestamp")).thenReturn(true);
-        when(signatureValidator.validate("valid signature", "valid timestamp", body)).thenReturn(true);
-
-        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent()
-                .withBody(body)
-                .withHeaders(headers);
-
-        APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
+        handler.handle(apiEvent);
 
         verify(dispatcher).dispatch(any(SlackEvent.class), eq(body));
     }
 
     @Test
-    void handleInvalidByTimestampEvent() {
-        when(timestampValidator.validate(anyString())).thenReturn(false);
-        String body = "{\n"
-                + "    'challenge':'some challenge',"
-                + "    'type': 'url_verification'\n"
-                + "}";
-        Map<String, String> headers = ImmutableMap.of(
-                "X-Slack-Request-Timestamp", "invalid timestamp",
-                "X-Slack-Signature", "valid signature");
+    void invalidEvent() {
+        when(eventValidator.validate(any())).thenReturn(false);
+        when(dispatcher.dispatch(any(), any())).thenReturn(StandardResponses.RESPONSE_FOR_VALID_REQUEST);
 
-        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent()
-                .withBody(body)
-                .withHeaders(headers);
+        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent();
 
         APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
 
         assertThat(responseEvent.getStatusCode(), equalTo(401));
-    }
-
-    @Test
-    void handleInvalidBySignatureEvent() {
-        when(timestampValidator.validate(anyString())).thenReturn(true);
-        when(signatureValidator.validate(anyString(), anyString(), anyString())).thenReturn(false);
-        String body = "{\n"
-                + "    'challenge':'some challenge',"
-                + "    'type': 'url_verification'\n"
-                + "}";
-
-        Map<String, String> headers = ImmutableMap.of(
-                "X-Slack-Request-Timestamp", "valid timestamp",
-                "X-Slack-Signature", "invalid signature");
-
-        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent()
-                .withBody(body)
-                .withHeaders(headers);
-
-        APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
-
-        assertThat(responseEvent.getStatusCode(), equalTo(401));
-    }
-
-    @Test
-    void handleEmptyPayload() {
-        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withHeaders(Collections.singletonMap("X-Slack-Request-Timestamp", "valid timestamp"));
-        when(timestampValidator.validate(anyString())).thenReturn(true);
-        APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
-
-        assertThat(responseEvent.getStatusCode(), equalTo(400));
-    }
-
-    @Test
-    void handleMissingType() {
-        String body = "{\n"
-                + "    'challenge':'some challenge'\n"
-                + "}";
-        when(timestampValidator.validate(anyString())).thenReturn(true);
-        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent()
-                .withBody(body)
-                .withHeaders(Collections.singletonMap("X-Slack-Request-Timestamp", "valid timestamp"));
-
-        APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
-
-        assertThat(responseEvent.getStatusCode(), equalTo(400));
-    }
-
-    @Test
-    void handleMissingTimestamp() {
-        String body = "{\n"
-                + "    'challenge':'some challenge',\n"
-                + "    'type': 'url_verification'\n"
-                + "}";
-        Map<String, String> headers = ImmutableMap.of(
-                "X-Slack-Signature", "valid signature");
-
-        when(timestampValidator.validate(anyString())).thenReturn(true);
-        when(signatureValidator.validate(anyString(), anyString(), anyString())).thenReturn(true);
-        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent()
-                .withBody(body)
-                .withHeaders(headers);
-
-        APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
-
-        assertThat(responseEvent.getStatusCode(), equalTo(400));
-    }
-
-    @Test
-    void handleMissingSignature() {
-        String body = "{\n"
-                + "    'challenge':'some challenge',\n"
-                + "    'type': 'url_verification'\n"
-                + "}";
-        Map<String, String> headers = ImmutableMap.of(
-                "X-Slack-Request-Timestamp", "valid timestamp");
-
-        when(timestampValidator.validate(anyString())).thenReturn(true);
-        when(signatureValidator.validate(anyString(), anyString(), anyString())).thenReturn(true);
-
-        APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent()
-                .withBody(body)
-                .withHeaders(Collections.emptyMap());
-
-        APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
-
-        assertThat(responseEvent.getStatusCode(), equalTo(400));
     }
 }

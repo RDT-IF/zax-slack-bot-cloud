@@ -1,9 +1,14 @@
 package org.rdtif.zaxslackbot;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.time.Instant;
 
 class SlackTimestampValidator {
     boolean validate(String eventTimestamp) {
+        if (StringUtils.isBlank(eventTimestamp)) {
+            return false;
+        }
         long timestamp = Long.parseLong(eventTimestamp);
         long now = Instant.now().toEpochMilli();
         long elapsed = now - timestamp;
