@@ -29,6 +29,7 @@ class ZaxBotCDKStackTest {
 
         Template template = Template.fromStack(stack);
         template.resourceCountIs("AWS::Lambda::Function", 1);
+        // TODO: Write a real assertion here
     }
 
     @Test

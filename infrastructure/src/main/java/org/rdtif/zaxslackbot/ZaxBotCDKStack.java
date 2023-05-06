@@ -21,7 +21,7 @@ import java.util.UUID;
 public class ZaxBotCDKStack extends Stack {
     public ZaxBotCDKStack(Construct scope, String id, StackProps properties, String slackSigningSecret) {
         super(scope, id, properties);
-        Map<String, String> environment = Collections.singletonMap("SLACK_SIGNING_SECRET", slackSigningSecret);
+        Map<String, String> environment = Collections.singletonMap("ZAXBOT_SLACK_SIGNING_SECRET", slackSigningSecret);
         SingletonFunction function = SingletonFunction.Builder.create(this, "zax-bot-lambda")
                 .description("ZaxBot Lambda")
                 .runtime(Runtime.JAVA_11)
