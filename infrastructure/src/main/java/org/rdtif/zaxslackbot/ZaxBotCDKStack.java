@@ -1,5 +1,6 @@
 package org.rdtif.zaxslackbot;
 
+import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.apigateway.LambdaIntegration;
@@ -24,6 +25,7 @@ public class ZaxBotCDKStack extends Stack {
         SingletonFunction function = SingletonFunction.Builder.create(this, "zax-bot-lambda")
                 .description("ZaxBot Lambda")
                 .runtime(Runtime.JAVA_11)
+                .timeout(Duration.minutes(15))
                 .code(Code.fromAsset("../bot/build/libs/bot.jar"))
                 .handler("org.rdtif.zaxslackbot.ZaxBotRequestHandler")
                 .environment(environment)

@@ -31,7 +31,6 @@ class ZaxBotCDKStackTest {
         template.resourceCountIs("AWS::Lambda::Function", 1);
     }
 
-
     @Test
     void assignsDescriptionToFunction() {
         App app = new App();
@@ -40,6 +39,16 @@ class ZaxBotCDKStackTest {
 
         Template template = Template.fromStack(stack);
         template.hasResourceProperties("AWS::Lambda::Function", Collections.singletonMap("Description", "ZaxBot Lambda"));
+    }
+
+    @Test
+    void assignsTimeoutToFunction() {
+        App app = new App();
+
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
+
+        Template template = Template.fromStack(stack);
+        template.hasResourceProperties("AWS::Lambda::Function", Collections.singletonMap("Timeout", 900));
     }
 
     @Test
