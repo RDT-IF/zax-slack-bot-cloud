@@ -8,11 +8,13 @@ import jakarta.inject.Inject;
 class SlackEventHandler {
     private final SlackTimestampValidator slackTimestampValidator;
     private final SlackSignatureValidator slackSignatureValidator;
+    private final SlackEventDispatcher dispatcher;
 
     @Inject
-    SlackEventHandler(SlackTimestampValidator slackTimestampValidator, SlackSignatureValidator slackSignatureValidator) {
+    SlackEventHandler(SlackTimestampValidator slackTimestampValidator, SlackSignatureValidator slackSignatureValidator, SlackEventDispatcher dispatcher) {
         this.slackTimestampValidator = slackTimestampValidator;
         this.slackSignatureValidator = slackSignatureValidator;
+        this.dispatcher = dispatcher;
     }
 
     APIGatewayProxyResponseEvent handle(APIGatewayProxyRequestEvent apiEvent) {
@@ -20,15 +22,11 @@ class SlackEventHandler {
         String timestamp = apiEvent.getHeaders().get("X-Slack-Request-Timestamp");
         String signature = apiEvent.getHeaders().get("X-Slack-Signature");
         if (slackEvent == null || signature == null || timestamp == null || slackEvent.getType() == null) {
-            return RESPONSE_FOR_INVALID_REQUEST;
+            return StandardResponses.RESPONSE_FOR_INVALID_REQUEST;
         }
         if (slackTimestampValidator.validate(timestamp) && slackSignatureValidator.validate(signature, timestamp, apiEvent.getBody())) {
-            return RESPONSE_FOR_VALID_REQUEST;
+            return dispatcher.dispatch(slackEvent, apiEvent.getBody());
         }
-        return RESPONSE_FOR_INVALID_AUTHENTICATION;
+        return StandardResponses.RESPONSE_FOR_INVALID_AUTHENTICATION;
     }
-
-    private static final APIGatewayProxyResponseEvent RESPONSE_FOR_VALID_REQUEST = new APIGatewayProxyResponseEvent().withStatusCode(200);
-    private static final APIGatewayProxyResponseEvent RESPONSE_FOR_INVALID_REQUEST = new APIGatewayProxyResponseEvent().withStatusCode(400);
-    private static final APIGatewayProxyResponseEvent RESPONSE_FOR_INVALID_AUTHENTICATION = new APIGatewayProxyResponseEvent().withStatusCode(401);
 }
