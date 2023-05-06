@@ -7,7 +7,7 @@ class SlackEventDispatcher {
     private final Gson gson = new Gson();
 
     APIGatewayProxyResponseEvent dispatch(SlackEvent event, String body) {
-        return StandardResponses.RESPONSE_FOR_VALID_REQUEST;
+        return HttpConstants.RESPONSE_OK;
 //        switch (event.getType()) {
 //            case "url_verification":
 //                UrlVerificationEvent urlVerificationEvent = gson.fromJson(body, UrlVerificationEvent.class);

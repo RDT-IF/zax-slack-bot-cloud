@@ -29,9 +29,9 @@ class SlackEventValidatorTest {
 
         APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withBody(body).withHeaders(headers);
 
-        boolean validate = validator.validate(apiEvent);
+        int validate = validator.validate(apiEvent);
 
-        assertThat(validate, equalTo(true));
+        assertThat(validate, equalTo(200));
     }
 
     @Test
@@ -41,9 +41,9 @@ class SlackEventValidatorTest {
 
         APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withHeaders(Collections.singletonMap("X-Slack-Request-Timestamp", "valid timestamp"));
 
-        boolean validate = validator.validate(apiEvent);
+        int validate = validator.validate(apiEvent);
 
-        assertThat(validate, equalTo(false));
+        assertThat(validate, equalTo(400));
     }
 
     @Test
@@ -54,9 +54,9 @@ class SlackEventValidatorTest {
         String body = "{\n    'challenge':'some challenge'\n}";
         APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withBody(body).withHeaders(Collections.singletonMap("X-Slack-Request-Timestamp", "valid timestamp"));
 
-        boolean validate = validator.validate(apiEvent);
+        int validate = validator.validate(apiEvent);
 
-        assertThat(validate, equalTo(false));
+        assertThat(validate, equalTo(400));
     }
 
     @Test
@@ -69,9 +69,9 @@ class SlackEventValidatorTest {
 
         APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withBody(body).withHeaders(headers);
 
-        boolean validate = validator.validate(apiEvent);
+        int validate = validator.validate(apiEvent);
 
-        assertThat(validate, equalTo(false));
+        assertThat(validate, equalTo(401));
     }
 
     @Test
@@ -84,8 +84,8 @@ class SlackEventValidatorTest {
 
         APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withBody(body).withHeaders(headers);
 
-        boolean validate = validator.validate(apiEvent);
+        int validate = validator.validate(apiEvent);
 
-        assertThat(validate, equalTo(false));
+        assertThat(validate, equalTo(401));
     }
 }

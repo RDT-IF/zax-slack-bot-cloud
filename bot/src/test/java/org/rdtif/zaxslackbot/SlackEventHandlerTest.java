@@ -19,8 +19,8 @@ class SlackEventHandlerTest {
 
     @Test
     void handleValidEvent() {
-        when(eventValidator.validate(any())).thenReturn(true);
-        when(dispatcher.dispatch(any(), any())).thenReturn(StandardResponses.RESPONSE_FOR_VALID_REQUEST);
+        when(eventValidator.validate(any())).thenReturn(200);
+        when(dispatcher.dispatch(any(), any())).thenReturn(HttpConstants.RESPONSE_OK);
 
         APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent();
 
@@ -31,8 +31,8 @@ class SlackEventHandlerTest {
 
     @Test
     void callDispatcherForValidEvent() {
-        when(eventValidator.validate(any())).thenReturn(true);
-        when(dispatcher.dispatch(any(), any())).thenReturn(StandardResponses.RESPONSE_FOR_VALID_REQUEST);
+        when(eventValidator.validate(any())).thenReturn(200);
+        when(dispatcher.dispatch(any(), any())).thenReturn(HttpConstants.RESPONSE_OK);
         String body = "{}";
 
         APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent().withBody(body);
@@ -44,13 +44,13 @@ class SlackEventHandlerTest {
 
     @Test
     void invalidEvent() {
-        when(eventValidator.validate(any())).thenReturn(false);
-        when(dispatcher.dispatch(any(), any())).thenReturn(StandardResponses.RESPONSE_FOR_VALID_REQUEST);
+        when(eventValidator.validate(any())).thenReturn(400);
+        when(dispatcher.dispatch(any(), any())).thenReturn(HttpConstants.RESPONSE_OK);
 
         APIGatewayProxyRequestEvent apiEvent = new APIGatewayProxyRequestEvent();
 
         APIGatewayProxyResponseEvent responseEvent = handler.handle(apiEvent);
 
-        assertThat(responseEvent.getStatusCode(), equalTo(401));
+        assertThat(responseEvent.getStatusCode(), equalTo(400));
     }
 }

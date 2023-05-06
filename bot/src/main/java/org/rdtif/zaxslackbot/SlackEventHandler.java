@@ -17,9 +17,10 @@ class SlackEventHandler {
 
     APIGatewayProxyResponseEvent handle(APIGatewayProxyRequestEvent apiEvent) {
         SlackEvent slackEvent = new Gson().fromJson(apiEvent.getBody(), SlackEvent.class);
-        if (validator.validate(apiEvent)) {
+        int statusCode = validator.validate(apiEvent);
+        if (statusCode == 200) {
             return dispatcher.dispatch(slackEvent, apiEvent.getBody());
         }
-        return StandardResponses.RESPONSE_FOR_INVALID_AUTHENTICATION;
+        return new APIGatewayProxyResponseEvent().withStatusCode(statusCode);
     }
 }
