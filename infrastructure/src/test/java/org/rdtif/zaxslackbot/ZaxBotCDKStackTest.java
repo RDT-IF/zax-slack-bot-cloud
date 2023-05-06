@@ -1,11 +1,14 @@
 package org.rdtif.zaxslackbot;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.Test;
 import software.amazon.awscdk.App;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.assertions.Template;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 class ZaxBotCDKStackTest {
     @Test
@@ -92,14 +95,19 @@ class ZaxBotCDKStackTest {
     }
 
     @Test
-    void postMethodConfiguredWith200Response() {
+    void postMethodConfiguredWithVariousStatusCodes() {
         App app = new App();
 
         Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
 
         Template template = Template.fromStack(stack);
         template.resourceCountIs("AWS::ApiGateway::Method", 1);
-        template.hasResourceProperties("AWS::ApiGateway::Method", Collections.singletonMap("MethodResponses", Collections.singletonList(Collections.singletonMap("StatusCode", "200"))));
+        Map<String, List<Map<String, String>>> responses = Collections.singletonMap("MethodResponses", ImmutableList.of(
+                Collections.singletonMap("StatusCode", "200"),
+                Collections.singletonMap("StatusCode", "400"),
+                Collections.singletonMap("StatusCode", "401")
+        ));
+        template.hasResourceProperties("AWS::ApiGateway::Method", responses);
     }
 
     @Test

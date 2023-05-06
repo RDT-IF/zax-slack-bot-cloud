@@ -3,6 +3,7 @@ package org.rdtif.zaxslackbot;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.apigateway.LambdaIntegration;
+import software.amazon.awscdk.services.apigateway.Method;
 import software.amazon.awscdk.services.apigateway.MethodOptions;
 import software.amazon.awscdk.services.apigateway.MethodResponse;
 import software.amazon.awscdk.services.apigateway.Resource;
@@ -28,15 +29,19 @@ public class ZaxBotCDKStack extends Stack {
                 .environment(environment)
                 .uuid(UUID.randomUUID().toString())
                 .build();
+
         LambdaIntegration simpleIntegration = LambdaIntegration.Builder.create(function).build();
         RestApi api = RestApi.Builder.create(this, "zax-bot-gateway")
                 .restApiName("ZaxBot API Gateway")
                 .description("ZaxBot API Gateway")
                 .defaultIntegration(simpleIntegration)
                 .build();
-        Resource slackPath = api.getRoot().addResource("slack");
-        Resource eventsEndpoint = slackPath.addResource("events");
+
         MethodOptions options = MethodOptions.builder().apiKeyRequired(false).build();
-        eventsEndpoint.addMethod("POST", simpleIntegration, options).addMethodResponse(MethodResponse.builder().statusCode("200").build());
+        Resource eventsResource = api.getRoot().addResource("slack").addResource("events");
+        Method eventsPostMethod = eventsResource.addMethod("POST", simpleIntegration, options);
+        eventsPostMethod.addMethodResponse(MethodResponse.builder().statusCode("200").build());
+        eventsPostMethod.addMethodResponse(MethodResponse.builder().statusCode("400").build());
+        eventsPostMethod.addMethodResponse(MethodResponse.builder().statusCode("401").build());
     }
 }
