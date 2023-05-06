@@ -6,15 +6,11 @@ import com.google.gson.Gson;
 import jakarta.inject.Inject;
 
 class SlackEventHandler {
-    private final SlackTimestampValidator slackTimestampValidator;
-    private final SlackSignatureValidator slackSignatureValidator;
     private final SlackEventDispatcher dispatcher;
     private final SlackEventValidator validator;
 
     @Inject
-    SlackEventHandler(SlackTimestampValidator slackTimestampValidator, SlackSignatureValidator slackSignatureValidator, SlackEventDispatcher dispatcher, SlackEventValidator eventValidator) {
-        this.slackTimestampValidator = slackTimestampValidator;
-        this.slackSignatureValidator = slackSignatureValidator;
+    SlackEventHandler(SlackEventValidator eventValidator, SlackEventDispatcher dispatcher) {
         this.dispatcher = dispatcher;
         this.validator = eventValidator;
     }

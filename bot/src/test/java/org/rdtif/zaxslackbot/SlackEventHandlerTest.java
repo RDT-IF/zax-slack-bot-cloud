@@ -2,27 +2,20 @@ package org.rdtif.zaxslackbot;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
-import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Test;
-
-import java.util.Collections;
-import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class SlackEventHandlerTest {
-    private final SlackTimestampValidator timestampValidator = mock(SlackTimestampValidator.class);
-    private final SlackSignatureValidator signatureValidator = mock(SlackSignatureValidator.class);
     private final SlackEventDispatcher dispatcher = mock(SlackEventDispatcher.class);
     private final SlackEventValidator eventValidator = mock(SlackEventValidator.class);
-    private final SlackEventHandler handler = new SlackEventHandler(timestampValidator, signatureValidator, dispatcher, eventValidator);
+    private final SlackEventHandler handler = new SlackEventHandler(eventValidator, dispatcher);
 
     @Test
     void handleValidEvent() {
