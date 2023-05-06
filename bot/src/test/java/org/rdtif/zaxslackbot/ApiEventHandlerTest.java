@@ -12,10 +12,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class SlackEventHandlerTest {
+class ApiEventHandlerTest {
     private final SlackEventDispatcher dispatcher = mock(SlackEventDispatcher.class);
     private final SlackEventValidator eventValidator = mock(SlackEventValidator.class);
-    private final SlackEventHandler handler = new SlackEventHandler(eventValidator, dispatcher);
+    private final ApiEventHandler handler = new ApiEventHandler(eventValidator, dispatcher);
 
     @Test
     void handleValidEvent() {

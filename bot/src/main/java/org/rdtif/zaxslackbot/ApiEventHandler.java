@@ -5,12 +5,12 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import com.google.gson.Gson;
 import jakarta.inject.Inject;
 
-class SlackEventHandler {
+class ApiEventHandler {
     private final SlackEventDispatcher dispatcher;
     private final SlackEventValidator validator;
 
     @Inject
-    SlackEventHandler(SlackEventValidator eventValidator, SlackEventDispatcher dispatcher) {
+    ApiEventHandler(SlackEventValidator eventValidator, SlackEventDispatcher dispatcher) {
         this.dispatcher = dispatcher;
         this.validator = eventValidator;
     }

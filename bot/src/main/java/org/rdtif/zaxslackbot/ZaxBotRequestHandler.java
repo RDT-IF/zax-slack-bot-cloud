@@ -16,8 +16,8 @@ public class ZaxBotRequestHandler implements RequestHandler<APIGatewayProxyReque
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent apiEvent, Context context) {
         try {
             Injector injector = Guice.createInjector(new ZaxBotModule());
-            SlackEventHandler slackEventHandler = injector.getInstance(SlackEventHandler.class);
-            return slackEventHandler.handle(apiEvent);
+            ApiEventHandler apiEventHandler = injector.getInstance(ApiEventHandler.class);
+            return apiEventHandler.handle(apiEvent);
         } catch (Exception exception) {
             context.getLogger().log("Exception caught: " + exception.getMessage());
             context.getLogger().log("Stacktrace: " + gson.toJson(exception.getStackTrace()));
