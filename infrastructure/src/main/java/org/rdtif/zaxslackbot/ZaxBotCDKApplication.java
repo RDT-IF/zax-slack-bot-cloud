@@ -13,7 +13,7 @@ public class ZaxBotCDKApplication {
         StackProps stackProperties = StackProps.builder().env(deploymentEnvironment).build();
 
         App application = new App();
-        new ZaxBotCDKStack(application, "ZaxBotStack", stackProperties, System.getenv("ZAXBOT_SLACK_SIGNING_SECRET"));
+        new ZaxBotCDKStack(application, "ZaxBotStack", stackProperties, System.getenv(SharedConstants.SIGNING_SECRET_ENVIRONMENT_VARIABLE));
         application.synth();
     }
 }

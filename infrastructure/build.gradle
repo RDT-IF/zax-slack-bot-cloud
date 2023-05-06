@@ -16,8 +16,10 @@ repositories {
 }
 
 dependencies {
+    implementation project(':bot-infrastructure-shared')
     implementation 'software.amazon.awscdk:aws-cdk-lib:2.73.0'
     implementation 'software.constructs:constructs:[10.0.0,11.0.0)'
+
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.1'
     testImplementation 'com.google.code.gson:gson:2.10.1'
     testImplementation 'com.google.guava:guava:31.1-jre'

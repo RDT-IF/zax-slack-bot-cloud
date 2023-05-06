@@ -22,7 +22,7 @@ class ZaxBotModuleTest {
     @Test
     void useKeyFromEnvironment() throws Exception {
         Mac hmacSHA256 = Mac.getInstance("HmacSHA256");
-        hmacSHA256.init(new SecretKeySpec(System.getenv("ZAXBOT_SLACK_SIGNING_SECRET").getBytes(), "HmacSHA256"));
+        hmacSHA256.init(new SecretKeySpec(System.getenv(SharedConstants.SIGNING_SECRET_ENVIRONMENT_VARIABLE).getBytes(), "HmacSHA256"));
         byte[] expected = hmacSHA256.doFinal("test string".getBytes());
 
         Injector injector = Guice.createInjector(new ZaxBotModule());

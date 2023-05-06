@@ -8,7 +8,7 @@ import javax.crypto.spec.SecretKeySpec;
 class ZaxBotModule extends AbstractModule {
     @Provides
     SecretKeySpec providesKeySpec() {
-        String signingSecret = System.getenv("ZAXBOT_SLACK_SIGNING_SECRET");
+        String signingSecret = System.getenv(SharedConstants.SIGNING_SECRET_ENVIRONMENT_VARIABLE);
         return new SecretKeySpec(signingSecret.getBytes(), "HmacSHA256");
     }
 }

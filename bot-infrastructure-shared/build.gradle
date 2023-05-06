@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.rdtif.zaxslackbot'
+version = ''
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+test {
+    useJUnitPlatform()
+}

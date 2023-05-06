@@ -1,4 +1,5 @@
 rootProject.name = 'zax-slack-bot-cloud'
 include 'infrastructure'
 include 'bot'
+include 'bot-infrastructure-shared'
 
