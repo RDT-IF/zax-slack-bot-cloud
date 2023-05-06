@@ -25,6 +25,7 @@ test {
 }
 
 jar {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     manifest {
         attributes 'Main-Class': 'org.rdtif.zaxslackbot.ZaxBotRequestHandler'
     }
