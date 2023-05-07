@@ -14,7 +14,7 @@ class SlackTimestampValidatorTest {
 
     @Test
     void timeStampInValidRangeMinimum() {
-        long timestamp = Instant.now().toEpochMilli();
+        long timestamp = Instant.now().toEpochMilli() / 1000;
 
         boolean valid = validator.validate(String.valueOf(timestamp));
 
@@ -23,7 +23,7 @@ class SlackTimestampValidatorTest {
 
     @Test
     void timeStampInValidRangeMaximum() {
-        long timestamp = Instant.now().toEpochMilli() - (5 * 60 * 1000);
+        long timestamp = (Instant.now().toEpochMilli() / 1000) - (5 * 60);
 
         boolean valid = validator.validate(String.valueOf(timestamp));
 
@@ -41,7 +41,7 @@ class SlackTimestampValidatorTest {
 
     @Test
     void timeStampBelowValidRange() {
-        long timestamp = Instant.now().toEpochMilli() - (5 * 60 * 1000) - 1;
+        long timestamp = Instant.now().toEpochMilli() - (5 * 60) - 1;
 
         boolean valid = validator.validate(String.valueOf(timestamp));
 

@@ -10,11 +10,11 @@ class SlackTimestampValidator {
             return false;
         }
         long timestamp = Long.parseLong(eventTimestamp);
-        long now = Instant.now().toEpochMilli();
+        long now = Instant.now().toEpochMilli() / 1000;
         long elapsed = now - timestamp;
-        return elapsed >= 0 && elapsed <= TIME_LIMIT_IN_MILLISECONDS;
+        return elapsed >= 0 && elapsed <= TIME_LIMIT_IN_SECONDS;
     }
 
     private static final int TIME_LIMIT_IN_MINUTES = 5;
-    private final static long TIME_LIMIT_IN_MILLISECONDS = TIME_LIMIT_IN_MINUTES * 60 * 1000;
+    private final static long TIME_LIMIT_IN_SECONDS = TIME_LIMIT_IN_MINUTES * 60;
 }
