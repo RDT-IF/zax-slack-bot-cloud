@@ -15,7 +15,7 @@ public class ZaxBotRequestHandler implements RequestHandler<APIGatewayProxyReque
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent apiEvent, Context context) {
         try {
-            Injector injector = Guice.createInjector(new ZaxBotModule());
+            Injector injector = Guice.createInjector(new ZaxBotModule(new ZaxLogger(context)));
             ApiEventHandler apiEventHandler = injector.getInstance(ApiEventHandler.class);
             return apiEventHandler.handle(apiEvent);
         } catch (Exception exception) {

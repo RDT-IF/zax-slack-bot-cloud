@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.equalTo;
 class ZaxBotModuleTest {
     @Test
     void specifyHmacSHA256() {
-        Injector injector = Guice.createInjector(new ZaxBotModule());
+        Injector injector = Guice.createInjector(new ZaxBotModule(new ZaxLogger(new MockContext())));
         SecretKeySpec keySpec = injector.getInstance(SecretKeySpec.class);
 
         assertThat(keySpec.getAlgorithm(), equalTo("HmacSHA256"));
@@ -25,7 +25,7 @@ class ZaxBotModuleTest {
         hmacSHA256.init(new SecretKeySpec(System.getenv(SharedConstants.SIGNING_SECRET_ENVIRONMENT_VARIABLE).getBytes(), "HmacSHA256"));
         byte[] expected = hmacSHA256.doFinal("test string".getBytes());
 
-        Injector injector = Guice.createInjector(new ZaxBotModule());
+        Injector injector = Guice.createInjector(new ZaxBotModule(new ZaxLogger(new MockContext())));
         SecretKeySpec keySpec = injector.getInstance(SecretKeySpec.class);
         hmacSHA256.init(keySpec);
         byte[] actual = hmacSHA256.doFinal("test string".getBytes());
