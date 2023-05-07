@@ -1,12 +1,13 @@
 package org.rdtif.zaxslackbot;
 
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
-import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -16,10 +17,9 @@ class SlackSignatureValidatorTest {
     private final SlackSignatureValidator validator = new SlackSignatureValidator(TEST_KEY_SPEC);
 
     @Test
-    void validSignature() throws Exception {
-        Mac hmacSHA256 = Mac.getInstance(TEST_KEY_SPEC.getAlgorithm());
-        hmacSHA256.init(TEST_KEY_SPEC);
-        String signature = Arrays.toString(hmacSHA256.doFinal("v0:timestamp:body".getBytes()));
+    void validSignature() {
+        HashFunction hashFunction = Hashing.hmacSha256(TEST_KEY_SPEC);
+        String signature = "v0=" + hashFunction.hashString("v0:timestamp:body", StandardCharsets.UTF_8);
 
         boolean validate = validator.validate(signature, "timestamp", "body");
 

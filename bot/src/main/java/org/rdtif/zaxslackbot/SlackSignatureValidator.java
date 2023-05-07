@@ -1,12 +1,11 @@
 package org.rdtif.zaxslackbot;
 
+import com.google.common.hash.HashFunction;
+import com.google.common.hash.Hashing;
 import jakarta.inject.Inject;
 
-import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 
 class SlackSignatureValidator {
     private final SecretKeySpec secretKeySpec;
@@ -17,14 +16,9 @@ class SlackSignatureValidator {
     }
 
     boolean validate(String signature, String timestamp, String body) {
-        String signatureOriginal = "v0:" + timestamp + ":" + body;
-        try {
-            Mac hmacSHA256 = Mac.getInstance(secretKeySpec.getAlgorithm());
-            hmacSHA256.init(secretKeySpec);
-            String expected = Arrays.toString(hmacSHA256.doFinal(signatureOriginal.getBytes()));
-            return expected.equals(signature);
-        } catch (NoSuchAlgorithmException | InvalidKeyException exception) {
-            return false;
-        }
+        String expectedOriginal = "v0:" + timestamp + ":" + body;
+        @SuppressWarnings("UnstableApiUsage") HashFunction hashFunction = Hashing.hmacSha256(secretKeySpec);
+        String expected = "v0=" + hashFunction.hashString(expectedOriginal, StandardCharsets.UTF_8);
+        return expected.equals(signature);
     }
 }
