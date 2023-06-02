@@ -11,10 +11,7 @@ repositories {
 
 dependencies {
     implementation project(':zax-bot-common')
-
-    implementation 'com.slack.api:bolt-aws-lambda:1.29.2'
-    implementation 'com.slack.api:bolt:1.29.2'
-
+    
     implementation 'com.amazonaws:aws-lambda-java-core:1.2.2'
     implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
 
