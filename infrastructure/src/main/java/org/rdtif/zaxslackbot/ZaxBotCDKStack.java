@@ -26,7 +26,7 @@ public class ZaxBotCDKStack extends Stack {
                 .description("ZaxBot Lambda")
                 .runtime(Runtime.JAVA_11)
                 .timeout(Duration.minutes(15))
-                .code(Code.fromAsset("../bot/build/libs/bot.jar"))
+                .code(Code.fromAsset("../aws-lambda-bot/build/libs/aws-lambda-bot.jar"))
                 .handler("org.rdtif.zaxslackbot.ZaxBotRequestHandler")
                 .environment(environment)
                 .uuid(UUID.randomUUID().toString())

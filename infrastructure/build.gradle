@@ -39,4 +39,4 @@ tasks.withType(Javadoc) {
     options.encoding = 'UTF-8'
 }
 
-run.dependsOn(':bot:jar')
+run.dependsOn(':aws-lambda-bot:jar')
