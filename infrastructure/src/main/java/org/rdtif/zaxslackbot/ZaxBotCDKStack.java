@@ -30,6 +30,7 @@ public class ZaxBotCDKStack extends Stack {
                 .handler("org.rdtif.zaxslackbot.ZaxBotRequestHandler")
                 .environment(environment)
                 .uuid(UUID.randomUUID().toString())
+                .memorySize(512)
                 .build();
 
         LambdaIntegration simpleIntegration = LambdaIntegration.Builder.create(function).build();

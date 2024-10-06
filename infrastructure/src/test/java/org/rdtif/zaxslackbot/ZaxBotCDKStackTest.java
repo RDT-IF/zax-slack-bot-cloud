@@ -53,6 +53,16 @@ class ZaxBotCDKStackTest {
     }
 
     @Test
+    void assignsMemoryToFunction() {
+        App app = new App();
+
+        Stack stack = new ZaxBotCDKStack(app, "CDKStack", null, "");
+
+        Template template = Template.fromStack(stack);
+        template.hasResourceProperties("AWS::Lambda::Function", Collections.singletonMap("MemorySize", 512));
+    }
+
+    @Test
     void assignsCorrectHandler() {
         App app = new App();
 
